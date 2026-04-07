@@ -1,6 +1,8 @@
 # Hey, I'm Sandeep 👋
 
-Software Engineer building scalable backend systems and cloud infrastructure. Interested in distributed systems, machine learning, and developer tooling.
+Software Engineer with experience across cloud infrastructure, enterprise platforms, and data engineering. MS in Computer Science from University at Buffalo, BTech from NIT Durgapur.
+
+Currently building backend systems at scale. Previously worked on data pipelines and analytics at Deloitte.
 
 ## What I'm working on
 
@@ -11,7 +13,20 @@ Software Engineer building scalable backend systems and cloud infrastructure. In
 
 ## Tech I work with
 
-`Python` `Java` `TypeScript` `SQL` `AWS` `React` `PyTorch` `TensorFlow` `scikit-learn` `SQLite` `MySQL` `Git`
+`Python` `Java` `TypeScript` `SQL` `AWS` `PySpark` `Azure Databricks` `Salesforce` `React` `PyTorch` `TensorFlow` `scikit-learn` `MySQL` `Git`
+
+## Education
+
+🎓 MS Computer Science — University at Buffalo  
+🎓 BTech Information Technology — NIT Durgapur
+
+## Certifications
+
+- Salesforce AI Associate
+- Salesforce Certified Platform Developer I
+- Salesforce Certified Administrator
+- SQL Advanced — HackerRank
+- Deloitte AI Certified
 
 ## Connect
 
