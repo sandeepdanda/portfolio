@@ -28,7 +28,16 @@
     const next = currentTheme() === "light" ? "dark" : "light";
     root.dataset.theme = next;
     localStorage.setItem("theme", next);
+    btn.setAttribute("aria-label", `Switch to ${next === "light" ? "dark" : "light"} mode`);
   });
+
+  // Set initial aria-label based on computed theme
+  if (btn) {
+    btn.setAttribute(
+      "aria-label",
+      `Switch to ${currentTheme() === "light" ? "dark" : "light"} mode`
+    );
+  }
 </script>
 
 <style>

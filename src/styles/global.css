@@ -80,6 +80,7 @@ h1, h2, h3 {
   font-family: var(--font-serif);
   font-weight: 500;
   letter-spacing: -0.01em;
+  font-variation-settings: "opsz" 96;
 }
 
 code, pre, kbd {
