@@ -1,0 +1,17 @@
+---
+// PersonSchema - emits JSON-LD so search engines and LLMs understand who this site is about.
+// Only render on the homepage.
+import { SITE, SOCIAL } from "../config";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.author,
+  url: SITE.url,
+  jobTitle: "Software Engineer",
+  worksFor: { "@type": "Organization", name: "Amazon" },
+  sameAs: [SOCIAL.github, SOCIAL.linkedin],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

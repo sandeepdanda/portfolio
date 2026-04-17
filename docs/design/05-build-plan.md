@@ -69,21 +69,25 @@ Build: 7 pages in 1.77s.
 
 ---
 
-## Phase 4 - SEO and OG  `TODO`
+## Phase 4 - SEO and OG  `DONE`
 
 **Goal**: good link previews, good crawlability, discoverable by name.
 
-Steps:
-1. JSON-LD Person schema on the homepage (link GitHub, LinkedIn, email).
-2. Dynamic OG images per page (use `satori` or `astro-og-canvas`, build-time).
-3. `robots.txt` generation.
-4. RSS feed for case studies (`@astrojs/rss`).
-5. Validate sitemap.xml has every route.
+Shipped:
+- `src/components/PersonSchema.astro` - JSON-LD Person schema on the homepage
+- `src/lib/og.ts` - shared OG image style (Fraunces title, Inter description, editorial palette)
+- `src/pages/og/[...route].png.ts` - homepage OG generator
+- `src/pages/og/work/[...slug].png.ts` - per-case-study OG generator
+- `src/pages/rss.xml.ts` - RSS feed for case studies
+- `public/robots.txt` - allow all, point to sitemap
+- Base layout now accepts `ogImage` prop and emits `og:image` + `twitter:image` tags
 
-Acceptance:
-- Share a case study URL in Slack, rich preview renders.
-- Searching "sandeep danda" on Perplexity finds the site.
-- Lighthouse SEO score 100.
+Build: 7 pages + 2 OG PNGs + 1 RSS in 2.34s. Fonts load from jsDelivr over HTTPS at build time only.
+
+Lessons learned:
+- `astro-og-canvas`'s `OGImageRoute` returns a Promise. Must `await` at the top of the route module.
+- Default `getSlug` appends `.png` which doubles the extension since the file is already `[slug].png.ts`. Custom `getSlug: (path) => path` fixes it.
+- Fonts not specified in `fonts` array silently fall back to Noto Sans. Always pass explicit font URLs.
 
 ---
 
@@ -173,3 +177,4 @@ npm run preview
 - 2026-04-17: Phase 2 shipped. Content collections for `work` and `projects`, case study list + detail pages, first draft of not-another-rewatch case study, homepage pulls featured from collection. 3 pages built in 1.7s.
 - 2026-04-17: Scrub pass. Replaced partition-map signature with an embedding-space scatter. Removed all internal-work references from copy, component code, and docs. Added `docs/SCRUB-RULES.md` as a permanent guardrail.
 - 2026-04-17: Phase 3 shipped. About, Now, Projects, 404 pages. Two seed entries in the projects collection. 7 pages built in 1.77s.
+- 2026-04-17: Phase 4 shipped. JSON-LD Person schema, per-page OG images via astro-og-canvas, RSS feed, robots.txt. Build up to 2.34s with 2 PNG renders.

@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import EmbeddingMap from "../components/EmbeddingMap.astro";
+import PersonSchema from "../components/PersonSchema.astro";
 
 const all = await getCollection("work", (e) => e.data.status !== "draft");
 const featured =
@@ -10,6 +11,7 @@ const featured =
 ---
 
 <Base>
+  <PersonSchema />
   <section class="intro">
     <h1>Sandeep Danda</h1>
     <p class="tagline">

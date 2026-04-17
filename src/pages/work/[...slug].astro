@@ -14,7 +14,7 @@ const { data } = entry;
 const minutes = readingTime(entry.body ?? "");
 ---
 
-<Base title={data.title} description={data.summary}>
+<Base title={data.title} description={data.summary} ogImage={`/og/work/${entry.id}.png`}>
   <article class="case-study">
     <header class="case-header">
       <p class="eyebrow">Case study</p>
