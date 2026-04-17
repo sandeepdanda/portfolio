@@ -1,0 +1,132 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const statusLabel: Record<string, string> = {
+  active: "Active",
+  paused: "Paused",
+  archived: "Archived",
+};
+---
+
+<Base
+  title="Projects"
+  description="Smaller things I ship or maintain. Some finished, some ongoing."
+>
+  <section class="header">
+    <h1>Projects</h1>
+    <p>Smaller things I ship or maintain. Some finished, some ongoing.</p>
+  </section>
+
+  {projects.length === 0 ? (
+    <p class="empty">Nothing here yet. Check back soon.</p>
+  ) : (
+    <ul class="grid">
+      {projects.map((entry) => {
+        const href = entry.data.live ?? entry.data.repo ?? `#${entry.id}`;
+        const external = href.startsWith("http");
+        return (
+          <li id={entry.id}>
+            <a
+              href={href}
+              class="tile"
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+            >
+              <div class="row">
+                <h2>{entry.data.name}</h2>
+                <span class={`status status-${entry.data.status}`}>
+                  {statusLabel[entry.data.status]}
+                </span>
+              </div>
+              <p>{entry.data.summary}</p>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+</Base>
+
+<style>
+  .header {
+    margin-bottom: 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    margin: 0 0 0.75rem 0;
+  }
+  .header p {
+    color: var(--color-text-muted);
+    font-size: 1.0625rem;
+    max-width: 36rem;
+  }
+  .empty {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 48rem;
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tile {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    color: inherit;
+    transition: border-color 150ms ease-out, transform 150ms ease-out;
+    background: var(--color-surface);
+    height: 100%;
+  }
+  .tile:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .tile h2 {
+    font-size: 1.125rem;
+    margin: 0;
+    color: var(--color-text);
+  }
+  .tile p {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .status {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .status-active {
+    color: var(--color-accent);
+  }
+  .status-archived {
+    opacity: 0.6;
+  }
+</style>

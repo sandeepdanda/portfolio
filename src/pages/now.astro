@@ -1,0 +1,80 @@
+---
+import Base from "../layouts/Base.astro";
+import { formatDate } from "../lib/content";
+
+// Edit this object when the list changes. Keep it short.
+const lastUpdated = new Date("2026-04-17");
+const items = [
+  "Shipping the next phase of not-another-rewatch - user profiles and watch history.",
+  'Reading "Designing Data-Intensive Applications" again. It keeps being good.',
+  "Trying out Rust on a small side project to see if I like it.",
+  "Building this portfolio site. If you are reading this, it worked.",
+];
+---
+
+<Base
+  title="Now"
+  description="What I am working on this month."
+>
+  <section class="header">
+    <h1>Now</h1>
+    <p class="subtitle">What I am working on this month.</p>
+  </section>
+
+  <ul class="items">
+    {items.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <p class="updated">Last updated: {formatDate(lastUpdated)}</p>
+
+  <p class="explain">
+    This is a <a href="https://nownownow.com/about">/now page</a>. The idea:
+    one page that says what I am focused on right now. Not a blog, not a
+    bio, just the current list.
+  </p>
+</Base>
+
+<style>
+  .header {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    margin: 0 0 0.5rem 0;
+  }
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.0625rem;
+    margin: 0;
+  }
+  .items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    max-width: 40rem;
+  }
+  .items li {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+  .items li:last-child {
+    border-bottom: none;
+  }
+  .updated {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 2rem 0 2.5rem 0;
+  }
+  .explain {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 36rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+</style>

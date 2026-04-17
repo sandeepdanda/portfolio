@@ -54,20 +54,18 @@ Lessons learned:
 
 ---
 
-## Phase 3 - Supporting pages  `TODO`
+## Phase 3 - Supporting pages  `DONE`
 
 **Goal**: fill out the navigation. All routes from the site brief return something real.
 
-Pages:
-- `src/pages/about.astro` - bio, links, optional "what I am looking for" section
-- `src/pages/now.astro` - current-month bullets, last-updated timestamp
-- `src/pages/projects/index.astro` - two-column grid pulling from the `projects` collection
+Shipped:
+- `src/pages/about.astro` - bio + links section (scrub-safe)
+- `src/pages/now.astro` - current month bullets with last-updated timestamp
+- `src/pages/projects.astro` - two-column grid pulling from the `projects` content collection
 - `src/pages/404.astro` - three-link fallback per spec
+- Two starter entries in `src/content/projects/`: not-another-rewatch, readloot
 
-Acceptance:
-- Every nav item resolves to a full page.
-- 404 catches unknown URLs (Astro default behavior).
-- All pages inherit Base layout and design tokens.
+Build: 7 pages in 1.77s.
 
 ---
 
@@ -174,3 +172,4 @@ npm run preview
 - 2026-04-17: Phase 1 shipped. Scaffolded project, global shell, homepage renders with signature visual. Build clean in ~1s.
 - 2026-04-17: Phase 2 shipped. Content collections for `work` and `projects`, case study list + detail pages, first draft of not-another-rewatch case study, homepage pulls featured from collection. 3 pages built in 1.7s.
 - 2026-04-17: Scrub pass. Replaced partition-map signature with an embedding-space scatter. Removed all internal-work references from copy, component code, and docs. Added `docs/SCRUB-RULES.md` as a permanent guardrail.
+- 2026-04-17: Phase 3 shipped. About, Now, Projects, 404 pages. Two seed entries in the projects collection. 7 pages built in 1.77s.
