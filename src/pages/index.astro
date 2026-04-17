@@ -1,0 +1,137 @@
+---
+import Base from "../layouts/Base.astro";
+import PartitionMap from "../components/PartitionMap.astro";
+---
+
+<Base>
+  <section class="intro">
+    <h1>Sandeep Danda</h1>
+    <p class="tagline">
+      Software engineer at Amazon. I work on payments infrastructure
+      and cross-partition data movement.
+    </p>
+  </section>
+
+  <PartitionMap />
+
+  <section class="featured">
+    <p class="eyebrow">Featured case study</p>
+    <h2><a href="/work/not-another-rewatch">Not Another Rewatch</a></h2>
+    <p>
+      A movie recommendation app that runs semantic search locally,
+      without an OpenAI bill. Built on DynamoDB single-table design.
+    </p>
+    <a href="/work/not-another-rewatch" class="read-more">
+      Read the case study →
+    </a>
+  </section>
+
+  <section class="more">
+    <h3>More work</h3>
+    <ul>
+      <li>
+        <a href="/work/ads-cross-partition-sync">Cross-partition data sync (ADS)</a>
+        <span> — What I build at Amazon.</span>
+      </li>
+      <li>
+        <a href="/projects#readloot">ReadLoot</a>
+        <span> — A vocabulary RPG for people who read too much.</span>
+      </li>
+      <li>
+        <a href="/about">About</a>
+        <span> — The longer version.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="bio">
+    <p>
+      I am based in Seattle and have been at Amazon for a few years,
+      mostly working on AWS Payments infrastructure. I like building
+      things with small teams, small dependencies, and long feedback loops.
+      <a href="/about">More about me →</a>
+    </p>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    margin-bottom: 3rem;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    margin: 0 0 1rem 0;
+    line-height: 1.05;
+  }
+  .tagline {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 34rem;
+    line-height: 1.55;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.5rem 0;
+  }
+  .featured {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .featured h2 {
+    font-size: 2rem;
+    margin: 0 0 0.75rem 0;
+  }
+  .featured h2 a {
+    color: var(--color-text);
+  }
+  .featured h2 a:hover {
+    color: var(--color-accent);
+  }
+  .featured p {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 38rem;
+    margin-bottom: 1rem;
+  }
+  .read-more {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+  .more {
+    margin-bottom: 3rem;
+  }
+  .more h3 {
+    font-size: 1.375rem;
+    margin: 0 0 1rem 0;
+  }
+  .more ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .more li {
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--color-border);
+    line-height: 1.5;
+  }
+  .more li:last-child {
+    border-bottom: none;
+  }
+  .more li span {
+    color: var(--color-text-muted);
+  }
+  .bio {
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .bio p {
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    max-width: 38rem;
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+// Theme toggle - fixed bottom-right. Persists to localStorage.
+---
+
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  aria-label="Toggle theme"
+  type="button"
+>
+  <span class="icon-sun" aria-hidden="true">☀</span>
+  <span class="icon-moon" aria-hidden="true">☾</span>
+</button>
+
+<script>
+  const btn = document.getElementById("theme-toggle");
+  const root = document.documentElement;
+
+  function currentTheme(): "light" | "dark" {
+    const explicit = root.dataset.theme;
+    if (explicit === "light" || explicit === "dark") return explicit;
+    return window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark";
+  }
+
+  btn?.addEventListener("click", () => {
+    const next = currentTheme() === "light" ? "dark" : "light";
+    root.dataset.theme = next;
+    localStorage.setItem("theme", next);
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    z-index: 10;
+    transition: background 150ms ease-out, border-color 150ms ease-out;
+  }
+  .theme-toggle:hover {
+    background: var(--color-surface-raised);
+    border-color: var(--color-text-muted);
+  }
+  .icon-sun {
+    display: none;
+  }
+  .icon-moon {
+    display: inline;
+  }
+  :root[data-theme="light"] .icon-sun,
+  :root:not([data-theme="dark"]) .icon-sun {
+    display: none;
+  }
+  :root[data-theme="dark"] .icon-moon {
+    display: inline;
+  }
+  :root[data-theme="light"] .icon-moon {
+    display: none;
+  }
+  :root[data-theme="light"] .icon-sun {
+    display: inline;
+  }
+</style>

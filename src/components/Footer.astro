@@ -1,0 +1,53 @@
+---
+import { SITE, SOCIAL } from "../config";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="top">
+    Built with Astro. Hosted on Cloudflare Pages.
+    <a href={SOCIAL.github}>Source on GitHub</a>.
+  </div>
+  <div class="bottom">
+    <span>© {year} {SITE.author}</span>
+    <span class="sep">·</span>
+    <a href="/rss.xml">RSS</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 2rem 3rem 2rem 6rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 1.5rem 1rem 1.5rem 2.5rem;
+    }
+  }
+  .top a,
+  .bottom a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 3px;
+  }
+  .top a:hover,
+  .bottom a:hover {
+    color: var(--color-text);
+  }
+  .bottom {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .sep {
+    opacity: 0.5;
+  }
+</style>

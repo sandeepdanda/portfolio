@@ -1,0 +1,98 @@
+---
+// PartitionMap - signature interaction from docs/design/02-signature-interaction.md
+// Four dots (IAD, NCL, ALE, THF), thin connecting lines, subtle animated pulses.
+// Degrades to static on prefers-reduced-motion.
+
+// Coordinates are in a normalized 0-100 viewBox space.
+const nodes = [
+  { id: "iad", label: "IAD", x: 28, y: 40, region: "US East (AWS commercial)" },
+  { id: "ncl", label: "NCL", x: 12, y: 22, region: "Secret region" },
+  { id: "ale", label: "ALE", x: 18, y: 62, region: "Top Secret region" },
+  { id: "thf", label: "THF", x: 78, y: 30, region: "EUSC partition" },
+];
+
+const edges = [
+  { from: "iad", to: "ncl", dur: 4 },
+  { from: "iad", to: "ale", dur: 7 },
+  { from: "iad", to: "thf", dur: 11 },
+];
+
+const nodeById = Object.fromEntries(nodes.map((n) => [n.id, n]));
+---
+
+<figure class="partition-map">
+  <svg viewBox="0 0 100 70" role="img" aria-label="AWS partition map showing data flow from IAD to NCL, ALE, and THF">
+    <!-- Edges -->
+    {edges.map((e) => {
+      const a = nodeById[e.from]!;
+      const b = nodeById[e.to]!;
+      return (
+        <g class="edge">
+          <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} class="edge-line" />
+          <circle r="0.8" class="pulse">
+            <animateMotion
+              dur={`${e.dur}s`}
+              repeatCount="indefinite"
+              path={`M ${a.x} ${a.y} L ${b.x} ${b.y}`}
+            />
+          </circle>
+        </g>
+      );
+    })}
+
+    <!-- Nodes -->
+    {nodes.map((n) => (
+      <g class="node">
+        <circle cx={n.x} cy={n.y} r="1.6" class="node-dot" />
+        <text x={n.x} y={n.y - 3} class="node-label" text-anchor="middle">
+          {n.label}
+        </text>
+      </g>
+    ))}
+  </svg>
+  <figcaption>
+    Data flowing between AWS partitions. This is what I work on.
+  </figcaption>
+</figure>
+
+<style>
+  .partition-map {
+    margin: 0 0 3rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    display: block;
+  }
+  .edge-line {
+    stroke: var(--color-border);
+    stroke-width: 0.15;
+  }
+  .pulse {
+    fill: var(--color-accent);
+  }
+  .node-dot {
+    fill: var(--color-text);
+  }
+  .node-label {
+    font-family: var(--font-mono);
+    font-size: 2.2px;
+    fill: var(--color-text-muted);
+    letter-spacing: 0.05em;
+  }
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse {
+      display: none;
+    }
+  }
+</style>
