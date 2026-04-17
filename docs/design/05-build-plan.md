@@ -4,7 +4,7 @@ Living document. Updated as we ship each phase. Mark phases `DONE`, `WIP`, or `T
 
 **Stack**: Astro 5/6 + Tailwind v4 + MDX, deployed to Cloudflare Pages.
 **Visual direction**: Editorial brutalist (Direction A, see `docs/design/03-visual-directions.md`).
-**Signature interactions**: Partition map + build log header (see `docs/design/02-signature-interaction.md`).
+**Signature interactions**: Embedding-space scatter + build log header (see `docs/design/02-signature-interaction.md`).
 
 ---
 
@@ -22,7 +22,7 @@ Shipped:
 - `src/components/BuildLog.astro` - "built YYYY-MM-DD HH:MM · sha" header
 - `src/components/Footer.astro` - minimal two-line footer
 - `src/components/ThemeToggle.astro` - fixed bottom-right toggle with localStorage
-- `src/components/PartitionMap.astro` - SVG map with IAD/NCL/ALE/THF + animated pulses
+- `src/components/EmbeddingMap.astro` - SVG scatter of points in embedding space with a drifting pulse through neighbors (based on the not-another-rewatch side project)
 - `src/pages/index.astro` - homepage with all blocks from `04-site-brief.md`
 - `npm run build` passes in 1.13s. Output: 7.8KB static HTML, zero JS to render.
 
@@ -32,23 +32,25 @@ Lessons learned:
 
 ---
 
-## Phase 2 - Content collections and MDX case studies  `TODO`
+## Phase 2 - Content collections and MDX case studies  `DONE`
 
 **Goal**: case studies live as typed MDX with auto-generated list and detail pages.
 
-Steps:
-1. Create `src/content.config.ts` with two collections: `work` (deep case studies) and `projects` (smaller tiles).
-2. Each `work` item: `title`, `summary`, `publishedAt`, `updatedAt`, `tags[]`, `readingTime`, `featured`, `status` (draft | shipped | wip | archived).
-3. Add `src/pages/work/index.astro` - sorted list, newest first, matches spec from `04-site-brief.md`.
-4. Add `src/pages/work/[...slug].astro` - individual case study template with the 6-section spine (What / Why / Stack / What broke / What I'd do differently / Metrics).
-5. Write the first real case study: `src/content/work/not-another-rewatch.mdx`.
-6. Verify: `npm run build` still under 3 seconds, lighthouse score 95+.
+Shipped:
+- `src/content.config.ts` with two collections: `work` and `projects`, typed with Zod schemas
+- `src/lib/content.ts` - reading time + date helpers
+- `src/pages/work/index.astro` - sorted case study list
+- `src/pages/work/[...slug].astro` - detail template with summary box + prose typography
+- `src/content/work/not-another-rewatch.mdx` - first case study (DRAFT - replace placeholder numbers with real ones before shipping)
+- Homepage refactored to pull the featured case study from the collection
 
-Acceptance:
-- Homepage featured link hits a real page.
-- Case study page has readable typography at 18px body.
-- Estimated reading time auto-calculated.
-- Slug in URL matches file name.
+Build: 3 pages static, 1.70s total.
+
+Lessons learned:
+- Astro 6 content collections use the `glob` loader from `astro/loaders`. Legacy `src/content/<name>/` auto-discovery is gone.
+- `render()` is imported from `astro:content`, not `entry.render()` like in Astro 4.
+- `entry.body` is raw markdown. Use it for reading-time estimates.
+- Empty content collection dirs emit a build warning. Added `.gitkeep` in `projects/`.
 
 ---
 
@@ -95,7 +97,7 @@ Steps:
 1. Tab through every page. Confirm focus rings visible, skip link works, no traps.
 2. Contrast check all text colors with WebAIM. Fix any AA failures.
 3. Add alt text audit for any images.
-4. Verify `prefers-reduced-motion` kills the partition map pulses.
+4. Verify `prefers-reduced-motion` kills the embedding-map pulses.
 5. Test on mobile viewport 360px wide. Nothing should overflow.
 6. Check headings form a valid outline (one H1 per page, no level skips).
 
@@ -129,8 +131,8 @@ Acceptance:
 **Goal**: two strong case studies so the "Work" index feels alive.
 
 Pick one:
-- Cross-partition data sync (ADS) - your day job, unique angle
-- A smaller but complete side project
+- A deeper dive on a complete side project (readloot, for example)
+- A standalone tools/infra project you shipped outside of work
 
 Keep under 1500 words. Include one diagram. Follow the 6-section spine.
 
@@ -149,7 +151,7 @@ Keep under 1500 words. Include one diagram. Follow the 6-section spine.
 ## Notes to future self
 
 - Keep the homepage under 10KB of HTML. Measure on every change.
-- If the partition map ever becomes boring, iterate on it before replacing it.
+- If the embedding map ever becomes boring, iterate on it before replacing it.
 - Do not add a hamburger menu. The 4 nav items fit on 360px.
 - Do not add testimonials unless they are real.
 - Voice check before shipping any copy: no em dashes, no `leverage`/`utilize`/`facilitate`, no "I'd be happy to".
@@ -169,4 +171,6 @@ npm run preview
 
 ## Update log
 
-- 2026-04-17: Phase 1 shipped. Scaffolded project, global shell, homepage renders with partition map. Build clean in ~1s.
+- 2026-04-17: Phase 1 shipped. Scaffolded project, global shell, homepage renders with signature visual. Build clean in ~1s.
+- 2026-04-17: Phase 2 shipped. Content collections for `work` and `projects`, case study list + detail pages, first draft of not-another-rewatch case study, homepage pulls featured from collection. 3 pages built in 1.7s.
+- 2026-04-17: Scrub pass. Replaced partition-map signature with an embedding-space scatter. Removed all internal-work references from copy, component code, and docs. Added `docs/SCRUB-RULES.md` as a permanent guardrail.

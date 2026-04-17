@@ -1,0 +1,61 @@
+---
+title: "Not Another Rewatch"
+summary: "A movie recommendation app that runs semantic search locally, without an OpenAI bill. Built on DynamoDB single-table design."
+publishedAt: 2026-04-17
+tags: ["TypeScript", "DynamoDB", "Embeddings", "Full-stack"]
+status: "shipped"
+featured: true
+---
+
+> Draft notes. Replace the placeholder numbers and specifics with your real ones before shipping.
+
+## What it is
+
+A small web app that recommends films based on mood, not metadata. Type a sentence like "something quiet with a sad ending" and it returns films that fit. It does not call an external LLM. All the heavy lifting runs on embeddings I generated once and stored in DynamoDB.
+
+## Why I built it
+
+Every recommendation site I tried was tag-based. "Action", "comedy", "80s". That matches how metadata is stored, not how I think about films. I wanted to type a feeling and get back a short list.
+
+Also I wanted to prove something: you do not need an LLM API for every problem that looks AI-shaped. A good embedding model plus a fast vector search covers most recommendation use cases for a fraction of the cost.
+
+## What I picked and why
+
+Stack in short:
+
+- Frontend: TypeScript, React, deployed on Vercel
+- Backend: serverless functions, DynamoDB for data + vectors
+- Embedding model: [a local sentence-transformer, ran once per film]
+- Dataset: ~45,000 films
+
+The interesting tradeoff was DynamoDB for vector storage. The "right" tool is a vector database like Pinecone or pgvector. I picked DynamoDB because:
+
+1. I already knew it from work
+2. For a personal project, I did not want another hosted dependency
+3. A few thousand films with cached embeddings fits comfortably in DDB's free tier
+4. Single-table design means one read per query - no joins, no N+1
+
+The cost: I have to compute similarity in code instead of at the storage layer. At 45k films that is fine. At 4.5M it would not be.
+
+## What broke and how I fixed it
+
+Three things went wrong and each taught me something.
+
+**Cold start times.** The first query to a fresh function was taking ~3s because the embedding model was being loaded on demand. Fixed by pre-computing embeddings and storing them. The runtime now only needs a tiny model to embed the user's query, not the full catalog.
+
+**Similarity ranking was off.** Cosine similarity alone kept surfacing films that shared vocabulary but not feel. Added a small ranking adjustment using film year and rating so the top 10 felt more coherent. Not fancy. Worked.
+
+**DDB throttling on bulk inserts.** Hit a BatchWriteItem wall when loading the initial dataset. Rewrote the loader with exponential backoff and it finished in under an hour.
+
+## What I would do differently
+
+Split the inference and the storage earlier. I started with everything in one function and hit cold-start issues. If I had separated "embed the query" and "rank the candidates" into different layers from day one, iteration would have been faster.
+
+I also would have kept a changelog. Half the decisions above are things I only remember because I happened to commit them with good messages.
+
+## Metrics
+
+- 45,000 films loaded
+- P95 query latency: under 200ms locally
+- Cost to host: under $1/month on the AWS free tier
+- LLM API calls: zero

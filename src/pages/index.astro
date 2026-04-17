@@ -1,41 +1,46 @@
 ---
+import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
-import PartitionMap from "../components/PartitionMap.astro";
+import EmbeddingMap from "../components/EmbeddingMap.astro";
+
+const all = await getCollection("work", (e) => e.data.status !== "draft");
+const featured =
+  all.find((e) => e.data.featured) ??
+  all.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())[0];
 ---
 
 <Base>
   <section class="intro">
     <h1>Sandeep Danda</h1>
     <p class="tagline">
-      Software engineer at Amazon. I work on payments infrastructure
-      and cross-partition data movement.
+      Software engineer in Seattle. I build distributed backend systems
+      and ship AI side projects in my spare time.
     </p>
   </section>
 
-  <PartitionMap />
+  <EmbeddingMap />
 
-  <section class="featured">
-    <p class="eyebrow">Featured case study</p>
-    <h2><a href="/work/not-another-rewatch">Not Another Rewatch</a></h2>
-    <p>
-      A movie recommendation app that runs semantic search locally,
-      without an OpenAI bill. Built on DynamoDB single-table design.
-    </p>
-    <a href="/work/not-another-rewatch" class="read-more">
-      Read the case study →
-    </a>
-  </section>
+  {featured && (
+    <section class="featured">
+      <p class="eyebrow">Featured case study</p>
+      <h2><a href={`/work/${featured.id}`}>{featured.data.title}</a></h2>
+      <p>{featured.data.summary}</p>
+      <a href={`/work/${featured.id}`} class="read-more">
+        Read the case study →
+      </a>
+    </section>
+  )}
 
   <section class="more">
     <h3>More work</h3>
     <ul>
       <li>
-        <a href="/work/ads-cross-partition-sync">Cross-partition data sync (ADS)</a>
-        <span> — What I build at Amazon.</span>
+        <a href="/work">All case studies</a>
+        <span> — Deep writeups on things I built.</span>
       </li>
       <li>
-        <a href="/projects#readloot">ReadLoot</a>
-        <span> — A vocabulary RPG for people who read too much.</span>
+        <a href="/projects">Projects</a>
+        <span> — Smaller things I ship and maintain.</span>
       </li>
       <li>
         <a href="/about">About</a>
@@ -46,9 +51,9 @@ import PartitionMap from "../components/PartitionMap.astro";
 
   <section class="bio">
     <p>
-      I am based in Seattle and have been at Amazon for a few years,
-      mostly working on AWS Payments infrastructure. I like building
-      things with small teams, small dependencies, and long feedback loops.
+      I like building things with small teams, small dependencies, and long
+      feedback loops. Outside of work I tend to build around AI and
+      full-stack tools.
       <a href="/about">More about me →</a>
     </p>
   </section>
