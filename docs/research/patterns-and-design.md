@@ -1,6 +1,6 @@
 # Portfolio Patterns and Design - 2026
 
-Written for Sandeep (Amazon SDE 1, AWS Payments Core). No implementation code here. Just what works, what does not, and why.
+Written for Sandeep (Amazon SDE, distributed systems background). No implementation code here. Just what works, what does not, and why.
 
 Verified April 2026. Where I could not reach a live site from this environment, I flag it.
 
@@ -34,7 +34,7 @@ Sources:
 
 **What recruiters skim that hiring managers ignore:** badge rows (AWS, React, Docker icons). They signal nothing at the senior level. Everyone your target bar has those. Replace them with specifics.
 
-**What hiring managers read that recruiters ignore:** case studies. A recruiter does not click through to "how I debugged a cross-partition data sync issue". A staff engineer on the loop does. Write both.
+**What hiring managers read that recruiters ignore:** case studies. A recruiter does not click through to "how I built a movie recommendation app that does semantic search locally". A staff engineer on the loop does. Write both.
 
 ---
 
@@ -280,9 +280,9 @@ Cheap wins. Worth doing even if you do not care, because they overlap with SEO a
 
 ## 8. What this means for Sandeep
 
-Based on the research and your background (Amazon SDE 2, AWS Payments Core, side projects span AI + full-stack + Java/Spring), here is the opinionated take:
+Based on the research and your background (Amazon SDE, distributed systems work at the day job, side projects span AI + full-stack + Java/Spring), here is the opinionated take:
 
-1. **Pick the hybrid model, not the minimal one.** You have a mix of deep work (payments, cross-partition data sync) and interesting side projects (not-another-rewatch with local embeddings, readloot vocabulary RPG). You need a site that shows both. That means: bio page, project showcase grid, 3 to 5 deep case studies, a blog with maybe 1 post at launch.
+1. **Pick the hybrid model, not the minimal one.** You have a mix of infra-adjacent work and interesting side projects (not-another-rewatch with local embeddings, readloot vocabulary RPG). You need a site that shows both. That means: bio page, project showcase grid, 3 to 5 deep case studies, a blog with maybe 1 post at launch.
 
 2. **Lead with the not-another-rewatch case study.** It is your strongest story: 17 shipped phases, DynamoDB single-table design, local semantic search without API bills, visual redesign with a clear editorial voice. That case study is your audition for "I can design and ship non-trivial systems end to end."
 

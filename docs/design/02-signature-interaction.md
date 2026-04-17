@@ -12,13 +12,13 @@ Rules these follow:
 
 ## 1. The partition map
 
-**What the user sees**: a minimal world map above the fold showing four dots - IAD, NCL, ALE, THF. Thin lines connect them. A subtle pulse travels IAD to NCL every 4 seconds, IAD to ALE every 7 seconds, IAD to THF every 11 seconds. Hovering a line shows "Cross-partition sync - DBSync / Diode / Bridges". Click a dot to highlight that region and read one sentence about it.
+**What the user sees**: a minimal map above the fold showing four unlabeled nodes connected by thin lines. Subtle pulses travel along the lines on different cadences. Hovering a line highlights it. The caption reads "Distributed systems - data moving between places."
 
-**Why it fits**: this IS your job at AWS. ADS moves data between partitions that most engineers have never even heard of. The map turns an invisible system into something a recruiter can see in 3 seconds. It says "I work on things you didn't know existed."
+**Why it fits**: "I build distributed backend systems" is the line on the homepage. Showing one silently says the same thing with less text. Works at any level of specificity - you never have to name what the dots are.
 
-**Cost**: 6-10 hours. SVG + CSS animations + one JSON file of partitions.
+**Cost**: 6-10 hours. SVG + CSS animations.
 
-**Risk**: looks like a dashboard if not restrained. Keep it to 4 dots, no numbers, no metrics. Decorative, not functional.
+**Risk**: reads as generic if not restrained. Keep the node count low, no tooltips with specifics, no labels.
 
 ---
 
@@ -75,15 +75,15 @@ Then the "output" expands into the actual homepage below. The terminal stays in 
 
 ---
 
-## 6. The oncall timer
+## 6. Shipping log
 
-**What the user sees**: top-right corner has a small, muted badge: "On call: No - next rotation in 12 days" or "On call: Yes - paged 2 times today". Updates based on your oncall schedule. Clicking it opens a small modal explaining what oncall means at Amazon, linking to your oncall-triage writeup.
+**What the user sees**: a small muted badge on the homepage: "Last shipped: 3 days ago to /work/not-another-rewatch". Updates based on the most recent content change in the repo.
 
-**Why it fits**: oncall work is real senior-engineer work that never appears on resumes or portfolios. This is a quiet flex - it shows production ownership without bragging. Unique because no one else does it.
+**Why it fits**: shows the site is alive without revealing anything about work rotations or production systems. Pure signal of "this person maintains what they publish."
 
-**Cost**: 4-6 hours plus a tiny data source (manual JSON, or a cron that pulls from the oncall.corp schedule into a public JSON).
+**Cost**: 3-4 hours. Reads last-modified times from the content collection, picks the most recent, formats it.
 
-**Risk**: could be read as oversharing work details. Sanitize: no ticket counts, no specific services, no paging sounds.
+**Risk**: almost none.
 
 ---
 
@@ -101,21 +101,20 @@ Then the "output" expands into the actual homepage below. The terminal stays in 
 
 ## Recommendation
 
-**Primary: Concept 1 - The partition map.**
+**Primary: an embedding-space scatter visualization.**
 
-Reasons:
-1. Directly tied to the work you do that nobody else in an interview loop has worked on. Instant differentiation.
-2. Cheap to build well. 10 hours, mostly SVG and CSS.
-3. Graceful degradation is trivial - on reduced-motion, just show static dots and lines.
-4. Pairs naturally with a case study on ADS. The homepage map is a teaser, the case study is the payoff.
-5. Doesn't depend on external APIs, so nothing to maintain.
+Concept 1 (the distributed systems map) is a fine idea but the embedding scatter is stronger because:
+1. It's visibly tied to one of your real side projects (the movie recommendation app), so the visual and a case study reinforce each other.
+2. Nothing about it depends on day-job information. Pure public-safe content.
+3. A scatter with a drifting pulse through nearest neighbors is visually interesting without being flashy.
+4. Graceful degradation is trivial - on reduced-motion, just show the static scatter and the neighbor lines.
 
 **Secondary: Concept 7 - The build log header.**
 
-Small enough to ship alongside Concept 1. Takes 4 hours, lives in the global layout, and does a lot of signaling for almost no effort. You can ship both on day one.
+Small enough to ship alongside the scatter. Takes 4 hours, lives in the global layout, and does a lot of signaling for almost no effort. Ship both on day one.
 
 **Skip for v1**: Concepts 2, 4, 5. They're all strong but each one is its own project. Concept 2 (movie card) becomes a case study in itself - write the case study first, link to a live demo from there, don't embed it on the homepage.
 
-**Skip entirely**: Concept 3 (CLI boot) because it's been done. Concept 6 (oncall timer) because the oversharing risk outweighs the novelty.
+**Skip entirely**: Concept 3 (CLI boot) because it's been done. Concept 1 (distributed systems map) stays in the doc for completeness but is not the pick.
 
-**Confidence**: Task High, Explanation Medium. The partition map is a clear best pick for your story. The ordering of the other six is more subjective - I'd defend the recommendations but could be talked out of the 4/5 ranking.
+**Confidence**: Task High, Explanation High.

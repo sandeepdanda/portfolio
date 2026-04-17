@@ -68,12 +68,12 @@ Recruiters (15-30 seconds, skim only). Hiring managers (2-5 minutes, may click t
 One line, large.
 ```
 Sandeep Danda
-Software engineer at Amazon. I work on payments infrastructure
-and cross-partition data movement.
+Software engineer in Seattle. I build distributed backend systems
+and ship AI side projects in my spare time.
 ```
 
-**Block 2 - Signature interaction (the partition map)**
-See doc 02. Full-width, 320px tall on desktop, 240px on mobile. Four dots (IAD, NCL, ALE, THF), thin connecting lines, subtle pulses. Caption below: `Data flowing between AWS partitions. This is what I work on.`
+**Block 2 - Signature interaction (the embedding-space scatter)**
+See doc 02. Full-width, 360px tall on desktop, 260px on mobile. A grid with a handful of clustered points, a query point, thin neighbor lines, and a subtle pulse drifting through nearest neighbors. Caption below: `A query drifts through its neighbors in embedding space. This is how my movie recommendation app finds films that feel similar.`
 
 **Block 3 - Featured case study**
 One card, full-width. Large title, one-sentence summary, a "Read the case study" link.
@@ -89,7 +89,7 @@ Read the case study ->
 A short bulleted list, 3-4 items. Format: title, one-line description, link.
 ```
 More work
-- Cross-partition data sync (ADS) - What I build at Amazon. Case study.
+- All case studies - Deep writeups on things I built.
 - ReadLoot - A vocabulary RPG for people who read too much. Project page.
 - Writing - The occasional long post. Index.
 ```
@@ -99,7 +99,7 @@ Three to four sentences. What you do at work, what you like building outside wor
 
 ```
 I am based in Seattle and have been at Amazon for a few years,
-mostly working on AWS Payments infrastructure. I like building
+mostly working on distributed backend systems. I like building
 things with small teams, small dependencies, and long feedback
 loops. More about me ->
 ```
@@ -152,9 +152,9 @@ Not Another Rewatch
 Semantic movie search without an API bill.
 2026  ·  DynamoDB, TypeScript, Python  ·  8 min read
 
-Cross-partition data sync at AWS Payments Core
-Moving payment data across partitions most engineers have never seen.
-2025-2026  ·  Lambda, Step Functions, Kinesis  ·  12 min read
+ReadLoot
+A vocabulary RPG for readers who look up too many words.
+2025  ·  TypeScript, React, SQLite  ·  6 min read
 ```
 
 Order by: most recent first. Featured case study first if you want to push it.
@@ -297,9 +297,10 @@ One photo, square, modest size. Casual, not a LinkedIn headshot if you can help 
 **Bio, three short paragraphs**
 Sample:
 ```
-I am a software engineer at Amazon in Seattle. My team owns AWS
-Payments Core - a set of services that move payment data across
-AWS partitions, including ones most engineers have never heard of.
+I am a software engineer in Seattle, working at Amazon on
+distributed backend systems. My day-to-day is mostly Java and
+the kind of problems that show up when data has to move
+reliably between places at scale.
 
 Before that I was in grad school, and before that I shipped
 full-stack apps for small teams. Java and Spring Boot at work,
@@ -361,9 +362,9 @@ What I am working on this month. Updated [date].
 
 **Bulleted list**, current month only:
 ```
-- Shipping phase 18 of not-another-rewatch (user profiles and watch history).
+- Shipping the next phase of not-another-rewatch (user profiles and watch history).
 - Reading: "Designing Data-Intensive Applications" (finally, yes, again).
-- Oncall this week on AWS Payments Core.
+- Working on a side project in Rust to see if I like it.
 - Building this portfolio site. If you are reading this, it worked.
 ```
 

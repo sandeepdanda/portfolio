@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import { SOCIAL } from "../config";
+---
+
+<Base
+  title="About"
+  description="A software engineer in Seattle who builds distributed backend systems and ships AI side projects."
+>
+  <section class="header">
+    <h1>About</h1>
+  </section>
+
+  <section class="bio">
+    <p>
+      I am a software engineer in Seattle, working at Amazon on distributed
+      backend systems. My day-to-day is mostly Java and the kind of problems
+      that show up when data has to move reliably between places at scale.
+    </p>
+
+    <p>
+      Before that I was in grad school, and before that I shipped full-stack
+      apps for small teams. Java and Spring Boot at work, TypeScript and
+      React on my own projects. Comfortable in Python when the problem calls
+      for it.
+    </p>
+
+    <p>
+      Outside of work I build small things. Most recently a movie app that
+      does semantic search without calling out to an LLM, and a vocabulary
+      RPG for people who read too much. I write the occasional long post
+      when I have something to say.
+    </p>
+  </section>
+
+  <section class="links">
+    <h2>Links</h2>
+    <ul>
+      <li><span class="label">Email</span> <a href={SOCIAL.email}>{SOCIAL.email.replace("mailto:", "")}</a></li>
+      <li><span class="label">GitHub</span> <a href={SOCIAL.github}>{SOCIAL.github.replace(/^https?:\/\//, "")}</a></li>
+      <li><span class="label">LinkedIn</span> <a href={SOCIAL.linkedin}>{SOCIAL.linkedin.replace(/^https?:\/\//, "")}</a></li>
+      <li><span class="label">Resume</span> <a href="/resume.pdf">resume.pdf</a></li>
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .header {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    margin: 0;
+  }
+  .bio {
+    max-width: 38rem;
+    margin-bottom: 3rem;
+  }
+  .bio p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin: 0 0 1.25rem 0;
+  }
+  .links {
+    max-width: 38rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .links h2 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+  .links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .links li {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    align-items: baseline;
+  }
+  .label {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+</style>

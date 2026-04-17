@@ -1,0 +1,136 @@
+---
+// EmbeddingMap - signature homepage visual.
+// Renders a 2D scatter of "films" positioned by their embedding, with a
+// pulse that drifts from a query point to its nearest neighbors. All numbers
+// are generated client-side; no real data leaves anywhere.
+//
+// This stands in for the signature interaction. The story it tells: "I build
+// things with embeddings and vector math, and I care enough to show it."
+
+// Pre-computed scatter positions. Seeded so it renders identically every build.
+// x, y in 0-100 space. `cluster` just tints the dot.
+const points = [
+  { x: 18, y: 32, c: 0 }, { x: 22, y: 29, c: 0 }, { x: 25, y: 35, c: 0 },
+  { x: 19, y: 40, c: 0 }, { x: 28, y: 33, c: 0 }, { x: 21, y: 45, c: 0 },
+  { x: 48, y: 22, c: 1 }, { x: 52, y: 26, c: 1 }, { x: 45, y: 18, c: 1 },
+  { x: 50, y: 32, c: 1 }, { x: 55, y: 21, c: 1 }, { x: 58, y: 29, c: 1 },
+  { x: 42, y: 28, c: 1 }, { x: 73, y: 48, c: 2 }, { x: 78, y: 52, c: 2 },
+  { x: 70, y: 54, c: 2 }, { x: 76, y: 44, c: 2 }, { x: 82, y: 50, c: 2 },
+  { x: 68, y: 49, c: 2 }, { x: 80, y: 58, c: 2 }, { x: 35, y: 62, c: 3 },
+  { x: 38, y: 58, c: 3 }, { x: 32, y: 65, c: 3 }, { x: 40, y: 66, c: 3 },
+  { x: 36, y: 54, c: 3 }, { x: 30, y: 58, c: 3 }, { x: 62, y: 70, c: 4 },
+  { x: 65, y: 66, c: 4 }, { x: 58, y: 72, c: 4 }, { x: 66, y: 74, c: 4 },
+];
+
+// The "query" pulse drifts through these neighbor indices in order.
+const pulsePath = [2, 8, 15, 22, 27];
+const query = { x: 46, y: 40 };
+---
+
+<figure class="embedding-map">
+  <svg viewBox="0 0 100 80" role="img" aria-label="A scatter plot in 2D embedding space. Points cluster into groups. A pulse moves from a query point through its nearest neighbors.">
+    <!-- Grid hint -->
+    <g class="grid" aria-hidden="true">
+      {[20, 40, 60].map((y) => (
+        <line x1="2" y1={y} x2="98" y2={y} class="grid-line" />
+      ))}
+      {[25, 50, 75].map((x) => (
+        <line x1={x} y1="2" x2={x} y2="78" class="grid-line" />
+      ))}
+    </g>
+
+    <!-- Neighbor connections from query -->
+    {pulsePath.map((idx) => {
+      const p = points[idx]!;
+      return <line x1={query.x} y1={query.y} x2={p.x} y2={p.y} class="neighbor-line" />;
+    })}
+
+    <!-- Scatter points -->
+    {points.map((p) => (
+      <circle cx={p.x} cy={p.y} r="1.2" class={`point c${p.c}`} />
+    ))}
+
+    <!-- Query point -->
+    <circle cx={query.x} cy={query.y} r="1.8" class="query-point" />
+    <circle cx={query.x} cy={query.y} r="3.5" class="query-halo" />
+
+    <!-- Drifting pulse along the first neighbor line, loops -->
+    <circle r="0.9" class="pulse">
+      <animateMotion
+        dur="9s"
+        repeatCount="indefinite"
+        path={pulsePath
+          .map((idx) => {
+            const p = points[idx]!;
+            return `M ${query.x} ${query.y} L ${p.x} ${p.y}`;
+          })
+          .join(" ")}
+      />
+    </circle>
+  </svg>
+  <figcaption>
+    A query drifts through its neighbors in embedding space. This is how my
+    movie recommendation app finds films that feel similar.
+  </figcaption>
+</figure>
+
+<style>
+  .embedding-map {
+    margin: 0 0 3rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    display: block;
+  }
+  .grid-line {
+    stroke: var(--color-border);
+    stroke-width: 0.1;
+    stroke-dasharray: 0.5 1;
+    opacity: 0.5;
+  }
+  .neighbor-line {
+    stroke: var(--color-accent);
+    stroke-width: 0.15;
+    opacity: 0.4;
+  }
+  .point {
+    fill: var(--color-text-muted);
+    opacity: 0.7;
+  }
+  .point.c0 { fill: #7aa2c7; }
+  .point.c1 { fill: #c89b3c; }
+  .point.c2 { fill: #8ab87a; }
+  .point.c3 { fill: #c77a9c; }
+  .point.c4 { fill: #b68acc; }
+  .query-point {
+    fill: var(--color-text);
+  }
+  .query-halo {
+    fill: none;
+    stroke: var(--color-text);
+    stroke-width: 0.15;
+    opacity: 0.4;
+  }
+  .pulse {
+    fill: var(--color-accent);
+    filter: drop-shadow(0 0 1px var(--color-accent));
+  }
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+    max-width: 36rem;
+    line-height: 1.5;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse {
+      display: none;
+    }
+  }
+</style>
