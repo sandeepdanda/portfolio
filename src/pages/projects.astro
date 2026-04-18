@@ -22,13 +22,7 @@ const projects = (await getCollection("projects")).sort(
       <li>
         <div class="row">
           <div class="left">
-            {entry.data.repo ? (
-              <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="name">
-                {entry.data.name}
-              </a>
-            ) : (
-              <span class="name plain">{entry.data.name}</span>
-            )}
+            <span class="name">{entry.data.name}</span>
             <p class="summary">{entry.data.summary}</p>
           </div>
           <div class="right">

@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+  <a href="https://sandeepdanda.pages.dev"><img src="https://img.shields.io/badge/Portfolio-sandeepdanda.pages.dev-6C63FF?style=flat&logo=astro&logoColor=white" /></a>
   <a href="https://linkedin.com/in/sandeepsde"><img src="https://img.shields.io/badge/LinkedIn-sandeepsde-0A66C2?style=flat&logo=linkedin&logoColor=white" /></a>
   <a href="https://github.com/sandeepdanda"><img src="https://img.shields.io/badge/GitHub-sandeepdanda-181717?style=flat&logo=github&logoColor=white" /></a>
 </p>
