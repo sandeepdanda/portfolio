@@ -5,12 +5,15 @@ import { SOCIAL } from "../config";
 
 <Base
   title="About"
-  description="A software engineer in Seattle. Here is the longer version."
+  description="A software engineer in Seattle. A little about me, beyond the resume."
 >
   <section class="hero">
-    <p class="kicker">About</p>
-    <h1>The longer <em>version</em></h1>
+    <h1>Nice to <em>meet</em> you</h1>
   </section>
+
+  <figure class="portrait">
+    <img src="/profile.png" alt="Sandeep Danda" width="622" height="653" />
+  </figure>
 
   <div class="bio">
     <p>
@@ -98,7 +101,7 @@ import { SOCIAL } from "../config";
 
   .bio {
     max-width: 38rem;
-    margin-bottom: 4rem;
+    margin-bottom: 0;
   }
   .bio p {
     font-size: 1.0625rem;
@@ -110,8 +113,25 @@ import { SOCIAL } from "../config";
     margin-bottom: 0;
   }
 
+  .portrait {
+    margin: 0 0 3rem 0;
+    max-width: 38rem;
+  }
+  .portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    filter: grayscale(0.1);
+    border: 1px solid var(--color-border);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center top;
+  }
+
   .links-section {
-    max-width: 44rem;
+    max-width: 38rem;
+    margin-top: 4rem;
     padding-top: 3rem;
     border-top: 1px solid var(--color-border);
   }
