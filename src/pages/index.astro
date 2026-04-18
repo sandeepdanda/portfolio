@@ -7,8 +7,17 @@ import PersonSchema from "../components/PersonSchema.astro";
   <PersonSchema />
 
   <section class="hero">
-    <p class="location"><a href="https://www.google.com/maps/place/Seattle,+WA" target="_blank" rel="noopener noreferrer">Seattle</a> · Software Development Engineer</p>
     <h1>Sandeep <em>Danda</em></h1>
+    <p class="location">
+      <a href="https://www.google.com/maps/place/Seattle,+WA" target="_blank" rel="noopener noreferrer">
+        <svg class="pin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Seattle
+      </a>
+      · Software Development Engineer
+    </p>
     <p class="tagline">
       SDE at Amazon. I work on systems that move data between places.
       In my off hours I build small apps - mostly to scratch some itch
@@ -38,7 +47,26 @@ import PersonSchema from "../components/PersonSchema.astro";
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-text-muted);
-    margin: 0 0 2rem 0;
+    margin: 1.25rem 0 1.75rem 0;
+  }
+  .location a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1px;
+    transition: color 150ms ease-out, border-color 150ms ease-out;
+  }
+  .location a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+  .pin {
+    flex-shrink: 0;
+    max-width: 12px;
+    max-height: 12px;
   }
   h1 {
     font-family: var(--font-serif);
@@ -46,7 +74,7 @@ import PersonSchema from "../components/PersonSchema.astro";
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 0.95;
-    margin: 0 0 1.75rem 0;
+    margin: 0;
   }
   h1 em {
     font-style: italic;

@@ -32,7 +32,7 @@ import { SOCIAL } from "../config";
   </div>
 
   <section class="links-section">
-    <h2>Say hi</h2>
+    <h2>Get in touch</h2>
     <p class="intro">
       I read most things that land in my inbox. Email is the fastest way.
     </p>
@@ -117,11 +117,12 @@ import { SOCIAL } from "../config";
   }
   .links-section h2 {
     font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
     font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-text-muted);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.015em;
+    color: var(--color-accent);
     margin: 0 0 1rem 0;
   }
   .intro {
