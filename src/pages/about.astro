@@ -14,19 +14,28 @@ import { SOCIAL } from "../config";
 
   <div class="bio">
     <p>
-      I am a software engineer in Seattle. I work at Amazon on distributed
-      backend systems - the kind of problems that show up when data has to
-      move reliably between places at scale.
+      I am an SDE at Amazon in Seattle. My day-to-day is
+      Java, some TypeScript, a lot of CloudWatch. The work is mostly
+      about moving data between places without losing anything along
+      the way. It is less glamorous than it sounds and more interesting
+      than it looks.
     </p>
     <p>
-      Before that I was at Deloitte and Nucleus Software in India, building
-      financial and banking systems in Java and Spring. I did my masters at
-      the University at Buffalo and my undergrad at NIT Durgapur.
+      Before Amazon I was in India for a few years. I started at Nucleus
+      Software writing Java for a bank's loan processing module - my
+      first real job and my first real production outage. Then I moved
+      to Deloitte working on the Salesforce side, mostly admin and Apex.
+      After that I came to the US for my masters at the University at
+      Buffalo. Grew up before that in Hyderabad and a smaller town
+      called Thorrur.
     </p>
     <p>
-      Outside of work I build small things. A movie recommendation app that
-      does semantic search without calling out to an LLM, and a vocabulary
-      RPG for people who read too much. I read more than I probably should.
+      On the side I build small things. The one I am most proud of is
+      a movie app that does recommendations locally using embeddings -
+      no OpenAI, no API bill. Also a vocabulary RPG that turns looking
+      up words while reading into something slightly less boring. I
+      read more than I probably should and I keep picking side projects
+      that let me learn exactly one new thing at a time.
     </p>
   </div>
 
@@ -36,7 +45,6 @@ import { SOCIAL } from "../config";
       <li><span class="label">Email</span> <a href={SOCIAL.email}>{SOCIAL.email.replace("mailto:", "")}</a></li>
       <li><span class="label">GitHub</span> <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer">{SOCIAL.github.replace(/^https?:\/\//, "")}</a></li>
       <li><span class="label">LinkedIn</span> <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer">{SOCIAL.linkedin.replace(/^https?:\/\//, "")}</a></li>
-      <li><span class="label">Resume</span> <a href="/resume.pdf">resume.pdf</a></li>
     </ul>
   </section>
 </Base>
