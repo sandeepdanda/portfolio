@@ -1,17 +1,17 @@
 ---
 import { SITE, SOCIAL } from "../config";
+import BuildLog from "./BuildLog.astro";
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="top">
-    Built with Astro. Hosted on Cloudflare Pages.
-    <a href={SOCIAL.github}>Source on GitHub</a>.
-  </div>
-  <div class="bottom">
-    <span>© {year} {SITE.author}</span>
-    <span class="sep">·</span>
-    <a href="/rss.xml">RSS</a>
+  <div class="row">
+    <div class="left">
+      <span>© {year} {SITE.author}</span>
+      <span class="sep">·</span>
+      <a href={SOCIAL.github}>GitHub</a>
+    </div>
+    <BuildLog />
   </div>
 </footer>
 
@@ -19,11 +19,8 @@ const year = new Date().getFullYear();
   .site-footer {
     padding: 2rem 3rem 2rem 6rem;
     border-top: 1px solid var(--color-border);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     position: relative;
     z-index: 1;
   }
@@ -32,20 +29,26 @@ const year = new Date().getFullYear();
       padding: 1.5rem 1rem 1.5rem 2.5rem;
     }
   }
-  .top a,
-  .bottom a {
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .left a {
     color: var(--color-text-muted);
     text-decoration: underline;
     text-decoration-color: var(--color-border);
     text-underline-offset: 3px;
   }
-  .top a:hover,
-  .bottom a:hover {
+  .left a:hover {
     color: var(--color-text);
-  }
-  .bottom {
-    display: flex;
-    gap: 0.5rem;
   }
   .sep {
     opacity: 0.5;
