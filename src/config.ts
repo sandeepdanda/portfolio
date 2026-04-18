@@ -19,5 +19,5 @@ export const NAV = [
 export const SOCIAL = {
   github: "https://github.com/sandeepdanda",
   linkedin: "https://linkedin.com/in/sandeepsde",
-  email: "mailto:sandeep10danda@gmail.com",
+  email: "mailto:sandeepdanda.dev@gmail.com",
 } as const;

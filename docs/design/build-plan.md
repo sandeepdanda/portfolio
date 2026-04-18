@@ -3,8 +3,8 @@
 Living document. Updated as we ship each phase. Mark phases `DONE`, `WIP`, or `TODO`. Keep the "what changed" notes brief.
 
 **Stack**: Astro 5/6 + Tailwind v4 + MDX, deployed to Cloudflare Pages.
-**Visual direction**: Editorial brutalist (Direction A, see `docs/design/03-visual-directions.md`).
-**Signature interactions**: Embedding-space scatter + build log header (see `docs/design/02-signature-interaction.md`).
+**Visual direction**: Editorial brutalist - serif headlines (Fraunces), warm amber accent, thin vertical rule on the left edge.
+**Signature interactions**: Typography-led homepage + small build log strip in the footer.
 
 ---
 
@@ -23,7 +23,7 @@ Shipped:
 - `src/components/Footer.astro` - minimal two-line footer
 - `src/components/ThemeToggle.astro` - fixed bottom-right toggle with localStorage
 - `src/components/EmbeddingMap.astro` - SVG scatter of points in embedding space with a drifting pulse through neighbors (based on the not-another-rewatch side project)
-- `src/pages/index.astro` - homepage with all blocks from `04-site-brief.md`
+- `src/pages/index.astro` - homepage: hero + featured case study + bio
 - `npm run build` passes in 1.13s. Output: 7.8KB static HTML, zero JS to render.
 
 Lessons learned:
