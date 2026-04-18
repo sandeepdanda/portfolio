@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/sandeepdanda">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=6C63FF&center=true&vCenter=true&random=false&width=600&lines=Software+Engineer+%40+AWS;Full-Stack+%7C+Cloud+Infra+%7C+Observability;MS+CS+%7C+NIT+Durgapur+Alum;Building+scalable+backend+systems" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=6C63FF&center=true&vCenter=true&random=false&width=600&lines=Software+Development+Engineer+%40+AWS;Distributed+Systems+%7C+Cloud+Infra+%7C+Observability;MS+CS+%7C+NIT+Durgapur+Alum;Building+things+that+scale" alt="Typing SVG" />
   </a>
 </p>
 
@@ -16,7 +16,8 @@
 class Sandeep:
 
     def __init__(self):
-        self.role = "Software Engineer"
+        self.role = "Software Development Engineer"
+        self.location = "Seattle, WA"
         self.education = {
             "masters": "MS Computer Science — University at Buffalo",
             "bachelors": "BTech Information Technology — NIT Durgapur"
@@ -50,12 +51,12 @@ if __name__ == "__main__":
 
 | Project                                                                             | Description                                                                 |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [🎬 not-another-rewatch](https://github.com/sandeepdanda/not-another-rewatch)       | Movie recommendations with local semantic search — DynamoDB, TypeScript, embeddings |
+| [📚 readloot](https://github.com/sandeepdanda/readloot)                             | A vocabulary RPG for readers — Python, Click, SQLite                        |
 | [🏋️ wellness-pro](https://github.com/sandeepdanda/wellness-pro)                     | Full-stack health club membership system — Spring Boot, React, AWS, MySQL   |
 | [🎬 movie-database](https://github.com/sandeepdanda/movie-database)                 | Movie DB with 600K+ records — ER modeling, SQL, Python, Power BI dashboards |
-| [📚 vocabulary-vault](https://github.com/sandeepdanda/vocabulary-vault)             | CLI tool that turns reading into a vocabulary RPG with spaced repetition    |
 | [🧠 reinforcement-learning](https://github.com/sandeepdanda/reinforcement-learning) | MDP environments, tabular methods, and Q-learning for stock trading         |
 | [🔍 fake-news-detection](https://github.com/sandeepdanda/fake-news-detection)       | Fake news detection using deep learning and NLP                             |
-| [💻 leetcode-solutions](https://github.com/sandeepdanda/leetcode-solutions)         | LeetCode solutions — arrays, hashing, and more                              |
 
 ---
 
@@ -81,8 +82,8 @@ if __name__ == "__main__":
 
 ### 🎓 Education
 
-- **MS Computer Science** — University at Buffalo (GPA: 3.80)
-- **BTech Information Technology** — NIT Durgapur (GPA: 3.60)
+- **MS Computer Science** — University at Buffalo (GPA: 3.80 / 4.00)
+- **BTech Information Technology** — NIT Durgapur (GPA: 7.8 / 10.0)
 
 ---
 
