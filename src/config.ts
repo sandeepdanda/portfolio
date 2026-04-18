@@ -10,14 +10,14 @@ export const SITE = {
 } as const;
 
 export const NAV = [
-  { href: "/work", label: "Work" },
+  { href: "/experience", label: "Experience" },
+  { href: "/education", label: "Education" },
   { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
-  { href: "/now", label: "Now" },
 ] as const;
 
 export const SOCIAL = {
   github: "https://github.com/sandeepdanda",
-  linkedin: "https://linkedin.com/in/sandeep-danda",
-  email: "mailto:hello@sandeepdanda.dev",
+  linkedin: "https://linkedin.com/in/sandeepsde",
+  email: "mailto:sandeep10danda@gmail.com",
 } as const;

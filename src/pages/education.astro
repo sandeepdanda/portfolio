@@ -1,46 +1,71 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const entries = [
+  {
+    degree: "MS, Computer Science",
+    school: "University at Buffalo, SUNY",
+    url: "https://www.buffalo.edu/",
+    years: "Jan 2023 – Dec 2024",
+    location: "Buffalo, NY",
+    gpa: "3.80 / 4.00",
+  },
+  {
+    degree: "BTech, Information Technology",
+    school: "NIT Durgapur",
+    url: "https://nitdgp.ac.in/",
+    years: "2016 – 2020",
+    location: "Durgapur, India",
+    gpa: "7.8 / 10.0",
+  },
+  {
+    degree: "High School (Class 12)",
+    school: "Narayana Junior College",
+    url: "https://www.narayanajuniorcolleges.com/",
+    years: "2014 – 2016",
+    location: "Hyderabad, India",
+    gpa: "985 / 1000",
+  },
+  {
+    degree: "High School (Class 10)",
+    school: "Aryabhatta Concept School",
+    url: "https://aryabhattaschools.org/",
+    years: "2014",
+    location: "Thorrur, India",
+    gpa: "10.0 / 10.0",
+  },
+];
 ---
 
 <Base
-  title="Projects"
-  description="Things I have shipped or maintain."
+  title="Education"
+  description="Where I studied."
 >
   <section class="hero">
-    <p class="kicker">Projects</p>
-    <h1>Things I have <em>shipped</em>.</h1>
+    <p class="kicker">Education</p>
+    <h1>Where I <em>studied</em>.</h1>
   </section>
 
   <ul class="timeline">
-    {projects.map((entry) => (
+    {entries.map((e) => (
       <li>
         <div class="row">
           <div class="left">
-            {entry.data.repo ? (
-              <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="name">
-                {entry.data.name}
+            <p class="degree">{e.degree}</p>
+            {e.url ? (
+              <a href={e.url} target="_blank" rel="noopener noreferrer" class="school">
+                {e.school}
               </a>
             ) : (
-              <span class="name plain">{entry.data.name}</span>
+              <span class="school plain">{e.school}</span>
             )}
-            <p class="summary">{entry.data.summary}</p>
           </div>
           <div class="right">
-            {entry.data.repo && (
-              <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="link">GitHub →</a>
-            )}
+            <span>{e.years}</span>
+            <span>{e.location}</span>
+            {e.gpa && <span>GPA {e.gpa}</span>}
           </div>
         </div>
-        {entry.data.tags.length > 0 && (
-          <ul class="tags">
-            {entry.data.tags.map((t) => <li>{t}</li>)}
-          </ul>
-        )}
       </li>
     ))}
   </ul>
@@ -94,22 +119,23 @@ const projects = (await getCollection("projects")).sort(
   @media (max-width: 640px) {
     .row {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 0.5rem;
     }
   }
-
-  .kind {
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .degree {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-text-muted);
-    margin: 0 0 0.25rem 0;
+    margin: 0;
   }
-  .status-active { color: var(--color-accent); }
-  .status-archived { opacity: 0.7; }
-
-  .name {
+  .school {
     font-family: var(--font-serif);
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     font-weight: 500;
@@ -117,25 +143,18 @@ const projects = (await getCollection("projects")).sort(
     color: var(--color-text);
     text-decoration: none;
     line-height: 1.15;
-    display: block;
-    margin-bottom: 0.625rem;
   }
-  .name:hover {
+  a.school:hover {
     color: var(--color-accent);
   }
-  .summary {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
-    margin: 0;
-    max-width: 32rem;
-  }
-
   .right {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
     text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
     white-space: nowrap;
   }
   @media (max-width: 640px) {
@@ -143,32 +162,7 @@ const projects = (await getCollection("projects")).sort(
       text-align: left;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
     }
-  }
-  .link {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .link:hover {
-    color: var(--color-accent);
-  }
-
-  .tags {
-    list-style: none;
-    padding: 0;
-    margin: 1.25rem 0 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .tags li {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
   }
 </style>

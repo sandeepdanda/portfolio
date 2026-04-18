@@ -5,56 +5,71 @@ import { SOCIAL } from "../config";
 
 <Base
   title="About"
-  description="A software engineer in Seattle who builds distributed backend systems and ships AI side projects."
+  description="A software engineer in Seattle. Here is the longer version."
 >
-  <section class="header">
-    <h1>About</h1>
+  <section class="hero">
+    <p class="kicker">About</p>
+    <h1>The longer <em>version</em>.</h1>
   </section>
 
-  <section class="bio">
+  <div class="bio">
     <p>
-      I am a software engineer in Seattle, working at Amazon on distributed
-      backend systems. My day-to-day is mostly Java and the kind of problems
-      that show up when data has to move reliably between places at scale.
+      I am a software engineer in Seattle. I work at Amazon on distributed
+      backend systems - the kind of problems that show up when data has to
+      move reliably between places at scale.
     </p>
-
     <p>
-      Before that I was in grad school, and before that I shipped full-stack
-      apps for small teams. Java and Spring Boot at work, TypeScript and
-      React on my own projects. Comfortable in Python when the problem calls
-      for it.
+      Before that I was at Deloitte and Nucleus Software in India, building
+      financial and banking systems in Java and Spring. I did my masters at
+      the University at Buffalo and my undergrad at NIT Durgapur.
     </p>
-
     <p>
-      Outside of work I build small things. Most recently a movie app that
+      Outside of work I build small things. A movie recommendation app that
       does semantic search without calling out to an LLM, and a vocabulary
-      RPG for people who read too much. I write the occasional long post
-      when I have something to say.
+      RPG for people who read too much. I read more than I probably should.
     </p>
-  </section>
+  </div>
 
-  <section class="links">
+  <section class="links-section">
     <h2>Links</h2>
-    <ul>
+    <ul class="links">
       <li><span class="label">Email</span> <a href={SOCIAL.email}>{SOCIAL.email.replace("mailto:", "")}</a></li>
-      <li><span class="label">GitHub</span> <a href={SOCIAL.github}>{SOCIAL.github.replace(/^https?:\/\//, "")}</a></li>
-      <li><span class="label">LinkedIn</span> <a href={SOCIAL.linkedin}>{SOCIAL.linkedin.replace(/^https?:\/\//, "")}</a></li>
+      <li><span class="label">GitHub</span> <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer">{SOCIAL.github.replace(/^https?:\/\//, "")}</a></li>
+      <li><span class="label">LinkedIn</span> <a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer">{SOCIAL.linkedin.replace(/^https?:\/\//, "")}</a></li>
       <li><span class="label">Resume</span> <a href="/resume.pdf">resume.pdf</a></li>
     </ul>
   </section>
 </Base>
 
 <style>
-  .header {
-    margin-bottom: 2rem;
+  .hero {
+    margin: 1.5rem 0 4rem 0;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin: 0 0 1.5rem 0;
   }
   h1 {
-    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
     margin: 0;
   }
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+
   .bio {
     max-width: 38rem;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
   .bio p {
     font-size: 1.0625rem;
@@ -62,16 +77,25 @@ import { SOCIAL } from "../config";
     color: var(--color-text);
     margin: 0 0 1.25rem 0;
   }
-  .links {
+  .bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  .links-section {
     max-width: 38rem;
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
   }
-  .links h2 {
-    font-size: 1.25rem;
-    margin: 0 0 1rem 0;
+  .links-section h2 {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin: 0 0 1.25rem 0;
   }
-  .links ul {
+  .links {
     list-style: none;
     padding: 0;
     margin: 0;

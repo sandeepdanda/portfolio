@@ -1,46 +1,61 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const jobs = [
+  {
+    role: "Software Development Engineer",
+    company: "Amazon",
+    url: "https://aws.amazon.com/",
+    years: "Apr 2025 – present",
+    location: "Seattle, WA",
+    tags: ["Java", "TypeScript", "React", "AWS CDK", "CloudWatch"],
+  },
+  {
+    role: "Business Technology Analyst",
+    company: "Deloitte",
+    url: "https://www2.deloitte.com/",
+    years: "Jun 2021 – Dec 2022",
+    location: "Hyderabad, India",
+    tags: ["Salesforce", "Apex", "SOQL", "Lightning", "Admin"],
+  },
+  {
+    role: "Assistant Software Engineer",
+    company: "Nucleus Software",
+    url: "https://www.nucleussoftware.com/",
+    years: "Aug 2020 – Jun 2021",
+    location: "Noida, India",
+    tags: ["Java", "Spring Boot", "Oracle"],
+  },
+];
 ---
 
 <Base
-  title="Projects"
-  description="Things I have shipped or maintain."
+  title="Experience"
+  description="Where I have worked so far."
 >
   <section class="hero">
-    <p class="kicker">Projects</p>
-    <h1>Things I have <em>shipped</em>.</h1>
+    <p class="kicker">Experience</p>
+    <h1>Where I have <em>worked</em>.</h1>
   </section>
 
   <ul class="timeline">
-    {projects.map((entry) => (
+    {jobs.map((j) => (
       <li>
         <div class="row">
           <div class="left">
-            {entry.data.repo ? (
-              <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="name">
-                {entry.data.name}
-              </a>
-            ) : (
-              <span class="name plain">{entry.data.name}</span>
-            )}
-            <p class="summary">{entry.data.summary}</p>
+            <p class="role">{j.role}</p>
+            <a href={j.url} target="_blank" rel="noopener noreferrer" class="company">
+              {j.company}
+            </a>
           </div>
           <div class="right">
-            {entry.data.repo && (
-              <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="link">GitHub →</a>
-            )}
+            <span>{j.years}</span>
+            <span>{j.location}</span>
           </div>
         </div>
-        {entry.data.tags.length > 0 && (
-          <ul class="tags">
-            {entry.data.tags.map((t) => <li>{t}</li>)}
-          </ul>
-        )}
+        <ul class="tags">
+          {j.tags.map((t) => <li>{t}</li>)}
+        </ul>
       </li>
     ))}
   </ul>
@@ -94,22 +109,23 @@ const projects = (await getCollection("projects")).sort(
   @media (max-width: 640px) {
     .row {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 0.5rem;
     }
   }
-
-  .kind {
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .role {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--color-text-muted);
-    margin: 0 0 0.25rem 0;
+    margin: 0;
   }
-  .status-active { color: var(--color-accent); }
-  .status-archived { opacity: 0.7; }
-
-  .name {
+  .company {
     font-family: var(--font-serif);
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     font-weight: 500;
@@ -117,25 +133,18 @@ const projects = (await getCollection("projects")).sort(
     color: var(--color-text);
     text-decoration: none;
     line-height: 1.15;
-    display: block;
-    margin-bottom: 0.625rem;
   }
-  .name:hover {
+  .company:hover {
     color: var(--color-accent);
   }
-  .summary {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
-    margin: 0;
-    max-width: 32rem;
-  }
-
   .right {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
     text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
     white-space: nowrap;
   }
   @media (max-width: 640px) {
@@ -143,16 +152,8 @@ const projects = (await getCollection("projects")).sort(
       text-align: left;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.5rem;
     }
-  }
-  .link {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .link:hover {
-    color: var(--color-accent);
   }
 
   .tags {

@@ -24,8 +24,10 @@ const projects = defineCollection({
     name: z.string(),
     summary: z.string(),
     status: z.enum(["active", "paused", "archived"]).default("active"),
+    tags: z.array(z.string()).default([]),
     repo: z.string().url().optional(),
     live: z.string().url().optional(),
+    caseStudy: z.string().optional(),
     order: z.number().default(100),
   }),
 });
