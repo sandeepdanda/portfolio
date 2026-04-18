@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://linkedin.com/in/sandeepsde"><img src="https://img.shields.io/badge/-sandeepsde-0A66C2?style=flat&logo=linkedin&logoColor=white" /></a>
-  <a href="https://github.com/sandeepdanda"><img src="https://img.shields.io/badge/-sandeepdanda-181717?style=flat&logo=github&logoColor=white" /></a>
+  <a href="https://linkedin.com/in/sandeepsde"><img src="https://img.shields.io/badge/LinkedIn-sandeepsde-0A66C2?style=flat&logo=linkedin&logoColor=white" /></a>
+  <a href="https://github.com/sandeepdanda"><img src="https://img.shields.io/badge/GitHub-sandeepdanda-181717?style=flat&logo=github&logoColor=white" /></a>
   <img src="https://komarev.com/ghpvc/?username=sandeepdanda&style=flat&color=6C63FF" alt="Profile views" />
 </p>
 
