@@ -1,14 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import PersonSchema from "../components/PersonSchema.astro";
-import { readingTime, year } from "../lib/content";
-
-const all = await getCollection("work", (e) => e.data.status !== "draft");
-const sorted = all.sort(
-  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
-);
-const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
 ---
 
 <Base>
@@ -23,27 +15,8 @@ const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
     </p>
   </section>
 
-  {featured && (
-    <section class="section">
-      <p class="section-number">01</p>
-      <h2 class="section-title">Featured</h2>
-      <a href={`/work/${featured.id}`} class="feature-card">
-        <div class="feature-meta">
-          <span>{year(featured.data.publishedAt)}</span>
-          <span class="sep">·</span>
-          <span>Case study</span>
-          <span class="sep">·</span>
-          <span>{readingTime(featured.body ?? "")} min read</span>
-        </div>
-        <h3 class="feature-title">{featured.data.title}</h3>
-        <p class="feature-summary">{featured.data.summary}</p>
-        <span class="feature-cta">Read the case study <span class="arrow">→</span></span>
-      </a>
-    </section>
-  )}
-
   <section class="section">
-    <p class="section-number">{featured ? "02" : "01"}</p>
+    <p class="section-number">01</p>
     <h2 class="section-title">About</h2>
     <p class="bio">
       I like building things with small teams, small dependencies, and
@@ -53,10 +26,19 @@ const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
     </p>
     <a href="/about" class="see-all">The longer version <span class="arrow">→</span></a>
   </section>
+
+  <section class="section">
+    <p class="section-number">02</p>
+    <h2 class="section-title">Projects</h2>
+    <p class="bio">
+      A handful of things I have built and maintained - full-stack apps,
+      CLI tools, grad school experiments.
+    </p>
+    <a href="/projects" class="see-all">See them all <span class="arrow">→</span></a>
+  </section>
 </Base>
 
 <style>
-  /* Hero */
   .hero {
     margin: 1.5rem 0 6rem 0;
   }
@@ -91,7 +73,6 @@ const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
     font-weight: 400;
   }
 
-  /* Sections */
   .section {
     position: relative;
     margin-bottom: 5rem;
@@ -112,60 +93,15 @@ const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--color-text-muted);
-    margin: 0 0 2rem 0;
+    margin: 0 0 1.5rem 0;
   }
-
-  /* Featured card */
-  .feature-card {
-    display: block;
-    padding: 2rem 0;
-    color: inherit;
-    border-bottom: 1px solid var(--color-border);
-    transition: padding-left 200ms ease-out;
-  }
-  .feature-card:hover {
-    padding-left: 0.5rem;
-  }
-  .feature-card:hover .feature-title {
-    color: var(--color-accent);
-  }
-  .feature-card:hover .arrow {
-    transform: translateX(4px);
-  }
-  .feature-meta {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin-bottom: 0.875rem;
-  }
-  .feature-meta .sep {
-    margin: 0 0.5rem;
-    opacity: 0.5;
-  }
-  .feature-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.875rem, 4vw, 2.75rem);
-    font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin: 0 0 0.875rem 0;
-    color: var(--color-text);
-    transition: color 150ms ease-out;
-  }
-  .feature-summary {
+  .bio {
     font-size: 1.0625rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
+    line-height: 1.7;
+    color: var(--color-text);
     max-width: 38rem;
     margin: 0 0 1.25rem 0;
   }
-  .feature-cta {
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    color: var(--color-accent);
-  }
-
-  /* Secondary CTAs */
   .see-all {
     font-family: var(--font-mono);
     font-size: 0.8125rem;
@@ -178,13 +114,7 @@ const featured = sorted.find((e) => e.data.featured) ?? sorted[0];
     display: inline-block;
     transition: transform 200ms ease-out;
   }
-
-  /* About bio */
-  .bio {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text);
-    max-width: 38rem;
-    margin: 0 0 1.25rem 0;
+  .see-all:hover .arrow {
+    transform: translateX(4px);
   }
 </style>
