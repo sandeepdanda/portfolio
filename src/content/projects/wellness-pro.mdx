@@ -1,8 +1,20 @@
 ---
 name: "Wellness Pro"
-summary: "Full-stack health club membership system with billing, scheduling, and reporting."
+summary: "Full-stack health club membership system. Billing, scheduling, and reporting across three role-based dashboards."
 status: "active"
 tags: ["Java", "Spring Boot", "React", "MySQL", "AWS"]
 repo: "https://github.com/sandeepdanda/wellness-pro"
 order: 3
 ---
+
+## What
+
+A membership and scheduling platform for a fictional health club. Members book sessions and pay dues. Trainers see their upcoming week and log completed sessions. Admins run reports on revenue and attendance.
+
+## Approach
+
+Standard three-tier: Spring Boot backend with a REST API, React frontend split by role, MySQL for persistence. Deployed on AWS with EC2 + RDS. The interesting part was the billing cycle - proration for mid-month signups and holds for paused memberships.
+
+## Stack
+
+Java, Spring Boot, Spring Data JPA, React, MySQL, AWS EC2, AWS RDS.

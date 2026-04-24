@@ -6,3 +6,15 @@ tags: ["Python", "Click", "SQLite"]
 repo: "https://github.com/sandeepdanda/readloot"
 order: 2
 ---
+
+## What
+
+A terminal game wrapped around the dictionary. Every word you look up earns XP. Words you forget come back later as bosses you have to defeat by recalling the definition.
+
+## Approach
+
+A Click CLI stores lookups in SQLite with spaced-repetition metadata. A tiny scheduler decides when a word is boss-ready based on interval decay. No web app, no accounts - the database is your save file.
+
+## Stack
+
+Python, Click, SQLite, a dictionary API for definitions. Ships as a single installable package.

@@ -21,10 +21,11 @@ const projects = (await getCollection("projects")).sort(
       <li>
         <div class="row">
           <div class="left">
-            <h2 class="name">{entry.data.name}</h2>
+            <h2 class="name"><a href={`/projects/${entry.id}`}>{entry.data.name}</a></h2>
             <p class="summary">{entry.data.summary}</p>
           </div>
           <div class="right">
+            <a href={`/projects/${entry.id}`} class="link">Read →</a>
             {entry.data.repo && (
               <a href={entry.data.repo} target="_blank" rel="noopener noreferrer" class="link">GitHub →</a>
             )}
@@ -115,13 +116,14 @@ const projects = (await getCollection("projects")).sort(
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     font-weight: 500;
     letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 0 0 0.625rem 0;
+  }
+  .name a {
     color: var(--color-text);
     text-decoration: none;
-    line-height: 1.15;
-    display: block;
-    margin-bottom: 0.625rem;
   }
-  .name:hover {
+  .name a:hover {
     color: var(--color-accent);
   }
   .summary {

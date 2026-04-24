@@ -1,8 +1,20 @@
 ---
 name: "Reinforcement Learning"
-summary: "Agents that learn to trade stocks using Q-learning and other classic RL methods. Built on OpenAI Gymnasium."
+summary: "Agents that learn to trade stocks using Q-learning, SARSA, and DQN on OpenAI Gymnasium."
 status: "archived"
 tags: ["Python", "Jupyter", "RL"]
 repo: "https://github.com/sandeepdanda/reinforcement-learning"
 order: 11
 ---
+
+## What
+
+Coursework from grad school. A set of notebooks that walk through classic reinforcement learning on small, legible environments before pointing the same methods at a toy stock-trading setup.
+
+## Approach
+
+Started with tabular Q-learning and SARSA on gridworlds to build intuition for exploration versus exploitation. Moved to Deep Q-Networks with experience replay for continuous state spaces, and applied the same code to a tiny trading environment built on top of OpenAI Gymnasium.
+
+## Stack
+
+Python, NumPy, PyTorch, Jupyter, Gymnasium. No GPU needed for any of it.

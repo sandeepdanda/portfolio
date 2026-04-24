@@ -6,3 +6,15 @@ tags: ["TypeScript", "DynamoDB", "Embeddings", "Python"]
 repo: "https://github.com/sandeepdanda/not-another-rewatch"
 order: 1
 ---
+
+## What
+
+A recommender that finds movies near a query film in embedding space, without calling a hosted LLM on every request. The idea was a watch-night helper: type one film you loved, get three you probably have not seen that share its shape.
+
+## Approach
+
+Offline pipeline builds sentence-transformer embeddings for a catalog of films and writes them to DynamoDB using a single-table design. A lightweight TypeScript service handles query-time nearest-neighbour lookups. Ranking blends embedding distance with a small boost for genre and era overlap.
+
+## Stack
+
+TypeScript, DynamoDB, sentence-transformers (Python for offline indexing), AWS Lambda for the lookup path. The offline indexer and the online query path share no code on purpose.

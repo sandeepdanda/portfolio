@@ -6,3 +6,15 @@ tags: ["Python", "PyTorch", "TensorFlow", "NLP"]
 repo: "https://github.com/sandeepdanda/fake-news-detection"
 order: 10
 ---
+
+## What
+
+A grad-school NLP project that tries to separate real news from fabricated news using deep learning. The question was less "can a model do it" and more "how does it fail when you change the dataset under it".
+
+## Approach
+
+Three public datasets of varying provenance. Tokenize, embed, train a few architectures: baseline LSTM, a CNN over word embeddings, and a transformer fine-tune. Held out one dataset at a time to see how models trained on one distribution fared on another.
+
+## Stack
+
+Python, PyTorch, TensorFlow, scikit-learn, Jupyter.
