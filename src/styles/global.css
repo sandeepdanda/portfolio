@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Self-hosted variable fonts with font-display: swap built in */
+@import "@fontsource-variable/fraunces/wght.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+
 /*
   Design tokens - editorial brutalist
   Source: editorial brutalist direction (serif headlines, warm amber accent, vertical rule)

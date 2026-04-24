@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
+import { Picture } from "astro:assets";
 import { SOCIAL } from "../config";
+import profile from "../assets/profile.png";
 ---
 
 <Base
@@ -14,7 +16,15 @@ import { SOCIAL } from "../config";
   <h2 class="sr-only">About</h2>
 
   <figure class="portrait">
-    <img src="/profile.png" alt="Sandeep Danda" width="622" height="653" />
+    <Picture
+      src={profile}
+      alt="Sandeep Danda"
+      widths={[320, 480, 640, 960]}
+      sizes="(max-width: 560px) 100vw, 38rem"
+      formats={["avif", "webp"]}
+      loading="eager"
+      fetchpriority="high"
+    />
   </figure>
 
   <div class="bio">

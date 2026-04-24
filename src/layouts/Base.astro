@@ -3,6 +3,8 @@ import "../styles/global.css";
 import { SITE, NAV } from "../config";
 import Footer from "../components/Footer.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import frauncesWoff2 from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
+import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 
 interface Props {
   title?: string;
@@ -43,13 +45,9 @@ function isCurrent(href: string): boolean {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogUrl} />
 
-    <!-- Fonts. Swap to self-hosted later if you care about performance. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-    />
+    <!-- Fonts self-hosted via @fontsource-variable (imported in global.css). Preload critical weights. -->
+    <link rel="preload" href={frauncesWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
 
     <!-- Theme script: run before paint to avoid flash -->
     <script is:inline>
