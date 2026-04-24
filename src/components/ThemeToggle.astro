@@ -27,7 +27,11 @@
   btn?.addEventListener("click", () => {
     const next = currentTheme() === "light" ? "dark" : "light";
     root.dataset.theme = next;
-    localStorage.setItem("theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // Safari private mode, storage disabled - ignore
+    }
     btn.setAttribute("aria-label", `Switch to ${next === "light" ? "dark" : "light"} mode`);
   });
 
