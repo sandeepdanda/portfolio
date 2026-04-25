@@ -124,6 +124,24 @@ import profile from "../assets/profile.png";
   </section>
 
   <script>
+    // Portrait fade + lift on first scroll into view
+    const portrait = document.querySelector<HTMLElement>(".portrait");
+    if (portrait) {
+      if (!("IntersectionObserver" in window)) {
+        portrait.classList.add("is-visible");
+      } else {
+        const io = new IntersectionObserver((entries, observer) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          }
+        }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
+        io.observe(portrait);
+      }
+    }
+
     const buttons = document.querySelectorAll<HTMLButtonElement>(".copy");
     buttons.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
@@ -190,6 +208,17 @@ import profile from "../assets/profile.png";
 
   .portrait {
     margin: 0;
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .portrait {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .portrait.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @media (max-width: 720px) {
     .portrait { max-width: 20rem; }

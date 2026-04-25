@@ -8,8 +8,20 @@
   aria-label="Toggle theme"
   type="button"
 >
-  <span class="icon-sun" aria-hidden="true">☀</span>
-  <span class="icon-moon" aria-hidden="true">☾</span>
+  <svg class="icon icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2"/>
+    <path d="M12 20v2"/>
+    <path d="m4.93 4.93 1.41 1.41"/>
+    <path d="m17.66 17.66 1.41 1.41"/>
+    <path d="M2 12h2"/>
+    <path d="M20 12h2"/>
+    <path d="m4.93 19.07 1.41-1.41"/>
+    <path d="m17.66 6.34 1.41-1.41"/>
+  </svg>
+  <svg class="icon icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
 </button>
 
 <script>
@@ -59,7 +71,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
     z-index: 10;
     transition: background 150ms ease-out, border-color 150ms ease-out;
   }
@@ -67,23 +78,25 @@
     background: var(--color-surface-raised);
     border-color: var(--color-text-muted);
   }
+  .icon {
+    position: absolute;
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+  /* Default (no data-theme = dark preferred): moon visible, sun hidden */
   .icon-sun {
-    display: none;
+    opacity: 0;
+    transform: rotate(-90deg);
   }
   .icon-moon {
-    display: inline;
-  }
-  :root[data-theme="light"] .icon-sun,
-  :root:not([data-theme="dark"]) .icon-sun {
-    display: none;
-  }
-  :root[data-theme="dark"] .icon-moon {
-    display: inline;
-  }
-  :root[data-theme="light"] .icon-moon {
-    display: none;
+    opacity: 1;
+    transform: rotate(0);
   }
   :root[data-theme="light"] .icon-sun {
-    display: inline;
+    opacity: 1;
+    transform: rotate(0);
+  }
+  :root[data-theme="light"] .icon-moon {
+    opacity: 0;
+    transform: rotate(90deg);
   }
 </style>
