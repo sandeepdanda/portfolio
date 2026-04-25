@@ -186,6 +186,7 @@ References:
 - Movie recommendation card as a live widget on the index page
 - Brand-aware micro-animations on hover (Amazon smile arrow, Deloitte green dot, etc). See `docs/design/animations-todo.md` for the full list, principles, and ship order.
 - Extract shared `Card.astro` component (4 near-identical copies live in experience, education, projects, about today)
+- About page visual refresh. Current /about is honest but flat. Directions (photo strip, map + timeline, asymmetric grid, pull quotes, side annotations, favorites grid) captured in `docs/design/about-page-ideas.md` with references and a decision checklist.
 
 ---
 
