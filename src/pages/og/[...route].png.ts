@@ -23,6 +23,10 @@ const pages: Record<string, { title: string; description: string }> = {
     title: "Projects",
     description: "Things I have shipped or maintain.",
   },
+  uses: {
+    title: "Uses",
+    description: "The tools I actually open every day.",
+  },
   "404": {
     title: "Not found",
     description: "The page you are looking for does not exist.",

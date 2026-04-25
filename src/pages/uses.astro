@@ -1,0 +1,175 @@
+---
+// TODO(sandeep): replace every [TODO: confirm] with real gear. Keep it
+// short - one line of why, no "daily driver" / "trusty" / "absolutely love".
+import Base from "../layouts/Base.astro";
+
+const sections = [
+  {
+    num: "01",
+    title: "Hardware",
+    items: [
+      { name: "Laptop", note: "[TODO: confirm] M-series MacBook Pro." },
+      { name: "Monitor", note: "[TODO: confirm]" },
+      { name: "Keyboard", note: "[TODO: confirm]" },
+      { name: "Mouse", note: "[TODO: confirm]" },
+      { name: "Headphones", note: "[TODO: confirm]" },
+      { name: "Mic / webcam", note: "[TODO: confirm]" },
+    ],
+  },
+  {
+    num: "02",
+    title: "Editor and terminal",
+    items: [
+      { name: "Editor", note: "[TODO: confirm] (VS Code? Cursor? Neovim?)" },
+      { name: "Terminal", note: "[TODO: confirm] (Ghostty? iTerm? Warp?)" },
+      { name: "Shell", note: "zsh. [TODO: confirm plugins]" },
+      { name: "Prompt", note: "[TODO: confirm] (starship? p10k?)" },
+      { name: "Font", note: "JetBrains Mono. Same as the site." },
+      { name: "Colorscheme", note: "[TODO: confirm]" },
+    ],
+  },
+  {
+    num: "03",
+    title: "Daily apps",
+    items: [
+      { name: "Browser", note: "[TODO: confirm]" },
+      { name: "Notes", note: "[TODO: confirm] (Obsidian, Bear, Apple Notes)" },
+      { name: "Tasks", note: "[TODO: confirm]" },
+      { name: "Comms", note: "Slack for work. [TODO: confirm] for personal." },
+      { name: "Password manager", note: "[TODO: confirm]" },
+      { name: "Music", note: "[TODO: confirm]" },
+    ],
+  },
+  {
+    num: "04",
+    title: "Dev tooling",
+    items: [
+      { name: "Node", note: "via Homebrew. [TODO: confirm version strategy]" },
+      { name: "Python", note: "[TODO: confirm]" },
+      { name: "Package manager", note: "[TODO: confirm]" },
+      { name: "Claude Code", note: "Primary agent harness. Config at ~/.claude." },
+      { name: "Git host", note: "GitHub for public, internal for work." },
+      { name: "CLIs", note: "gh, rg, fd, jq. [TODO: confirm additions]" },
+    ],
+  },
+  {
+    num: "05",
+    title: "Physical desk",
+    items: [
+      { name: "Desk", note: "[TODO: confirm]" },
+      { name: "Chair", note: "[TODO: confirm]" },
+      { name: "Lighting", note: "[TODO: confirm]" },
+      { name: "Notebook", note: "[TODO: confirm]" },
+      { name: "Coffee", note: "[TODO: confirm method + beans]" },
+    ],
+  },
+];
+---
+
+<Base
+  title="Uses"
+  description="The tools I actually open every day."
+>
+  <section class="hero">
+    <h1>What I <em>use</em></h1>
+    <p class="subtitle">The tools I actually open every day. Updated when something changes, not when a company ships a new one.</p>
+  </section>
+
+  {sections.map((s) => (
+    <section class="uses-section">
+      <p class="kicker">{s.num}</p>
+      <h2>{s.title}</h2>
+      <dl class="uses-list">
+        {s.items.map((item) => (
+          <div class="row">
+            <dt>{item.name}</dt>
+            <dd>{item.note}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  ))}
+</Base>
+
+<style>
+  .hero { margin: 0 0 4rem 0; }
+  h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    margin: 0;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+  .subtitle {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 34rem;
+    margin: 1.25rem 0 0 0;
+  }
+
+  .uses-section {
+    max-width: 52rem;
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .uses-section:first-of-type {
+    margin-top: 0;
+  }
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem 0;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--color-accent);
+    letter-spacing: -0.015em;
+    margin: 0 0 1.75rem 0;
+  }
+
+  .uses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin: 0;
+    padding: 0;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 1.25rem;
+    align-items: baseline;
+  }
+  @media (max-width: 560px) {
+    .row {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+  dt {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: var(--color-text);
+  }
+  dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+</style>
