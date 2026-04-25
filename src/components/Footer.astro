@@ -1,6 +1,5 @@
 ---
 import { SITE, SOCIAL } from "../config";
-import BuildLog from "./BuildLog.astro";
 const year = new Date().getFullYear();
 ---
 
@@ -21,7 +20,6 @@ const year = new Date().getFullYear();
       </svg>
     </p>
   </div>
-  <BuildLog />
 </footer>
 
 <style>
@@ -62,11 +60,6 @@ const year = new Date().getFullYear();
     .site-footer {
       padding: 1.5rem 1rem 1.5rem 2.5rem;
     }
-  }
-  .site-footer :global(.build-log) {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--color-border);
   }
   .row {
     display: flex;

@@ -184,6 +184,8 @@ References:
 - Command palette (`cmd+k` style) if navigation gets busier
 - Per-page OG images (template exists in `src/pages/og/[...route].png.ts` but `Base.astro:17` currently hardcodes `/og/home.png`)
 - Movie recommendation card as a live widget on the index page
+- Brand-aware micro-animations on hover (Amazon smile arrow, Deloitte green dot, etc). See `docs/design/animations-todo.md` for the full list, principles, and ship order.
+- Extract shared `Card.astro` component (4 near-identical copies live in experience, education, projects, about today)
 
 ---
 
