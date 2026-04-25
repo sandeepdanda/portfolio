@@ -18,7 +18,6 @@ export const NAV = [
 
 export const SOCIAL = {
   github: "https://github.com/sandeepdanda",
-  // TODO(sandeep): confirm correct LinkedIn handle
-  linkedin: "https://linkedin.com/in/sandeepdanda",
+  linkedin: "https://linkedin.com/in/sandeepsde",
   email: "mailto:sandeepdanda.dev@gmail.com",
 } as const;
