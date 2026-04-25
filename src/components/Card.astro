@@ -1,0 +1,160 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  headline?: string;
+  external?: boolean;
+  showArrow?: boolean;
+  density?: "default" | "compact";
+  tags?: string[];
+  class?: string;
+}
+
+const {
+  href,
+  label,
+  headline,
+  external,
+  showArrow = true,
+  density = "default",
+  tags = [],
+  class: klass,
+} = Astro.props;
+
+const isExternal = external ?? /^https?:\/\//i.test(href);
+const relAttr = isExternal ? "noopener noreferrer" : undefined;
+const targetAttr = isExternal ? "_blank" : undefined;
+---
+
+<a
+  class:list={["card", klass]}
+  data-density={density}
+  href={href}
+  target={targetAttr}
+  rel={relAttr}
+>
+  <span class="card-top">
+    {Astro.slots.has("icon") && (
+      <span class="icon"><slot name="icon" /></span>
+    )}
+    <span class="label">{label}</span>
+    {showArrow && <span class="arrow" aria-hidden="true">↗</span>}
+  </span>
+
+  {headline && <span class="headline">{headline}</span>}
+
+  {Astro.slots.has("meta") && (
+    <span class="meta"><slot name="meta" /></span>
+  )}
+
+  <slot name="body" />
+
+  {tags.length > 0 && (
+    <ul class="tags">
+      {tags.map((t) => <li>{t}</li>)}
+    </ul>
+  )}
+</a>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1.5rem 1.5rem 1.75rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      transform 200ms ease-out,
+      border-color 200ms ease-out,
+      box-shadow 200ms ease-out;
+  }
+  .card[data-density="compact"] {
+    gap: 0.375rem;
+    padding: 0.875rem 1rem 1rem 1rem;
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 24px -12px var(--color-accent);
+  }
+  .card:hover .arrow,
+  .card:focus-visible .arrow {
+    transform: translate(3px, -3px);
+    color: var(--color-accent);
+  }
+  .card:hover .headline,
+  .card:focus-visible .headline {
+    color: var(--color-accent);
+  }
+  .card:hover .icon,
+  .card:focus-visible .icon {
+    color: var(--color-accent);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+  .icon {
+    display: inline-flex;
+    color: var(--color-text-muted);
+    transition: color 150ms ease-out;
+    flex-shrink: 0;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-muted);
+  }
+  .arrow {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    transition: transform 200ms ease-out, color 200ms ease-out;
+  }
+  .headline {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: var(--color-text);
+    transition: color 150ms ease-out;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .tags li {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+  }
+</style>

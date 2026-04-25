@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import Card from "../components/Card.astro";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order
@@ -19,19 +20,14 @@ const projects = (await getCollection("projects")).sort(
   <ul class="cards">
     {projects.map((entry) => (
       <li>
-        <a class="card" href={`/projects/${entry.id}`}>
-          <span class="card-top">
-            <span class="label">Project</span>
-            <span class="arrow" aria-hidden="true">↗</span>
-          </span>
-          <span class="headline">{entry.data.name}</span>
-          <span class="summary">{entry.data.summary}</span>
-          {entry.data.tags.length > 0 && (
-            <ul class="tags">
-              {entry.data.tags.map((t) => <li>{t}</li>)}
-            </ul>
-          )}
-        </a>
+        <Card
+          href={`/projects/${entry.id}`}
+          label="Project"
+          headline={entry.data.name}
+          tags={entry.data.tags}
+        >
+          <p slot="body" class="summary">{entry.data.summary}</p>
+        </Card>
       </li>
     ))}
   </ul>
@@ -69,81 +65,11 @@ const projects = (await getCollection("projects")).sort(
     gap: 1rem;
   }
   .cards li { display: flex; }
-
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 1.5rem 1.5rem 1.75rem 1.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    color: var(--color-text);
-    text-decoration: none;
-    transition:
-      transform 200ms ease-out,
-      border-color 200ms ease-out,
-      box-shadow 200ms ease-out;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-    box-shadow: 0 4px 24px -12px var(--color-accent);
-  }
-  .card:hover .arrow { transform: translate(3px, -3px); color: var(--color-accent); }
-  .card:hover .headline { color: var(--color-accent); }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-  }
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--color-text-muted);
-  }
-  .arrow {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: var(--color-text-muted);
-    transition: transform 200ms ease-out, color 200ms ease-out;
-  }
-  .headline {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.1;
-    color: var(--color-text);
-    transition: color 150ms ease-out;
-  }
   .summary {
     font-size: 1rem;
     line-height: 1.55;
     color: var(--color-text-muted);
     max-width: 36rem;
-  }
-  .tags {
-    list-style: none;
-    padding: 0;
-    margin: 0.25rem 0 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-  }
-  .tags li {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-muted);
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
+    margin: 0;
   }
 </style>

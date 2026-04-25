@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import Card from "../components/Card.astro";
 
 const entries = [
   {
@@ -49,19 +50,18 @@ const entries = [
   <ul class="cards">
     {entries.map((e) => (
       <li>
-        <a class="card" href={e.url} target="_blank" rel="noopener noreferrer">
-          <span class="card-top">
-            <span class="label">{e.degree}</span>
-            <span class="arrow" aria-hidden="true">↗</span>
-          </span>
-          <span class="headline">{e.school}</span>
-          <span class="meta">
+        <Card
+          href={e.url}
+          label={e.degree}
+          headline={e.school}
+        >
+          <Fragment slot="meta">
             <span>{e.years}</span>
             <span aria-hidden="true">·</span>
             <span>{e.location}</span>
             {e.gpa && <><span aria-hidden="true">·</span><span>GPA {e.gpa}</span></>}
-          </span>
-        </a>
+          </Fragment>
+        </Card>
       </li>
     ))}
   </ul>
@@ -99,65 +99,4 @@ const entries = [
     gap: 1rem;
   }
   .cards li { display: flex; }
-
-  .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 1.5rem 1.5rem 1.75rem 1.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    color: var(--color-text);
-    text-decoration: none;
-    transition:
-      transform 200ms ease-out,
-      border-color 200ms ease-out,
-      box-shadow 200ms ease-out;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-    box-shadow: 0 4px 24px -12px var(--color-accent);
-  }
-  .card:hover .arrow { transform: translate(3px, -3px); color: var(--color-accent); }
-  .card:hover .headline { color: var(--color-accent); }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-  }
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--color-text-muted);
-  }
-  .arrow {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: var(--color-text-muted);
-    transition: transform 200ms ease-out, color 200ms ease-out;
-  }
-  .headline {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.1;
-    color: var(--color-text);
-    transition: color 150ms ease-out;
-  }
-  .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
 </style>
