@@ -40,6 +40,9 @@ import profile from "../assets/profile.png";
         reason. Less glamorous than it sounds, more interesting than it
         looks.
       </p>
+      <p class="pull" aria-hidden="true">
+        I had my first real production outage.
+      </p>
       <p>
         I grew up in Thorrur, a small town in Telangana, and then in
         Hyderabad. My first real job was at Nucleus Software in Delhi
@@ -49,7 +52,7 @@ import profile from "../assets/profile.png";
         US for my masters at the University at Buffalo, and eventually
         ended up in Seattle.
       </p>
-      <p class="pull">
+      <p class="pull" aria-hidden="true">
         If I had to pick the career again I would still pick engineering
         - this time for the curiosity, not the path.
       </p>
@@ -57,6 +60,9 @@ import profile from "../assets/profile.png";
         Lately I have been pulled into AI tooling - agents, MCPs,
         skills, configs, and the slightly obsessive fun of making a
         team's tools do more than they were designed for.
+      </p>
+      <p class="pull" aria-hidden="true">
+        The missing pieces in a thing more than the finished ones.
       </p>
       <p>
         Outside work: cooking, badminton, cricket, and since I moved
@@ -258,13 +264,16 @@ import profile from "../assets/profile.png";
   .bio p.pull {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1.375rem;
+    font-size: clamp(1.125rem, 2.6vw + 0.6rem, 1.375rem);
     line-height: 1.4;
     color: var(--color-accent);
     border-left: 2px solid var(--color-accent);
     padding-left: 1.25rem;
     margin: 0.5rem 0;
     max-width: 32rem;
+  }
+  @media (max-width: 720px) {
+    .bio p.pull { padding-left: 1rem; }
   }
 
   .links-section {
