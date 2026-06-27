@@ -20,28 +20,31 @@ import profile from "../assets/profile.png";
   <h2 class="sr-only">About</h2>
 
   <div class="about-grid">
-    <figure class="portrait">
-      <Picture
-        src={profile}
-        alt="Sandeep Danda"
-        widths={[320, 480, 640, 960]}
-        sizes="(max-width: 720px) 80vw, 20rem"
-        formats={["avif", "webp"]}
-        loading="eager"
-        fetchpriority="high"
-      />
-      <figcaption>Seattle, WA</figcaption>
-    </figure>
+    <aside class="dossier">
+      <figure class="portrait">
+        <Picture
+          src={profile}
+          alt="Sandeep Danda"
+          widths={[320, 480, 640, 960]}
+          sizes="(max-width: 720px) 80vw, 22rem"
+          formats={["avif", "webp"]}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+      <dl class="facts">
+        <div><dt>Based in</dt><dd>Seattle, WA</dd></div>
+        <div><dt>Doing</dt><dd>SDE — backends &amp; AI tooling</dd></div>
+        <div><dt>From</dt><dd>Thorrur → Hyderabad → Buffalo</dd></div>
+      </dl>
+    </aside>
 
     <div class="bio">
-      <p>
+      <p class="lede">
         I write backends. The part I like is the shape of the thing -
         idempotent writes, replay queues, alarms that fire for the right
         reason. Less glamorous than it sounds, more interesting than it
         looks.
-      </p>
-      <p class="pull" aria-hidden="true">
-        I had my first real production outage.
       </p>
       <p>
         I grew up in Thorrur, a small town in Telangana, and then in
@@ -52,17 +55,14 @@ import profile from "../assets/profile.png";
         US for my masters at the University at Buffalo, and eventually
         ended up in Seattle.
       </p>
-      <p class="pull" aria-hidden="true">
-        If I had to pick the career again I would still pick engineering
-        - this time for the curiosity, not the path.
-      </p>
+      <blockquote class="pull">
+        I would pick engineering again - this time for the curiosity,
+        not the path.
+      </blockquote>
       <p>
         Lately I have been pulled into AI tooling - agents, MCPs,
         skills, configs, and the slightly obsessive fun of making a
         team's tools do more than they were designed for.
-      </p>
-      <p class="pull" aria-hidden="true">
-        The missing pieces in a thing more than the finished ones.
       </p>
       <p>
         Outside work: cooking, badminton, cricket, and since I moved
@@ -200,16 +200,29 @@ import profile from "../assets/profile.png";
 
   .about-grid {
     display: grid;
-    grid-template-columns: 20rem 1fr;
-    gap: 3.5rem;
+    grid-template-columns: minmax(15rem, 19rem) 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
     align-items: start;
-    max-width: 56rem;
+    max-width: 58rem;
   }
   @media (max-width: 720px) {
     .about-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 2.5rem;
     }
+  }
+
+  /* Left rail: portrait + a mono "dossier" of facts. Sticky on desktop so the
+     face stays with the reader through the bio. */
+  .dossier {
+    position: sticky;
+    top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  @media (max-width: 720px) {
+    .dossier { position: static; }
   }
 
   .portrait {
@@ -227,53 +240,90 @@ import profile from "../assets/profile.png";
     }
   }
   @media (max-width: 720px) {
-    .portrait { max-width: 20rem; }
+    .portrait { max-width: 18rem; }
   }
   .portrait img {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 4px;
-    filter: grayscale(0.1);
+    filter: grayscale(1) contrast(1.04);
     border: 1px solid var(--color-border);
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: center top;
+    transition: filter 500ms ease-out;
   }
-  .portrait figcaption {
-    margin-top: 0.75rem;
+  .portrait:hover img { filter: grayscale(0) contrast(1.02); }
+
+  /* Mono fact list — masthead, not buttons */
+  .facts {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .facts div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    border-left: 1px solid var(--color-border);
+    padding-left: 0.75rem;
+  }
+  .facts dt {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.625rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--color-text-muted);
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+  }
+  .facts dd {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--color-text);
   }
 
   .bio {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    max-width: 34rem;
+    gap: 1.35rem;
+    max-width: 36rem;
   }
   .bio p {
     font-size: 1.0625rem;
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--color-text);
     margin: 0;
   }
-  .bio p.pull {
+  /* Opening line carries a touch more weight */
+  .bio p.lede {
+    font-size: clamp(1.125rem, 1.2vw + 1rem, 1.3rem);
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+  .bio p.lede::first-letter {
+    initial-letter: 2;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-right: 0.5rem;
+  }
+  /* Pull-quote: a DISTINCT distilled line (not duplicated body text), hanging
+     into the left margin as a typographic anchor. */
+  .bio blockquote.pull {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(1.125rem, 2.6vw + 0.6rem, 1.375rem);
-    line-height: 1.4;
+    font-size: clamp(1.25rem, 2.6vw + 0.6rem, 1.6rem);
+    line-height: 1.35;
     color: var(--color-accent);
     border-left: 2px solid var(--color-accent);
     padding-left: 1.25rem;
-    margin: 0.5rem 0;
-    max-width: 32rem;
+    margin: 1rem 0 1rem -1.5rem;
+    max-width: 34rem;
   }
   @media (max-width: 720px) {
-    .bio p.pull { padding-left: 1rem; }
+    .bio blockquote.pull { margin-left: 0; padding-left: 1rem; }
   }
 
   .links-section {

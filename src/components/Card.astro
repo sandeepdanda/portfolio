@@ -131,6 +131,26 @@ const targetAttr = isExternal ? "_blank" : undefined;
     color: var(--color-text);
     transition: color 150ms ease-out;
   }
+
+  /* Left-anchored underline sweep for schools with no other motif. Uses the
+     background-size technique (not width on an inline box, which renders wrong
+     and wraps badly). Applied to a self-sized inline span so it hugs the text. */
+  .card--underline .headline {
+    /* flex blockifies items, so shrink to text width via the cross axis */
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 100%;
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 2px;
+    padding-bottom: 2px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card--underline .headline { transition: color 150ms ease-out, background-size 280ms ease-out; }
+  }
+  .card--underline:hover .headline,
+  .card--underline:focus-visible .headline { background-size: 100% 2px; }
   .meta {
     display: flex;
     flex-wrap: wrap;

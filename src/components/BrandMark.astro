@@ -1,8 +1,15 @@
 ---
 // Brand-true hover micro-mark, drawn inline (no external assets, no scraping).
 // Each company gets one small motif that animates on the parent .card hover and
-// is fully disabled under prefers-reduced-motion. Brand hexes are public values
-// documented in docs/design/animations-todo.md.
+// degrades gracefully under prefers-reduced-motion (final state shown, never blank).
+//
+// Design rule (from the motion research): a sub-20px motif only reads if the
+// animation CHANGES THE SILHOUETTE or reveals withheld information. So:
+//   - Amazon  : stroke-dashoffset "draw" of the smile arrow (nothing -> a mark)
+//   - Deloitte: the dot MORPHS round -> square and slides to "punctuate" the name
+//               (form change, not a sub-threshold size pulse)
+//   - Nucleus : a center dot with an orbiting ring that DRAWS via dashoffset
+//               (atom/nucleus metaphor; not a symmetric rotation no-op)
 //
 // Usage (inside a Card body slot):
 //   <BrandMark company="amazon" slot="body" />
@@ -14,18 +21,18 @@ const { company } = Astro.props;
 
 <span class="brand-mark" data-company={company} aria-hidden="true">
   {company === "amazon" && (
-    <svg class="bm-amazon" width="58" height="16" viewBox="0 0 58 16" fill="none">
+    <svg class="bm-amazon" width="60" height="18" viewBox="0 0 60 18" fill="none">
       {/* shallow smile arc + arrow tip, Amazon orange */}
       <path
         class="bm-amazon-arc"
-        d="M2 4 C 16 14, 42 14, 56 4"
+        d="M3 5 C 18 16, 44 16, 57 5"
         stroke="#FF9900"
         stroke-width="2"
         stroke-linecap="round"
       />
       <path
         class="bm-amazon-tip"
-        d="M50 3 L56 4 L53 9"
+        d="M51 3 L57 5 L54 11"
         stroke="#FF9900"
         stroke-width="2"
         stroke-linecap="round"
@@ -36,11 +43,14 @@ const { company } = Astro.props;
   )}
 
   {company === "deloitte" && (
-    <span class="bm-deloitte" style="--brand:#86BC25"></span>
+    <span class="bm-deloitte"><i class="bm-dot"></i><span class="bm-trail"></span></span>
   )}
 
   {company === "nucleus" && (
-    <span class="bm-nucleus"></span>
+    <svg class="bm-nucleus" width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle class="bm-orbit" cx="11" cy="11" r="8" stroke="var(--color-accent)" stroke-width="1.4" />
+      <circle class="bm-core" cx="11" cy="11" r="2.4" fill="var(--color-accent)" />
+    </svg>
   )}
 </span>
 
@@ -48,76 +58,75 @@ const { company } = Astro.props;
   .brand-mark {
     display: inline-flex;
     align-items: center;
-    height: 16px;
-    margin-top: -0.25rem;
+    height: 22px;
   }
 
   /* ---- Amazon: smile arrow draws on hover ---- */
   .bm-amazon-arc,
   .bm-amazon-tip {
-    stroke-dasharray: 80;
-    stroke-dashoffset: 80;
+    stroke-dasharray: 90;
+    stroke-dashoffset: 90;
   }
 
-  /* ---- Deloitte: single green square ---- */
+  /* ---- Deloitte: green dot that morphs round->square and slides ---- */
   .bm-deloitte {
-    width: 9px;
-    height: 9px;
-    background: var(--brand);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .bm-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #86bc25; /* Deloitte green */
+    flex-shrink: 0;
+  }
+  /* a short green rule that draws out from the dot — "punctuation" gesture */
+  .bm-trail {
+    width: 0;
+    height: 2px;
+    background: #86bc25;
+    border-radius: 2px;
   }
 
-  /* ---- Nucleus: thin accent ring ---- */
-  .bm-nucleus {
-    width: 13px;
-    height: 13px;
-    border: 1px solid var(--color-accent);
-    border-radius: 999px;
-    display: inline-block;
+  /* ---- Nucleus: orbiting ring draws around a core ---- */
+  .bm-orbit {
+    stroke-dasharray: 52;
+    stroke-dashoffset: 52;
+    transform-origin: 11px 11px;
   }
+  .bm-core { transform-origin: 11px 11px; transform: scale(0.6); opacity: 0.5; }
 
   @media (prefers-reduced-motion: no-preference) {
     .bm-amazon-arc,
-    .bm-amazon-tip {
-      transition: stroke-dashoffset 500ms ease-out;
-    }
+    .bm-amazon-tip { transition: stroke-dashoffset 520ms ease-out; }
     :global(.card:hover) .bm-amazon-arc,
-    :global(.card:focus-visible) .bm-amazon-arc {
-      stroke-dashoffset: 0;
-    }
+    :global(.card:focus-visible) .bm-amazon-arc { stroke-dashoffset: 0; }
     :global(.card:hover) .bm-amazon-tip,
-    :global(.card:focus-visible) .bm-amazon-tip {
-      stroke-dashoffset: 0;
-      transition-delay: 300ms;
-    }
+    :global(.card:focus-visible) .bm-amazon-tip { stroke-dashoffset: 0; transition-delay: 320ms; }
 
-    .bm-deloitte {
-      transition: transform 600ms ease-in-out;
-    }
-    :global(.card:hover) .bm-deloitte,
-    :global(.card:focus-visible) .bm-deloitte {
-      animation: bm-pulse 600ms ease-in-out;
-    }
-    @keyframes bm-pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
+    .bm-dot { transition: border-radius 260ms ease; }
+    .bm-trail { transition: width 360ms ease 120ms; }
+    :global(.card:hover) .bm-dot,
+    :global(.card:focus-visible) .bm-dot { border-radius: 1px; }
+    :global(.card:hover) .bm-trail,
+    :global(.card:focus-visible) .bm-trail { width: 22px; }
 
-    .bm-nucleus {
-      transition: transform 900ms ease;
-    }
-    :global(.card:hover) .bm-nucleus,
-    :global(.card:focus-visible) .bm-nucleus {
-      transform: rotate(360deg);
-    }
+    .bm-orbit { transition: stroke-dashoffset 700ms ease-out; }
+    .bm-core { transition: transform 360ms ease 200ms, opacity 360ms ease 200ms; }
+    :global(.card:hover) .bm-orbit,
+    :global(.card:focus-visible) .bm-orbit { stroke-dashoffset: 0; }
+    :global(.card:hover) .bm-core,
+    :global(.card:focus-visible) .bm-core { transform: scale(1); opacity: 1; }
   }
 
-  /* Under reduced-motion the marks are simply static (arc shown full). */
+  /* Reduced motion: show the final, meaningful state instantly (never blank). */
   @media (prefers-reduced-motion: reduce) {
     .bm-amazon-arc,
-    .bm-amazon-tip {
-      stroke-dashoffset: 0;
-    }
+    .bm-amazon-tip { stroke-dashoffset: 0; }
+    .bm-dot { border-radius: 1px; }
+    .bm-trail { width: 22px; }
+    .bm-orbit { stroke-dashoffset: 0; }
+    .bm-core { transform: scale(1); opacity: 1; }
   }
 </style>

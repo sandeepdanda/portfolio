@@ -1,8 +1,11 @@
 ---
-// Brand-true hover micro-mark for education cards, drawn inline (no external
-// assets, no scraping). Mirrors BrandMark.astro: one small motif per school,
-// animated on the parent .card hover, fully disabled under prefers-reduced-motion.
-// Motifs are place/identity touches, not logo reproductions.
+// Hover micro-mark for education cards, drawn inline. Mirrors BrandMark:
+// one small motif per school, animated on the parent .card hover, degrades to a
+// meaningful static state under prefers-reduced-motion.
+//   - buffalo   : tiny snowflakes drift down the card (UB winters)
+//   - nit       : torch flame flickers next to the headline (NIT's torch)
+//   - narayana/aryabhatta: no glyph here — they use the .card--underline sweep
+//     defined in Card.astro (the headline itself underlines L->R on hover)
 //
 // Usage (inside a Card body slot):
 //   <EducationMark school="buffalo" slot="body" />
@@ -10,14 +13,13 @@ interface Props {
   school: "buffalo" | "nit" | "narayana" | "aryabhatta";
 }
 const { school } = Astro.props;
-const isUnderline = school === "narayana" || school === "aryabhatta";
 ---
 
 <span class="edu-mark" data-school={school} aria-hidden="true">
   {school === "buffalo" && (
     <span class="em-snow">
-      {[0, 1, 2, 3, 4].map((i) => (
-        <svg class="em-flake" width="9" height="9" viewBox="0 0 9 9" fill="none" style={`--i:${i}`}>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <svg class="em-flake" width="10" height="10" viewBox="0 0 9 9" fill="none" style={`--i:${i}`}>
           <path d="M4.5 0.5V8.5M0.5 4.5H8.5M1.7 1.7L7.3 7.3M7.3 1.7L1.7 7.3"
             stroke="currentColor" stroke-width="0.8" stroke-linecap="round" />
         </svg>
@@ -26,90 +28,68 @@ const isUnderline = school === "narayana" || school === "aryabhatta";
   )}
 
   {school === "nit" && (
-    <svg class="em-flame" width="10" height="14" viewBox="0 0 10 14" fill="none">
-      {/* small torch flame glyph */}
-      <path d="M5 0.5C5 3 8.5 4 8.5 7.5C8.5 11 6.5 13.5 5 13.5C3.5 13.5 1.5 11 1.5 7.5C1.5 5.5 3 4.5 3 6.5C3 4 5 3 5 0.5Z"
-        fill="#F2A900" />
-    </svg>
+    <span class="em-torch">
+      <svg class="em-flame" width="12" height="16" viewBox="0 0 10 14" fill="none">
+        <path d="M5 0.5C5 3 8.5 4 8.5 7.5C8.5 11 6.5 13.5 5 13.5C3.5 13.5 1.5 11 1.5 7.5C1.5 5.5 3 4.5 3 6.5C3 4 5 3 5 0.5Z"
+          fill="#F2A900" />
+      </svg>
+    </span>
   )}
-
-  {/* underline schools use a .headline::after sweep, keyed off the card class in education.astro */}
 </span>
 
 <style>
   .edu-mark {
     display: inline-flex;
     align-items: center;
-    height: 14px;
+    min-height: 16px;
   }
 
-  /* ---- Buffalo: tiny snowflakes drift down the card ---- */
+  /* ---- Buffalo: snowflakes drift down the whole card on hover ---- */
   .em-snow {
     position: absolute;
     inset: 0;
     pointer-events: none;
     color: var(--color-text-muted);
+    overflow: hidden;
+    border-radius: 6px;
   }
-  .em-flake {
-    position: absolute;
-    top: 0;
-    opacity: 0;
-  }
-  .em-flake:nth-child(1) { left: 18%; }
-  .em-flake:nth-child(2) { left: 38%; }
-  .em-flake:nth-child(3) { left: 56%; }
-  .em-flake:nth-child(4) { left: 74%; }
-  .em-flake:nth-child(5) { left: 88%; }
+  .em-flake { position: absolute; top: -10px; opacity: 0; }
+  .em-flake:nth-child(1) { left: 14%; }
+  .em-flake:nth-child(2) { left: 30%; }
+  .em-flake:nth-child(3) { left: 46%; }
+  .em-flake:nth-child(4) { left: 62%; }
+  .em-flake:nth-child(5) { left: 78%; }
+  .em-flake:nth-child(6) { left: 90%; }
 
-  /* ---- NIT Durgapur: flickering torch flame ---- */
+  /* ---- NIT Durgapur: torch flame with a soft base glow so it reads even
+     before the flicker; flicker adds life on hover ---- */
+  .em-torch { display: inline-flex; }
   .em-flame {
-    opacity: 0.55;
-  }
-
-  /* ---- Narayana / Aryabhatta: accent underline sweep ----
-     Rendered as a .headline::after sweep so it sits directly beneath the
-     school name. Scoped to cards marked with .card--underline. */
-  :global(.card--underline) .headline {
-    position: relative;
-  }
-  :global(.card--underline) .headline::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    height: 2px;
-    width: 0;
-    background: var(--color-accent);
+    opacity: 0.6;
+    filter: drop-shadow(0 0 2px rgba(242, 169, 0, 0.5));
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    :global(.card--underline) .headline::after {
-      transition: width 250ms ease-out;
-    }
-    :global(.card--underline:hover) .headline::after,
-    :global(.card--underline:focus-visible) .headline::after {
-      width: 100%;
-    }
-
     :global(.card:hover) .em-flake,
     :global(.card:focus-visible) .em-flake {
-      animation: em-drift 1.2s ease-in forwards;
-      animation-delay: calc(var(--i) * 120ms);
+      animation: em-drift 1.5s ease-in infinite;
+      animation-delay: calc(var(--i) * 160ms);
     }
     @keyframes em-drift {
-      0% { transform: translateY(0); opacity: 0; }
-      15% { opacity: 0.9; }
-      100% { transform: translateY(140px); opacity: 0; }
+      0% { transform: translateY(0) rotate(0); opacity: 0; }
+      15% { opacity: 0.85; }
+      100% { transform: translateY(160px) rotate(180deg); opacity: 0; }
     }
 
+    .em-flame { transition: opacity 200ms ease; }
     :global(.card:hover) .em-flame,
     :global(.card:focus-visible) .em-flame {
-      animation: em-flicker 300ms steps(1, end) infinite;
+      animation: em-flicker 220ms steps(2, end) infinite;
     }
     @keyframes em-flicker {
-      0% { opacity: 0.55; }
-      50% { opacity: 1; }
-      100% { opacity: 0.55; }
+      0% { opacity: 0.6; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.12); }
+      100% { opacity: 0.7; transform: scaleY(0.96); }
     }
   }
 </style>
