@@ -3,13 +3,13 @@
 // Each company gets one small motif that animates on the parent .card hover and
 // degrades gracefully under prefers-reduced-motion (final state shown, never blank).
 //
-// Design rule (from the motion research): a sub-20px motif only reads if the
-// animation CHANGES THE SILHOUETTE or reveals withheld information. So:
-//   - Amazon  : stroke-dashoffset "draw" of the smile arrow (nothing -> a mark)
-//   - Deloitte: the dot MORPHS round -> square and slides to "punctuate" the name
-//               (form change, not a sub-threshold size pulse)
-//   - Nucleus : a center dot with an orbiting ring that DRAWS via dashoffset
-//               (atom/nucleus metaphor; not a symmetric rotation no-op)
+// Each motif is BRAND-TRUE to the org and animates by changing silhouette /
+// drawing on (a sub-20px symmetric tween reads as a no-op):
+//   - Amazon  : the a->z smile arrow draws via stroke-dashoffset (the logo)
+//   - Deloitte: the green "full stop" — Deloitte's actual brand element ("Deloitte.")
+//               — lands by scaling in with a slight slide (nothing -> the dot)
+//   - Nucleus : the real Nucleus Software icon is a solid core wrapped in
+//               concentric rings (#0653c7). Rings ripple outward from the core.
 //
 // Usage (inside a Card body slot):
 //   <BrandMark company="amazon" slot="body" />
@@ -43,13 +43,16 @@ const { company } = Astro.props;
   )}
 
   {company === "deloitte" && (
-    <span class="bm-deloitte"><i class="bm-dot"></i><span class="bm-trail"></span></span>
+    <svg class="bm-deloitte" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <circle class="bm-fullstop" cx="8" cy="11" r="3" fill="#86BC25" />
+    </svg>
   )}
 
   {company === "nucleus" && (
-    <svg class="bm-nucleus" width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <circle class="bm-orbit" cx="11" cy="11" r="8" stroke="var(--color-accent)" stroke-width="1.4" />
-      <circle class="bm-core" cx="11" cy="11" r="2.4" fill="var(--color-accent)" />
+    <svg class="bm-nucleus" width="20" height="20" viewBox="0 0 16 16" fill="none">
+      <circle class="bm-core" cx="8" cy="8" r="1.7" fill="#0653c7" />
+      <circle class="bm-ring" cx="8" cy="8" r="4" stroke="#0653c7" stroke-width="1.2" />
+      <circle class="bm-ring" cx="8" cy="8" r="6.6" stroke="#0653c7" stroke-width="1.2" />
     </svg>
   )}
 </span>
@@ -68,34 +71,21 @@ const { company } = Astro.props;
     stroke-dashoffset: 90;
   }
 
-  /* ---- Deloitte: green dot that morphs round->square and slides ---- */
-  .bm-deloitte {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .bm-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #86bc25; /* Deloitte green */
-    flex-shrink: 0;
-  }
-  /* a short green rule that draws out from the dot — "punctuation" gesture */
-  .bm-trail {
-    width: 0;
-    height: 2px;
-    background: #86bc25;
-    border-radius: 2px;
+  /* ---- Deloitte: the green "full stop" lands (Deloitte's brand element) ---- */
+  .bm-fullstop {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0) translateX(5px);
+    opacity: 0;
   }
 
-  /* ---- Nucleus: orbiting ring draws around a core ---- */
-  .bm-orbit {
-    stroke-dasharray: 52;
-    stroke-dashoffset: 52;
-    transform-origin: 11px 11px;
+  /* ---- Nucleus: solid core, concentric rings ripple outward ---- */
+  .bm-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.2);
+    opacity: 0;
   }
-  .bm-core { transform-origin: 11px 11px; transform: scale(0.6); opacity: 0.5; }
 
   @media (prefers-reduced-motion: no-preference) {
     .bm-amazon-arc,
@@ -105,28 +95,22 @@ const { company } = Astro.props;
     :global(.card:hover) .bm-amazon-tip,
     :global(.card:focus-visible) .bm-amazon-tip { stroke-dashoffset: 0; transition-delay: 320ms; }
 
-    .bm-dot { transition: border-radius 260ms ease; }
-    .bm-trail { transition: width 360ms ease 120ms; }
-    :global(.card:hover) .bm-dot,
-    :global(.card:focus-visible) .bm-dot { border-radius: 1px; }
-    :global(.card:hover) .bm-trail,
-    :global(.card:focus-visible) .bm-trail { width: 22px; }
+    .bm-fullstop { transition: transform 280ms cubic-bezier(.34,1.56,.64,1), opacity 180ms ease; }
+    :global(.card:hover) .bm-fullstop,
+    :global(.card:focus-visible) .bm-fullstop { transform: scale(1) translateX(0); opacity: 1; }
 
-    .bm-orbit { transition: stroke-dashoffset 700ms ease-out; }
-    .bm-core { transition: transform 360ms ease 200ms, opacity 360ms ease 200ms; }
-    :global(.card:hover) .bm-orbit,
-    :global(.card:focus-visible) .bm-orbit { stroke-dashoffset: 0; }
-    :global(.card:hover) .bm-core,
-    :global(.card:focus-visible) .bm-core { transform: scale(1); opacity: 1; }
+    .bm-ring { transition: transform 320ms ease, opacity 320ms ease; }
+    :global(.card:hover) .bm-ring,
+    :global(.card:focus-visible) .bm-ring { transform: scale(1); opacity: 1; }
+    :global(.card:hover) .bm-ring:nth-of-type(3),
+    :global(.card:focus-visible) .bm-ring:nth-of-type(3) { transition-delay: 90ms; }
   }
 
   /* Reduced motion: show the final, meaningful state instantly (never blank). */
   @media (prefers-reduced-motion: reduce) {
     .bm-amazon-arc,
     .bm-amazon-tip { stroke-dashoffset: 0; }
-    .bm-dot { border-radius: 1px; }
-    .bm-trail { width: 22px; }
-    .bm-orbit { stroke-dashoffset: 0; }
-    .bm-core { transform: scale(1); opacity: 1; }
+    .bm-fullstop { transform: scale(1); opacity: 1; }
+    .bm-ring { transform: scale(1); opacity: 1; }
   }
 </style>

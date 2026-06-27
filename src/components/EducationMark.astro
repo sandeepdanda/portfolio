@@ -2,8 +2,10 @@
 // Hover micro-mark for education cards, drawn inline. Mirrors BrandMark:
 // one small motif per school, animated on the parent .card hover, degrades to a
 // meaningful static state under prefers-reduced-motion.
-//   - buffalo   : tiny snowflakes drift down the card (UB winters)
-//   - nit       : torch flame flickers next to the headline (NIT's torch)
+//   - buffalo   : snowflakes drift down the card, tinted UB Blue (#005bbb).
+//                 Snow is a deliberate winter metaphor; UB Blue is the brand color.
+//   - nit       : NIT Durgapur's emblem is a cog/gear seal with a red lamp-flame
+//                 inside. Mark = a gear ring that turns + a red flame that ignites.
 //   - narayana/aryabhatta: no glyph here — they use the .card--underline sweep
 //     defined in Card.astro (the headline itself underlines L->R on hover)
 //
@@ -21,17 +23,21 @@ const { school } = Astro.props;
       {[0, 1, 2, 3, 4, 5].map((i) => (
         <svg class="em-flake" width="10" height="10" viewBox="0 0 9 9" fill="none" style={`--i:${i}`}>
           <path d="M4.5 0.5V8.5M0.5 4.5H8.5M1.7 1.7L7.3 7.3M7.3 1.7L1.7 7.3"
-            stroke="currentColor" stroke-width="0.8" stroke-linecap="round" />
+            stroke="#005bbb" stroke-width="0.8" stroke-linecap="round" />
         </svg>
       ))}
     </span>
   )}
 
   {school === "nit" && (
-    <span class="em-torch">
-      <svg class="em-flame" width="12" height="16" viewBox="0 0 10 14" fill="none">
-        <path d="M5 0.5C5 3 8.5 4 8.5 7.5C8.5 11 6.5 13.5 5 13.5C3.5 13.5 1.5 11 1.5 7.5C1.5 5.5 3 4.5 3 6.5C3 4 5 3 5 0.5Z"
-          fill="#F2A900" />
+    <span class="em-seal">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+        {/* gear ring — engineering institute seal, drop the lettering */}
+        <circle class="em-cog" cx="8" cy="8" r="6.2" fill="none"
+          stroke="var(--color-text-muted)" stroke-width="1.3" stroke-dasharray="1.7 1.7" />
+        {/* lamp base + red flame (NIT Durgapur's lamp of knowledge) */}
+        <path d="M6.1 12 H9.9 L9 13.3 H7 Z" fill="var(--color-text-muted)" />
+        <path class="em-flame" d="M8 11.3 C6.4 9.9 7.1 8 8 6.7 C8.9 8 9.6 9.9 8 11.3 Z" fill="#e8261c" />
       </svg>
     </span>
   )}
@@ -44,12 +50,11 @@ const { school } = Astro.props;
     min-height: 16px;
   }
 
-  /* ---- Buffalo: snowflakes drift down the whole card on hover ---- */
+  /* ---- Buffalo: UB-Blue snowflakes drift down the whole card on hover ---- */
   .em-snow {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    color: var(--color-text-muted);
     overflow: hidden;
     border-radius: 6px;
   }
@@ -61,12 +66,14 @@ const { school } = Astro.props;
   .em-flake:nth-child(5) { left: 78%; }
   .em-flake:nth-child(6) { left: 90%; }
 
-  /* ---- NIT Durgapur: torch flame with a soft base glow so it reads even
-     before the flicker; flicker adds life on hover ---- */
-  .em-torch { display: inline-flex; }
+  /* ---- NIT Durgapur: gear-seal + red lamp-flame (from the real emblem) ---- */
+  .em-seal { display: inline-flex; }
+  .em-cog { transform-box: fill-box; transform-origin: center; }
   .em-flame {
-    opacity: 0.6;
-    filter: drop-shadow(0 0 2px rgba(242, 169, 0, 0.5));
+    transform-box: fill-box;
+    transform-origin: bottom center;
+    transform: scaleY(0.35);
+    opacity: 0.55;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -81,15 +88,27 @@ const { school } = Astro.props;
       100% { transform: translateY(160px) rotate(180deg); opacity: 0; }
     }
 
-    .em-flame { transition: opacity 200ms ease; }
+    .em-cog { transition: transform 600ms ease; }
+    .em-flame { transition: transform 280ms ease-out, opacity 200ms ease; }
+    :global(.card:hover) .em-cog,
+    :global(.card:focus-visible) .em-cog { transform: rotate(30deg); }
     :global(.card:hover) .em-flame,
     :global(.card:focus-visible) .em-flame {
-      animation: em-flicker 220ms steps(2, end) infinite;
+      opacity: 1;
+      animation: em-ignite 260ms ease-out forwards, em-flicker 600ms steps(3, end) 260ms infinite;
+    }
+    @keyframes em-ignite {
+      from { transform: scaleY(0.35); }
+      to { transform: scaleY(1); }
     }
     @keyframes em-flicker {
-      0% { opacity: 0.6; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.12); }
-      100% { opacity: 0.7; transform: scaleY(0.96); }
+      0% { transform: scaleY(1); }
+      50% { transform: scaleY(1.1); }
+      100% { transform: scaleY(0.97); }
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .em-flame { transform: scaleY(1); opacity: 1; }
   }
 </style>
