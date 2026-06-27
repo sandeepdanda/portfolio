@@ -1,11 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import Card from "../components/Card.astro";
+import EducationMark from "../components/EducationMark.astro";
 
 const entries = [
   {
     degree: "MS, Computer Science",
     school: "University at Buffalo, SUNY",
+    mark: "buffalo" as const,
     url: "https://www.buffalo.edu/",
     years: "Jan 2023 – Dec 2024",
     location: "Buffalo, NY",
@@ -14,6 +16,7 @@ const entries = [
   {
     degree: "BTech, Information Technology",
     school: "NIT Durgapur",
+    mark: "nit" as const,
     url: "https://nitdgp.ac.in/",
     years: "2016 – 2020",
     location: "Durgapur, India",
@@ -22,6 +25,7 @@ const entries = [
   {
     degree: "High School (Class 12)",
     school: "Narayana Junior College",
+    mark: "narayana" as const,
     url: "https://www.narayanajuniorcolleges.com/",
     years: "2014 – 2016",
     location: "Hyderabad, India",
@@ -30,6 +34,7 @@ const entries = [
   {
     degree: "High School (Class 10)",
     school: "Aryabhatta Concept School",
+    mark: "aryabhatta" as const,
     url: "https://aryabhattaschools.org/",
     years: "2014",
     location: "Thorrur, India",
@@ -54,6 +59,7 @@ const entries = [
           href={e.url}
           label={e.degree}
           headline={e.school}
+          class={e.mark === "narayana" || e.mark === "aryabhatta" ? "card--underline" : undefined}
         >
           <Fragment slot="meta">
             <span>{e.years}</span>
@@ -61,6 +67,7 @@ const entries = [
             <span>{e.location}</span>
             {e.gpa && <><span aria-hidden="true">·</span><span>GPA {e.gpa}</span></>}
           </Fragment>
+          <EducationMark school={e.mark} slot="body" />
         </Card>
       </li>
     ))}

@@ -1,0 +1,123 @@
+---
+// Brand-true hover micro-mark, drawn inline (no external assets, no scraping).
+// Each company gets one small motif that animates on the parent .card hover and
+// is fully disabled under prefers-reduced-motion. Brand hexes are public values
+// documented in docs/design/animations-todo.md.
+//
+// Usage (inside a Card body slot):
+//   <BrandMark company="amazon" slot="body" />
+interface Props {
+  company: "amazon" | "deloitte" | "nucleus";
+}
+const { company } = Astro.props;
+---
+
+<span class="brand-mark" data-company={company} aria-hidden="true">
+  {company === "amazon" && (
+    <svg class="bm-amazon" width="58" height="16" viewBox="0 0 58 16" fill="none">
+      {/* shallow smile arc + arrow tip, Amazon orange */}
+      <path
+        class="bm-amazon-arc"
+        d="M2 4 C 16 14, 42 14, 56 4"
+        stroke="#FF9900"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        class="bm-amazon-tip"
+        d="M50 3 L56 4 L53 9"
+        stroke="#FF9900"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+      />
+    </svg>
+  )}
+
+  {company === "deloitte" && (
+    <span class="bm-deloitte" style="--brand:#86BC25"></span>
+  )}
+
+  {company === "nucleus" && (
+    <span class="bm-nucleus"></span>
+  )}
+</span>
+
+<style>
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    margin-top: -0.25rem;
+  }
+
+  /* ---- Amazon: smile arrow draws on hover ---- */
+  .bm-amazon-arc,
+  .bm-amazon-tip {
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+  }
+
+  /* ---- Deloitte: single green square ---- */
+  .bm-deloitte {
+    width: 9px;
+    height: 9px;
+    background: var(--brand);
+    display: inline-block;
+  }
+
+  /* ---- Nucleus: thin accent ring ---- */
+  .bm-nucleus {
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--color-accent);
+    border-radius: 999px;
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bm-amazon-arc,
+    .bm-amazon-tip {
+      transition: stroke-dashoffset 500ms ease-out;
+    }
+    :global(.card:hover) .bm-amazon-arc,
+    :global(.card:focus-visible) .bm-amazon-arc {
+      stroke-dashoffset: 0;
+    }
+    :global(.card:hover) .bm-amazon-tip,
+    :global(.card:focus-visible) .bm-amazon-tip {
+      stroke-dashoffset: 0;
+      transition-delay: 300ms;
+    }
+
+    .bm-deloitte {
+      transition: transform 600ms ease-in-out;
+    }
+    :global(.card:hover) .bm-deloitte,
+    :global(.card:focus-visible) .bm-deloitte {
+      animation: bm-pulse 600ms ease-in-out;
+    }
+    @keyframes bm-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .bm-nucleus {
+      transition: transform 900ms ease;
+    }
+    :global(.card:hover) .bm-nucleus,
+    :global(.card:focus-visible) .bm-nucleus {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Under reduced-motion the marks are simply static (arc shown full). */
+  @media (prefers-reduced-motion: reduce) {
+    .bm-amazon-arc,
+    .bm-amazon-tip {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

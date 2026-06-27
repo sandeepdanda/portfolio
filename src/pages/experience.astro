@@ -1,11 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import Card from "../components/Card.astro";
+import BrandMark from "../components/BrandMark.astro";
 
 const jobs = [
   {
     role: "Software Development Engineer",
     company: "Amazon",
+    brand: "amazon" as const,
     url: "https://aws.amazon.com/",
     years: "Apr 2025 – present",
     location: "Seattle, WA",
@@ -14,6 +16,7 @@ const jobs = [
   {
     role: "Business Technology Analyst",
     company: "Deloitte",
+    brand: "deloitte" as const,
     url: "https://www2.deloitte.com/",
     years: "Jun 2021 – Dec 2022",
     location: "Hyderabad, India",
@@ -22,6 +25,7 @@ const jobs = [
   {
     role: "Assistant Software Engineer",
     company: "Nucleus Software",
+    brand: "nucleus" as const,
     url: "https://www.nucleussoftware.com/",
     years: "Aug 2020 – Jun 2021",
     location: "Noida, India",
@@ -53,6 +57,7 @@ const jobs = [
             <span aria-hidden="true">·</span>
             <span>{j.location}</span>
           </Fragment>
+          <BrandMark company={j.brand} slot="body" />
         </Card>
       </li>
     ))}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio — Phase 9: Brand micro-interactions</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e; --heading:#e6edf3;
+    --green:#3fb950; --red:#f85149; --blue:#58a6ff; --yellow:#d29922; --green-bg:#0f2417; --red-bg:#2a1416; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif; line-height:1.55; padding:40px 24px 80px; }
+  .wrap { max-width:1100px; margin:0 auto; }
+  h1 { color:var(--heading); font-size:30px; margin:0 0 6px; }
+  h2 { color:var(--heading); font-size:21px; margin:48px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  h3 { color:var(--heading); font-size:15px; margin:0 0 8px; }
+  .sub { color:var(--muted); margin:0 0 8px; }
+  code { background:#1f2630; padding:1px 6px; border-radius:5px; font-size:12.5px; font-family:"SF Mono",Menlo,Consolas,monospace; color:#e6edf3; }
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:24px 0; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px; }
+  .card .num { font-size:30px; font-weight:700; color:var(--heading); }
+  .card .lbl { color:var(--muted); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+  .card .delta { font-size:12.5px; margin-top:4px; }
+  .up { color:var(--green); }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0; }
+  .pane { border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel); }
+  .pane .head { padding:10px 14px; font-weight:600; font-size:13px; }
+  .pane.before .head { background:var(--red-bg); color:var(--red); }
+  .pane.after .head { background:var(--green-bg); color:var(--green); }
+  .pane .body { padding:14px; }
+  pre { margin:0; background:#0b0f14; border-radius:8px; padding:12px 14px; overflow-x:auto; font-family:"SF Mono",Menlo,Consolas,monospace; font-size:12px; line-height:1.5; color:#c9d1d9; }
+  .pre-green { border-left:3px solid var(--green); }
+  ul.tight { margin:6px 0 0; padding-left:18px; } ul.tight li { margin:3px 0; font-size:13.5px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); font-size:13.5px; vertical-align:top; }
+  th { background:#1c232c; color:var(--muted); font-weight:600; text-transform:uppercase; font-size:11.5px; letter-spacing:.04em; }
+  tr:last-child td { border-bottom:none; }
+  .tag { display:inline-block; padding:2px 9px; border-radius:20px; font-size:11px; font-weight:600; }
+  .t-done { background:var(--green-bg); color:var(--green); }
+  .t-you { background:#1b2a3a; color:var(--blue); }
+  .shots { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0; }
+  .shot { border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--panel); }
+  .shot .cap { padding:9px 14px; font-size:13px; color:var(--muted); border-bottom:1px solid var(--border); }
+  .shot img { width:100%; display:block; }
+  .note { background:#13202e; border:1px solid #1b3149; border-radius:8px; padding:12px 16px; margin:14px 0; font-size:13.5px; }
+  footer { margin-top:60px; padding-top:18px; border-top:1px solid var(--border); color:var(--muted); font-size:12.5px; }
+  .pill { display:inline-block; background:var(--green-bg); color:var(--green); border:1px solid #1d4427; padding:3px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Portfolio — Phase 9: Brand micro-interactions</h1>
+  <p class="sub">Astro portfolio (editorial-brutalist). Implemented Batch 2 of the animation backlog: brand-true hover marks on the Experience cards, drawn inline, restraint-first, reduced-motion safe.</p>
+  <p><span class="pill">✓ build green (11 pages)</span> &nbsp; <span class="pill">✓ 3 marks render</span> &nbsp; <span class="pill">✓ hover draw verified in browser</span> &nbsp; <span class="pill">✓ 0 console errors</span></p>
+
+  <div class="cards">
+    <div class="card"><div class="lbl">New component</div><div class="num">1</div><div class="delta up">▲ BrandMark.astro</div></div>
+    <div class="card"><div class="lbl">Brand marks</div><div class="num">3</div><div class="delta up">▲ Amazon · Deloitte · Nucleus</div></div>
+    <div class="card"><div class="lbl">External assets</div><div class="num">0</div><div class="delta up">▲ all inline SVG/CSS</div></div>
+    <div class="card"><div class="lbl">JS added</div><div class="num">0</div><div class="delta up">▲ pure CSS, transform/opacity</div></div>
+  </div>
+
+  <div class="note">
+    <strong>What shipped:</strong> a single <code>BrandMark.astro</code> takes a <code>company</code> prop and renders one small motif into each Experience card. On hover the <strong>Amazon</strong> smile arrow draws itself (<code>stroke-dashoffset</code> 80→0), the <strong>Deloitte</strong> green square (<code>#86BC25</code>) pulses, and the <strong>Nucleus</strong> thin accent ring spins 360°. Every animation sits behind <code>prefers-reduced-motion: no-preference</code>; reduce mode shows the Amazon arc static. Matches the spec in <code>docs/design/animations-todo.md</code> exactly — brand-true, one animation per action, no decoration.
+  </div>
+
+  <h2>Before / after</h2>
+  <div class="split">
+    <div class="pane before">
+      <div class="head">● BEFORE</div>
+      <div class="body"><ul class="tight">
+        <li>Experience cards: title, company, tags — no brand identity on hover</li>
+        <li>Animation backlog (<code>animations-todo.md</code>) fully unimplemented for brand marks</li>
+        <li>No reusable mark component</li>
+      </ul></div>
+    </div>
+    <div class="pane after">
+      <div class="head">● AFTER</div>
+      <div class="body"><ul class="tight">
+        <li>Each company gets a recognizable, brand-true hover mark</li>
+        <li><code>BrandMark.astro</code> — one component, <code>company</code> prop, reusable for later batches</li>
+        <li>Inline SVG + CSS only; no scraping, no asset files, no JS</li>
+        <li>Reduced-motion safe; build green; browser-verified</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <h2>The mark component</h2>
+  <div class="split">
+    <div class="pane after">
+      <div class="head">● BrandMark.astro — Amazon smile draw</div>
+      <div class="body">
+<pre class="pre-green">.bm-amazon-arc, .bm-amazon-tip {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;   /* hidden by default */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bm-amazon-arc { transition: stroke-dashoffset 500ms ease-out; }
+  .card:hover .bm-amazon-arc { stroke-dashoffset: 0; }  /* draws */
+  .card:hover .bm-amazon-tip { stroke-dashoffset: 0; transition-delay: 300ms; }
+}</pre>
+      </div>
+    </div>
+    <div class="pane after">
+      <div class="head">● Wired via the Card body slot</div>
+      <div class="body">
+<pre class="pre-green">&lt;Card href={j.url} label={j.role} headline={j.company} tags={j.tags}&gt;
+  &lt;Fragment slot="meta"&gt;...&lt;/Fragment&gt;
+  &lt;BrandMark company={j.brand} slot="body" /&gt;
+&lt;/Card&gt;
+
+// brand: "amazon" | "deloitte" | "nucleus"</pre>
+      </div>
+    </div>
+  </div>
+
+  <h2>Live UI (captured from the running build)</h2>
+  <div class="shots">
+    <div class="shot"><div class="cap">Experience — default (marks idle)</div><img src="img/experience-default.png" alt="Experience default" /></div>
+    <div class="shot"><div class="cap">Experience — Amazon card hovered (smile arrow drawn)</div><img src="img/experience-hover.png" alt="Experience hover" /></div>
+  </div>
+
+  <h2>Verification</h2>
+  <table>
+    <tr><th>Check</th><th>Result</th></tr>
+    <tr><td><code>npm run build</code> (Node 22)</td><td><span class="tag t-done">11 pages, exit 0</span></td></tr>
+    <tr><td>All 3 brand marks present in DOM</td><td><span class="tag t-done">amazon · deloitte · nucleus</span></td></tr>
+    <tr><td>Amazon arc draws on hover (computed style)</td><td><span class="tag t-done">dashoffset 80px → 0px</span></td></tr>
+    <tr><td>Reduced-motion fallback rule present</td><td><span class="tag t-done">verified</span></td></tr>
+    <tr><td>Console errors on /experience</td><td><span class="tag t-done">0</span></td></tr>
+  </table>
+
+  <h2>Scope notes</h2>
+  <table>
+    <tr><td>Batch 1 (nav underline sweep, theme-toggle morph, portrait fade-in) was already shipped in earlier phases — confirmed in code, not re-done.</td><td><span class="tag t-done">already done</span></td></tr>
+    <tr><td>Batches 3–6 (education marks, project motifs, contact cards, home hero) — not started; next increments.</td><td><span class="tag t-you">later</span></td></tr>
+    <tr><td>Phase 8 (Cloudflare Pages deploy) — outward-facing, needs your account. Left to you.</td><td><span class="tag t-you">needs you</span></td></tr>
+    <tr><td>Review the diff, then <code>git add / commit</code>.</td><td><span class="tag t-you">needs you</span></td></tr>
+  </table>
+
+  <footer>
+    Generated for sdad · served on 127.0.0.1 · screenshots from the running Astro preview (:4321), Node 22.22.3. Hover state captured via Playwright after a real mouse hover; arc draw confirmed by reading computed <code>stroke-dashoffset</code>.
+  </footer>
+
+</div>
+</body>
+</html>

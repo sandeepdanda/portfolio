@@ -177,6 +177,20 @@ References:
 
 ---
 
+## Phase 9 - Brand micro-interactions (Batch 2)  `WIP`
+
+**Goal**: brand-true hover marks on the Experience cards, per `docs/design/animations-todo.md`.
+
+Shipped:
+- `src/components/BrandMark.astro` - one component, `company` prop, inline SVG/CSS only (no external assets, no scraping). Amazon smile arrow draws via `stroke-dashoffset` on hover; Deloitte green square (`#86BC25`) pulses; Nucleus thin accent ring spins 360deg.
+- Wired into `experience.astro` via the Card `body` slot.
+- Every animation gated behind `prefers-reduced-motion: no-preference`; reduce mode shows the Amazon arc static.
+- Verified in browser (Playwright): all 3 marks render, Amazon arc dashoffset animates 80px -> 0 on hover, 0 console errors, build green (11 pages).
+
+Remaining batches (1 = chrome polish + portrait fade-in already shipped in earlier phases): Batch 3 education marks, 4 project motifs, 5 contact cards, 6 home hero.
+
+---
+
 ## Later (not scheduled)
 
 - `/uses` page for tools and setup
@@ -224,4 +238,5 @@ npm run preview
 - 2026-04-24: Phase 5 marked DONE. Focus ring contrast fix, `:focus-visible` broadened to buttons, project titles promoted to `<h2>`, sr-only About heading, try/catch on localStorage. BuildLog wired into Footer, emoji wave swapped to SVG.
 - 2026-04-24: Phase 6 shipped. Fonts self-hosted via fontsource-variable. Portrait ships AVIF + WebP + JPG at 4 widths via Astro `<Picture>`.
 - 2026-04-24: Phase 7 shipped. Per-project detail pages at `/projects/<slug>` from MDX bodies. 5 new pages. Project summaries sharpened. About copy deduped against index.
+- 2026-06-26: Phase 9 Batch 2 shipped. `BrandMark.astro` brings hover micro-marks to Experience cards (Amazon smile arrow draw, Deloitte green-square pulse, Nucleus accent-ring spin). Inline SVG/CSS, reduced-motion safe. Browser-verified. Phase 8 (Cloudflare deploy) still open - left to manual run.
 - 2026-04-24: Phase 8 (deploy) queued with exact Cloudflare Pages setup values. Pending user approval for actual deploy.
