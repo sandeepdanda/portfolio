@@ -51,9 +51,9 @@ if __name__ == "__main__":
 
 | Project                                                                             | Description                                                                 |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [🎬 not-another-rewatch](https://github.com/sandeepdanda/not-another-rewatch)       | Movie recommendations with local semantic search — DynamoDB, TypeScript, embeddings |
-| [📚 readloot](https://github.com/sandeepdanda/readloot)                             | A vocabulary RPG for readers — Python, Click, SQLite                        |
-| [🏋️ wellness-pro](https://github.com/sandeepdanda/wellness-pro)                     | Full-stack health club membership system — Spring Boot, React, AWS, MySQL   |
+| [🎬 not-another-rewatch](https://github.com/sandeepdanda/not-another-rewatch)       | AI movie discovery — semantic search + taste-profile recs over 45K local embeddings, pluggable LLM chat — Spring Boot, React, DynamoDB |
+| [📚 readloot](https://github.com/sandeepdanda/readloot)                             | A vocabulary RPG — auto-extracts graded vocab from public-domain books, rarity tiers, spaced repetition — FastAPI, Next.js, SQLite |
+| [🏋️ wellness-pro](https://github.com/sandeepdanda/wellness-pro)                     | Full-stack health club membership — JWT auth, bookings, payments + auto-renewal, admin analytics — Spring Boot, React, PostgreSQL |
 | [🎬 movie-database](https://github.com/sandeepdanda/movie-database)                 | Movie DB with 600K+ records — ER modeling, SQL, Python, Power BI dashboards |
 | [🧠 reinforcement-learning](https://github.com/sandeepdanda/reinforcement-learning) | MDP environments, tabular methods, and Q-learning for stock trading         |
 | [🔍 fake-news-detection](https://github.com/sandeepdanda/fake-news-detection)       | Fake news detection using deep learning and NLP                             |
