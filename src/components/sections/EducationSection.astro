@@ -66,7 +66,7 @@ const entries = [
             <span>{e.location}</span>
             {e.gpa && <><span aria-hidden="true">·</span><span>GPA {e.gpa}</span></>}
           </Fragment>
-          <EducationMark school={e.mark} slot="body" />
+          <EducationMark school={e.mark} slot="mark" />
         </Card>
       </li>
     ))}
@@ -76,10 +76,10 @@ const entries = [
 <style>
   .section {
     position: relative;
-    margin-bottom: 6rem;
-    padding-top: 3rem;
+    margin-bottom: 3.5rem;
+    padding-top: 2.5rem;
     border-top: 1px solid var(--color-border);
-    scroll-margin-top: 6rem;
+    scroll-margin-top: 5rem;
   }
   .cards {
     list-style: none;
@@ -87,7 +87,7 @@ const entries = [
     margin: 0;
     max-width: 52rem;
     display: grid;
-    gap: 1rem;
+    gap: 0.75rem;
   }
   .cards li { display: flex; }
 </style>

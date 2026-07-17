@@ -1,15 +1,11 @@
 ---
-import { SITE, SOCIAL } from "../config";
+import { SITE } from "../config";
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="row">
-    <div class="left">
-      <span>© {year} {SITE.author}</span>
-      <span class="sep">·</span>
-      <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-    </div>
+    <span class="copyright">© {year} {SITE.author}</span>
     <p class="thanks">
       Thanks for the wander
       <svg class="wave" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -24,7 +20,7 @@ const year = new Date().getFullYear();
 
 <style>
   .site-footer {
-    padding: 2rem 3rem 2rem 6rem;
+    padding: 2rem 3rem;
     border-top: 1px solid var(--color-border);
     font-size: 0.8125rem;
     color: var(--color-text-muted);
@@ -58,31 +54,18 @@ const year = new Date().getFullYear();
   }
   @media (max-width: 768px) {
     .site-footer {
-      padding: 1.5rem 1rem 1.5rem 2.5rem;
+      padding: 1.5rem 1rem;
     }
   }
   .row {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .left {
-    display: flex;
-    align-items: center;
+    text-align: center;
     gap: 0.5rem;
   }
-  .left a {
+  .copyright {
     color: var(--color-text-muted);
-    text-decoration: underline;
-    text-decoration-color: var(--color-border);
-    text-underline-offset: 3px;
-  }
-  .left a:hover {
-    color: var(--color-text);
-  }
-  .sep {
-    opacity: 0.5;
   }
 </style>

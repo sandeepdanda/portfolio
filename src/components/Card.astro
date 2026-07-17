@@ -41,7 +41,14 @@ const targetAttr = isExternal ? "_blank" : undefined;
     {showArrow && <span class="arrow" aria-hidden="true">↗</span>}
   </span>
 
-  {headline && <span class="headline">{headline}</span>}
+  {headline && (
+    <span class="headline-row">
+      <span class="headline">{headline}</span>
+      {Astro.slots.has("mark") && (
+        <span class="headline-mark"><slot name="mark" /></span>
+      )}
+    </span>
+  )}
 
   {Astro.slots.has("meta") && (
     <span class="meta"><slot name="meta" /></span>
@@ -61,9 +68,9 @@ const targetAttr = isExternal ? "_blank" : undefined;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
-    padding: 1.5rem 1.5rem 1.75rem 1.5rem;
+    padding: 1.15rem 1.25rem;
     border: 1px solid var(--color-border);
     border-radius: 6px;
     color: var(--color-text);
@@ -122,6 +129,12 @@ const targetAttr = isExternal ? "_blank" : undefined;
     color: var(--color-text-muted);
     transition: transform 200ms ease-out, color 200ms ease-out;
   }
+  /* Company / school name plus its inline brand mark on one line. */
+  .headline-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
   .headline {
     font-family: var(--font-serif);
     font-size: clamp(1.5rem, 2.5vw, 2rem);
@@ -130,6 +143,12 @@ const targetAttr = isExternal ? "_blank" : undefined;
     line-height: 1.1;
     color: var(--color-text);
     transition: color 150ms ease-out;
+  }
+  /* Mark sits right of the name, vertically centered, no extra row height. */
+  .headline-mark {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   /* Left-anchored underline sweep for schools with no other motif. Uses the

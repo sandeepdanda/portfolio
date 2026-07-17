@@ -3,7 +3,6 @@ import "../styles/global.css";
 import { SITE, NAV } from "../config";
 import Footer from "../components/Footer.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import CommandPalette from "../components/CommandPalette.astro";
 import frauncesWoff2 from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
 import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 
@@ -104,6 +103,7 @@ function navHref(href: string): string {
               </a>
             </li>
           ))}
+          {singlePage && <span class="nav-indicator" aria-hidden="true"></span>}
         </ul>
       </nav>
     </header>
@@ -114,15 +114,18 @@ function navHref(href: string): string {
 
     <Footer />
     <ThemeToggle />
-    <CommandPalette />
 
     {singlePage && (
       <script is:inline>
-        // Scroll-spy: highlight the tab whose section is in view.
+        // Scroll-spy with a single underline that SLIDES to the active tab.
         (() => {
+          const list = document.querySelector('.nav-list');
+          const indicator = document.querySelector('.nav-indicator');
           const links = Array.from(
             document.querySelectorAll('.nav-link[data-nav-anchor]')
           );
+          if (!list || !indicator || links.length === 0) return;
+
           const map = new Map();
           for (const a of links) {
             const anchor = a.getAttribute('data-nav-anchor');
@@ -132,16 +135,29 @@ function navHref(href: string): string {
           }
           if (map.size === 0) return;
 
-          function setCurrent(active) {
+          let activeLink = links[0];
+
+          // Move the bar under a given link, measured against the nav-list box.
+          function moveTo(link) {
+            if (!link) return;
+            const l = link.getBoundingClientRect();
+            const base = list.getBoundingClientRect();
+            indicator.style.width = l.width + 'px';
+            indicator.style.transform = 'translateX(' + (l.left - base.left) + 'px)';
+            indicator.style.opacity = '1';
+          }
+
+          function setCurrent(link) {
+            activeLink = link;
             for (const a of links) {
-              if (a === active) a.setAttribute('aria-current', 'page');
+              if (a === link) a.setAttribute('aria-current', 'page');
               else a.removeAttribute('aria-current');
             }
+            moveTo(link);
           }
 
           const io = new IntersectionObserver(
             (entries) => {
-              // pick the most-visible intersecting section
               let best = null;
               let bestRatio = 0;
               for (const e of entries) {
@@ -155,6 +171,26 @@ function navHref(href: string): string {
             { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5, 1] }
           );
           for (const sec of map.keys()) io.observe(sec);
+
+          // Hover preview: slide to the hovered tab, snap back to active on leave.
+          links.forEach((a) => {
+            a.addEventListener('mouseenter', () => moveTo(a));
+          });
+          list.addEventListener('mouseleave', () => moveTo(activeLink));
+
+          // Recompute on resize / font load so the bar stays aligned.
+          const recompute = () => moveTo(activeLink);
+          if ('ResizeObserver' in window) {
+            new ResizeObserver(recompute).observe(list);
+          } else {
+            window.addEventListener('resize', recompute);
+          }
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(recompute);
+          }
+
+          // Initial placement under the first tab.
+          setCurrent(links[0]);
         })();
       </script>
     )}
@@ -226,6 +262,7 @@ function navHref(href: string): string {
       }
 
       .nav-list {
+        position: relative;
         display: flex;
         gap: 1.75rem;
         list-style: none;
@@ -252,34 +289,35 @@ function navHref(href: string): string {
         white-space: nowrap;
         transition: color 150ms ease-out;
       }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -0.125rem;
-        height: 1px;
-        background: var(--color-accent);
-        transform: scaleX(0);
-        transform-origin: left center;
-        transition: transform 200ms ease-out;
-      }
       .nav-link:hover {
         color: var(--color-text);
-      }
-      .nav-link:hover::after {
-        transform: scaleX(1);
       }
       .nav-link[aria-current="page"] {
         color: var(--color-text);
       }
-      .nav-link[aria-current="page"]::after {
-        transform: scaleX(1);
+
+      /* Single underline that slides between tabs. Positioned by JS via
+         transform + width; only those animate, so it stays GPU-cheap. */
+      .nav-indicator {
+        position: absolute;
+        left: 0;
+        bottom: -0.25rem;
+        height: 2px;
+        width: 0;
         background: var(--color-accent);
+        opacity: 0;
+        transform: translateX(0);
+        transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+                    width 280ms cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 200ms ease-out;
+        pointer-events: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .nav-indicator { transition-duration: 0.01ms; }
       }
 
       .main {
-        padding: 2.5rem 3rem 5rem 6rem;
+        padding: 2.5rem 3rem 3rem 6rem;
         max-width: 56rem;
         position: relative;
         z-index: 1;
