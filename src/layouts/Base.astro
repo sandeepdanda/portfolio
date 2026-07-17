@@ -212,9 +212,12 @@ function navHref(href: string): string {
         top: 0;
       }
 
+      /* Signature rule hugs the LEFT edge of the centered content column.
+         Column is 56rem wide and centered, so its left edge sits at
+         calc(50% - 28rem); clamp so it never goes off-screen on narrow views. */
       .vertical-rule {
         position: fixed;
-        left: 3rem;
+        left: max(1rem, calc(50% - 28rem));
         top: 0;
         bottom: 0;
         width: 1px;
@@ -222,16 +225,11 @@ function navHref(href: string): string {
         pointer-events: none;
         z-index: 0;
       }
-      @media (max-width: 768px) {
-        .vertical-rule {
-          left: 1rem;
-        }
-      }
 
       .site-header {
         display: flex;
         align-items: center;
-        padding: 1.5rem 3rem 1.5rem 6rem;
+        padding: 1.5rem 2rem;
         border-bottom: 1px solid var(--color-border);
         position: sticky;
         top: 0;
@@ -241,15 +239,19 @@ function navHref(href: string): string {
       }
       @media (max-width: 768px) {
         .site-header {
-          padding: 1rem 1rem 1rem 2.5rem;
+          padding: 1rem;
         }
       }
 
+      /* Nav shares the centered 56rem measure so brand + tabs line up with
+         the content column edges below. */
       .nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        max-width: 56rem;
+        margin: 0 auto;
         gap: 2rem;
       }
 
@@ -317,14 +319,15 @@ function navHref(href: string): string {
       }
 
       .main {
-        padding: 2.5rem 3rem 3rem 6rem;
+        padding: 2.5rem 2rem 3rem 2rem;
         max-width: 56rem;
+        margin: 0 auto;
         position: relative;
         z-index: 1;
       }
       @media (max-width: 768px) {
         .main {
-          padding: 1.5rem 1rem 3rem 2.5rem;
+          padding: 1.5rem 1rem 3rem 2rem;
         }
       }
     </style>
