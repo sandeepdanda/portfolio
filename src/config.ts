@@ -3,8 +3,8 @@ export const SITE = {
   name: "Sandeep Danda",
   title: "Sandeep Danda — Software Engineer",
   description:
-    "Software engineer in Seattle. I build distributed backend systems and ship AI side projects in my spare time.",
-  url: "https://sandeepdanda.dev",
+    "Sandeep Danda - backend engineer in Seattle. I build the boring, reliable stuff you only notice when it breaks. Cooking, badminton, and PNW trails off the clock.",
+  url: "https://sandeepdanda.pages.dev",
   author: "Sandeep Danda",
   locale: "en-US",
 } as const;

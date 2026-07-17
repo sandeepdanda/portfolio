@@ -141,9 +141,15 @@ import { SOCIAL } from "../../config";
     display: grid;
     gap: 0.75rem;
   }
-  .cards li { display: flex; }
+  .cards li { display: flex; min-width: 0; }
   .about-card {
     width: 100%;
+    /* Never exceed the content column. min-width:0 breaks the flex/grid
+       min-content floor so an inner scroll area (the journey route) can
+       overflow internally instead of stretching the card + whole page. */
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

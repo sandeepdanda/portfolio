@@ -8,27 +8,28 @@ const MAPS = {
   jalubavula: "https://www.google.com/maps/place/Jaalubhaavula+Govt+School/@17.4589648,79.7460681,202a,75y,194.2h,72.19t/data=!3m7!1e1!3m5!1s8o7G23t8W5LCe3pwExLAWQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D17.810000000000002%26panoid%3D8o7G23t8W5LCe3pwExLAWQ%26yaw%3D194.2!7i13312!8i6656!4m7!3m6!1s0x3a349569378b6991:0xe26fc09820448479!8m2!3d17.4585652!4d79.7460579!10e5!16s%2Fg%2F11g10fp2k7",
   thorrur: "https://maps.app.goo.gl/mo6PqzP2qZB6Q9eo7",
   hyderabad: "https://maps.app.goo.gl/3UdaK9UdMue41DXs5",
+  noida: "https://maps.app.goo.gl/jNUiQGWNfMLzZFNR8",
+  deloitte: "https://maps.app.goo.gl/wt6J6Vvq1rMuyR769",
   durgapur: "https://maps.app.goo.gl/NrE6CmPZKPfPMm587",
   buffalo: "https://maps.app.goo.gl/gUxhmbXvzon4beUc8",
   seattle: "https://maps.app.goo.gl/KNhwyKHnASrvc45h6",
 } as const;
 
 const stops = [
-  { pin: "🏡", place: "Jalubavula", what: "where it all starts", year: "TELANGANA", href: MAPS.jalubavula },
-  { pin: "🎒", place: "Thorrur", what: "boarding school, age 10", year: "— 2014", href: MAPS.thorrur },
-  { pin: "📚", place: "Hyderabad", what: "junior college", year: "2014 – 2016", href: MAPS.hyderabad },
-  { pin: "🎓", place: "Durgapur", what: "BTech, NIT", year: "2016 – 2020", href: MAPS.durgapur },
-  { pin: "💼", place: "Noida", what: "Nucleus Software", year: "2020 – 2021", href: null },
-  { pin: "💼", place: "Hyderabad", what: "Deloitte", year: "2021 – 2022", href: MAPS.hyderabad },
-  { crossing: true, pin: "✈️", year: "the big one" },
-  { pin: "🎓", place: "Buffalo", what: "MS, Computer Science", year: "2023 – 2024", href: MAPS.buffalo },
-  { pin: "🚀", place: "Seattle", what: "Amazon", year: "2025 – now", href: MAPS.seattle },
+  { pin: "🏡", place: "Jalubavula", year: "start", href: MAPS.jalubavula },
+  { pin: "🎒", place: "Thorrur", year: "'14", href: MAPS.thorrur },
+  { pin: "📚", place: "Hyderabad", year: "'14–'16", href: MAPS.hyderabad },
+  { pin: "🎓", place: "Durgapur", year: "'16–'20", href: MAPS.durgapur },
+  { pin: "💼", place: "Noida", year: "'20–'21", href: MAPS.noida },
+  { pin: "💼", place: "Hyderabad", year: "'21–'22", href: MAPS.deloitte },
+  { crossing: true, pin: "✈️", year: "" },
+  { pin: "🎓", place: "Buffalo", year: "'23–'24", href: MAPS.buffalo },
+  { pin: "🚀", place: "Seattle", year: "now", href: MAPS.seattle },
 ];
 ---
 
 <div class="journey">
   <p class="journey-title">The long way <em>here</em></p>
-  <p class="journey-lede">A village in Telangana to a desk in Seattle, with a lot of stops (and homesick phone calls) in between.</p>
 
   <ol class="stops">
     {stops.map((s) =>
@@ -43,14 +44,12 @@ const stops = [
             <a class="stop-inner" href={s.href} target="_blank" rel="noopener noreferrer">
               <span class="pin">{s.pin}</span>
               <span class="place">{s.place}</span>
-              <span class="what">{s.what}</span>
               <span class="year">{s.year}</span>
             </a>
           ) : (
             <div class="stop-inner">
               <span class="pin">{s.pin}</span>
               <span class="place">{s.place}</span>
-              <span class="what">{s.what}</span>
               <span class="year">{s.year}</span>
             </div>
           )}
@@ -58,21 +57,10 @@ const stops = [
       )
     )}
   </ol>
-
-  <p class="hint">↔ scroll the route</p>
-
-  <div class="legend">
-    <span>🏡 home</span>
-    <span>🎒 school</span>
-    <span>🎓 graduation</span>
-    <span>💼 work</span>
-    <span>🚀 now</span>
-    <span>✈️ crossed an ocean</span>
-  </div>
 </div>
 
 <style>
-  .journey { position: relative; }
+  .journey { position: relative; min-width: 0; max-width: 100%; }
   .journey-title {
     font-family: var(--font-serif);
     font-size: clamp(1.5rem, 2.4vw, 1.875rem);
@@ -82,13 +70,6 @@ const stops = [
     color: var(--color-text);
   }
   .journey-title em { font-style: italic; color: var(--color-accent); }
-  .journey-lede {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
-    max-width: 40rem;
-    margin: 0 0 2rem 0;
-  }
 
   /* Desktop: horizontal route that scrolls sideways. */
   .stops {
@@ -98,6 +79,7 @@ const stops = [
     display: flex;
     gap: 0;
     align-items: stretch;
+    max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x proximity;
@@ -106,7 +88,7 @@ const stops = [
   .stop {
     scroll-snap-align: center;
     flex: 0 0 auto;
-    width: 150px;
+    width: 82px;
     position: relative;
   }
   .stop-inner {
@@ -122,7 +104,7 @@ const stops = [
   .stop::before {
     content: "";
     position: absolute;
-    top: 27px;
+    top: 20px;
     left: -50%;
     width: 100%;
     height: 2px;
@@ -135,22 +117,22 @@ const stops = [
   .stop::after {
     content: "›";
     position: absolute;
-    top: 16px;
-    left: -6px;
+    top: 10px;
+    left: -5px;
     color: var(--color-accent);
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1;
     opacity: 0.7;
   }
   .stop:first-child::after { display: none; }
 
   .pin {
-    width: 56px;
-    height: 56px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: grid;
     place-items: center;
-    font-size: 26px;
+    font-size: 20px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     position: relative;
@@ -164,26 +146,26 @@ const stops = [
   }
   .place {
     font-family: var(--font-serif);
-    font-size: 17px;
+    font-size: 13px;
     font-weight: 500;
-    margin: 14px 0 2px;
+    margin: 10px 0 1px;
+    line-height: 1.2;
     transition: color 0.15s ease;
   }
   .stop-inner:hover .place,
   .stop-inner:focus-visible .place { color: var(--color-accent); }
-  .what { font-size: 13px; color: var(--color-text); line-height: 1.35; }
   .year {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
     color: var(--color-text-muted);
-    margin-top: 5px;
+    margin-top: 3px;
     letter-spacing: 0.02em;
   }
 
   /* ocean crossing gets a wider special connector + plane */
   .crossing {
     flex: 0 0 auto;
-    width: 130px;
+    width: 96px;
     display: grid;
     place-items: center;
     position: relative;
@@ -191,7 +173,7 @@ const stops = [
   .crossing::before {
     content: "";
     position: absolute;
-    top: 27px;
+    top: 20px;
     left: 0;
     width: 100%;
     height: 2px;
@@ -200,30 +182,12 @@ const stops = [
     opacity: 0.55;
   }
   .plane {
-    font-size: 24px;
+    font-size: 20px;
     position: relative;
     z-index: 1;
     background: var(--color-bg);
     padding: 0 6px;
     transform: translateY(1px);
-  }
-  .crossing .year { position: absolute; top: 46px; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 22px;
-    margin-top: 2.5rem;
-    font-size: 13px;
-    color: var(--color-text-muted);
-  }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
-
-  .hint {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--color-text-muted);
-    margin-top: 14px;
   }
 
   /* Mobile: vertical timeline. */
@@ -243,7 +207,6 @@ const stops = [
     .crossing::before { top: -20px; left: 27px; width: 2px; height: 80px; background-size: 2px 8px; }
     .crossing .year { position: static; margin-left: 60px; }
     .plane { background: none; }
-    .hint { display: none; }
   }
 
   @media (prefers-reduced-motion: no-preference) {

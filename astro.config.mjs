@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sandeepdanda.dev',
+  site: 'https://sandeepdanda.pages.dev',
   integrations: [mdx(), sitemap()],
   // Old multi-page routes now live as sections on the single-page home.
   // Redirect indexed links / bookmarks to the matching anchor.
