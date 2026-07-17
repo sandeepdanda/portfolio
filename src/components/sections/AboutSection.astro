@@ -1,5 +1,6 @@
 ---
 import SectionHeader from "./SectionHeader.astro";
+import JourneyMap from "../JourneyMap.astro";
 import { SOCIAL } from "../../config";
 ---
 
@@ -16,16 +17,17 @@ import { SOCIAL } from "../../config";
       <article class="card about-card">
         <div class="bio">
           <p>
-            I write backends - the quiet, reliable kind. What I like is the
-            shape of the thing: idempotent writes, replay queues, alarms that
-            fire for the right reason. Less glamorous than it sounds, more
-            interesting than it looks.
+            I grew up in Jalubavula, a village in Telangana you've never heard
+            of and probably can't pronounce - and that's kind of my favorite
+            thing about it. Somewhere between there and Seattle I started
+            building things at Amazon, which still feels like a typo on my
+            resume.
           </p>
           <p>
-            I started in Thorrur, a small town in Telangana, wrote Java for a
-            bank in Delhi, did Salesforce work at Deloitte, then a masters at
-            Buffalo before Seattle. Lately I keep getting pulled into AI tooling -
-            agents, MCPs, and making a team's tools do more than they were built for.
+            I care about doing the quiet work well and then actually going home.
+            Weekends are for cooking, badminton, and PNW trails. I fall down
+            AI-tooling rabbit holes for fun. Ask me about a hike or a recipe
+            before you ask me about code.
           </p>
         </div>
 
@@ -47,6 +49,12 @@ import { SOCIAL } from "../../config";
             <dd>agents · MCPs · developer tooling</dd>
           </div>
         </dl>
+      </article>
+    </li>
+
+    <li>
+      <article class="card about-card">
+        <JourneyMap />
       </article>
     </li>
 
@@ -117,7 +125,7 @@ import { SOCIAL } from "../../config";
 <style>
   .section {
     position: relative;
-    margin-bottom: 0;
+    margin-bottom: 3.5rem;
     padding-top: 2.5rem;
     border-top: 1px solid var(--color-border);
     scroll-margin-top: 5rem;

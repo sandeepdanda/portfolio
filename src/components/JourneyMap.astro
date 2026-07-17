@@ -1,0 +1,266 @@
+---
+// Journey map - a horizontal scrolling route of where I've been, staggered
+// with connectors and a plane for the ocean crossing. Pins link to the real
+// map spots where a URL exists. Vertical timeline on mobile. On-brand tokens.
+// Embedded inside the About section (no section wrapper of its own).
+
+const MAPS = {
+  jalubavula: "https://www.google.com/maps/place/Jaalubhaavula+Govt+School/@17.4589648,79.7460681,202a,75y,194.2h,72.19t/data=!3m7!1e1!3m5!1s8o7G23t8W5LCe3pwExLAWQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D17.810000000000002%26panoid%3D8o7G23t8W5LCe3pwExLAWQ%26yaw%3D194.2!7i13312!8i6656!4m7!3m6!1s0x3a349569378b6991:0xe26fc09820448479!8m2!3d17.4585652!4d79.7460579!10e5!16s%2Fg%2F11g10fp2k7",
+  thorrur: "https://maps.app.goo.gl/mo6PqzP2qZB6Q9eo7",
+  hyderabad: "https://maps.app.goo.gl/3UdaK9UdMue41DXs5",
+  durgapur: "https://maps.app.goo.gl/NrE6CmPZKPfPMm587",
+  buffalo: "https://maps.app.goo.gl/gUxhmbXvzon4beUc8",
+  seattle: "https://maps.app.goo.gl/KNhwyKHnASrvc45h6",
+} as const;
+
+const stops = [
+  { pin: "🏡", place: "Jalubavula", what: "where it all starts", year: "TELANGANA", href: MAPS.jalubavula },
+  { pin: "🎒", place: "Thorrur", what: "boarding school, age 10", year: "— 2014", href: MAPS.thorrur },
+  { pin: "📚", place: "Hyderabad", what: "junior college", year: "2014 – 2016", href: MAPS.hyderabad },
+  { pin: "🎓", place: "Durgapur", what: "BTech, NIT", year: "2016 – 2020", href: MAPS.durgapur },
+  { pin: "💼", place: "Noida", what: "Nucleus Software", year: "2020 – 2021", href: null },
+  { pin: "💼", place: "Hyderabad", what: "Deloitte", year: "2021 – 2022", href: MAPS.hyderabad },
+  { crossing: true, pin: "✈️", year: "the big one" },
+  { pin: "🎓", place: "Buffalo", what: "MS, Computer Science", year: "2023 – 2024", href: MAPS.buffalo },
+  { pin: "🚀", place: "Seattle", what: "Amazon", year: "2025 – now", href: MAPS.seattle },
+];
+---
+
+<div class="journey">
+  <p class="journey-title">The long way <em>here</em></p>
+  <p class="journey-lede">A village in Telangana to a desk in Seattle, with a lot of stops (and homesick phone calls) in between.</p>
+
+  <ol class="stops">
+    {stops.map((s) =>
+      s.crossing ? (
+        <li class="crossing" aria-label="moved to the US">
+          <span class="plane">{s.pin}</span>
+          <span class="year">{s.year}</span>
+        </li>
+      ) : (
+        <li class="stop">
+          {s.href ? (
+            <a class="stop-inner" href={s.href} target="_blank" rel="noopener noreferrer">
+              <span class="pin">{s.pin}</span>
+              <span class="place">{s.place}</span>
+              <span class="what">{s.what}</span>
+              <span class="year">{s.year}</span>
+            </a>
+          ) : (
+            <div class="stop-inner">
+              <span class="pin">{s.pin}</span>
+              <span class="place">{s.place}</span>
+              <span class="what">{s.what}</span>
+              <span class="year">{s.year}</span>
+            </div>
+          )}
+        </li>
+      )
+    )}
+  </ol>
+
+  <p class="hint">↔ scroll the route</p>
+
+  <div class="legend">
+    <span>🏡 home</span>
+    <span>🎒 school</span>
+    <span>🎓 graduation</span>
+    <span>💼 work</span>
+    <span>🚀 now</span>
+    <span>✈️ crossed an ocean</span>
+  </div>
+</div>
+
+<style>
+  .journey { position: relative; }
+  .journey-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-text);
+  }
+  .journey-title em { font-style: italic; color: var(--color-accent); }
+  .journey-lede {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 40rem;
+    margin: 0 0 2rem 0;
+  }
+
+  /* Desktop: horizontal route that scrolls sideways. */
+  .stops {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 1.125rem 0;
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .stop {
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+    width: 150px;
+    position: relative;
+  }
+  .stop-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  /* dotted connector between stops */
+  .stop::before {
+    content: "";
+    position: absolute;
+    top: 27px;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background-image: linear-gradient(to right, var(--color-accent) 60%, transparent 0);
+    background-size: 10px 2px;
+    background-repeat: repeat-x;
+    opacity: 0.55;
+  }
+  .stop:first-child::before { display: none; }
+  .stop::after {
+    content: "›";
+    position: absolute;
+    top: 16px;
+    left: -6px;
+    color: var(--color-accent);
+    font-size: 20px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+  .stop:first-child::after { display: none; }
+
+  .pin {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .stop-inner:hover .pin,
+  .stop-inner:focus-visible .pin {
+    transform: translateY(-4px) scale(1.06);
+    border-color: var(--color-accent);
+  }
+  .place {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 500;
+    margin: 14px 0 2px;
+    transition: color 0.15s ease;
+  }
+  .stop-inner:hover .place,
+  .stop-inner:focus-visible .place { color: var(--color-accent); }
+  .what { font-size: 13px; color: var(--color-text); line-height: 1.35; }
+  .year {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 5px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ocean crossing gets a wider special connector + plane */
+  .crossing {
+    flex: 0 0 auto;
+    width: 130px;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .crossing::before {
+    content: "";
+    position: absolute;
+    top: 27px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-image: linear-gradient(to right, var(--color-accent) 50%, transparent 0);
+    background-size: 8px 2px;
+    opacity: 0.55;
+  }
+  .plane {
+    font-size: 24px;
+    position: relative;
+    z-index: 1;
+    background: var(--color-bg);
+    padding: 0 6px;
+    transform: translateY(1px);
+  }
+  .crossing .year { position: absolute; top: 46px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+    margin-top: 2.5rem;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 14px;
+  }
+
+  /* Mobile: vertical timeline. */
+  @media (max-width: 640px) {
+    .stops { flex-direction: column; overflow: visible; gap: 0; }
+    .stop { width: 100%; padding-bottom: 26px; }
+    .stop-inner { flex-direction: row; align-items: flex-start; text-align: left; gap: 16px; }
+    .stop::before {
+      top: -26px; left: 27px; width: 2px; height: 26px;
+      background-image: linear-gradient(to bottom, var(--color-accent) 60%, transparent 0);
+      background-size: 2px 10px;
+    }
+    .stop::after { content: "⌄"; top: -14px; left: 21px; }
+    .pin { flex: 0 0 56px; }
+    .place { margin: 4px 0 2px; }
+    .crossing { width: 100%; justify-content: flex-start; padding-left: 4px; height: 60px; }
+    .crossing::before { top: -20px; left: 27px; width: 2px; height: 80px; background-size: 2px 8px; }
+    .crossing .year { position: static; margin-left: 60px; }
+    .plane { background: none; }
+    .hint { display: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stop, .crossing {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: journey-rise 0.5s ease forwards;
+    }
+    .stop:nth-child(1) { animation-delay: 0.05s; }
+    .stop:nth-child(2) { animation-delay: 0.1s; }
+    .stop:nth-child(3) { animation-delay: 0.15s; }
+    .stop:nth-child(4) { animation-delay: 0.2s; }
+    .stop:nth-child(5) { animation-delay: 0.25s; }
+    .stop:nth-child(6) { animation-delay: 0.3s; }
+    .crossing { animation-delay: 0.35s; }
+    .stop:nth-child(8) { animation-delay: 0.4s; }
+    .stop:nth-child(9) { animation-delay: 0.45s; }
+    @keyframes journey-rise { to { opacity: 1; transform: none; } }
+  }
+</style>
