@@ -24,6 +24,7 @@ const projects = (await getCollection("projects")).sort(
           label="Project"
           headline={entry.data.name}
           tags={entry.data.tags}
+          density="compact"
         >
           <p slot="body" class="summary">{entry.data.summary}</p>
         </Card>
@@ -46,14 +47,18 @@ const projects = (await getCollection("projects")).sort(
     margin: 0;
     max-width: 52rem;
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
+  }
+  /* One column on narrow screens. */
+  @media (max-width: 600px) {
+    .cards { grid-template-columns: 1fr; }
   }
   .cards li { display: flex; }
   .summary {
-    font-size: 1rem;
-    line-height: 1.55;
+    font-size: 0.9375rem;
+    line-height: 1.5;
     color: var(--color-text-muted);
-    max-width: 36rem;
     margin: 0;
   }
 </style>

@@ -26,29 +26,9 @@ import { SOCIAL } from "../../config";
           <p>
             I care about doing the quiet work well and then actually going home.
             Weekends are for cooking, badminton, and PNW trails. I fall down
-            AI-tooling rabbit holes for fun. Ask me about a hike or a recipe
-            before you ask me about code.
+            AI-tooling rabbit holes for fun.
           </p>
         </div>
-
-        <dl class="facts">
-          <div>
-            <dt>Now</dt>
-            <dd>Seattle · backend SDE at Amazon</dd>
-          </div>
-          <div>
-            <dt>Stack</dt>
-            <dd>Java · TypeScript · Python · AWS</dd>
-          </div>
-          <div>
-            <dt>Off the clock</dt>
-            <dd>cooking · badminton · PNW trails</dd>
-          </div>
-          <div>
-            <dt>Curious about</dt>
-            <dd>agents · MCPs · developer tooling</dd>
-          </div>
-        </dl>
       </article>
     </li>
 
@@ -170,40 +150,6 @@ import { SOCIAL } from "../../config";
     line-height: 1.7;
     color: var(--color-text);
     margin: 0;
-  }
-
-  /* Quick facts - 4 across, spans the card, wraps down small. */
-  .facts {
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.25rem 1.5rem;
-  }
-  @media (max-width: 720px) {
-    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 460px) {
-    .facts { grid-template-columns: 1fr; }
-  }
-  .facts div {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    border-left: 1px solid var(--color-border);
-    padding-left: 0.75rem;
-  }
-  .facts dt {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--color-accent);
-  }
-  .facts dd {
-    margin: 0;
-    font-size: 0.9375rem;
-    line-height: 1.4;
-    color: var(--color-text);
   }
 
   .links-card {

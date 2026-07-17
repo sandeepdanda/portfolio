@@ -3,7 +3,7 @@ export const SITE = {
   name: "Sandeep Danda",
   title: "Sandeep Danda — Software Engineer",
   description:
-    "Sandeep Danda - backend engineer in Seattle. I build the boring, reliable stuff you only notice when it breaks. Cooking, badminton, and PNW trails off the clock.",
+    "Sandeep Danda - software engineer in Seattle. I build software you only notice when it breaks. Cooking, badminton, and PNW trails off the clock.",
   url: "https://sandeepdanda.pages.dev",
   author: "Sandeep Danda",
   locale: "en-US",
