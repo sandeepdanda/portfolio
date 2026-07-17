@@ -1,142 +1,18 @@
 ---
-// TODO(sandeep): Hand-edit this copy. Cut anything that still reads as
-// AI-generated or non-relatable. Make it yours - specific, odd, true.
 import Base from "../layouts/Base.astro";
 import PersonSchema from "../components/PersonSchema.astro";
+import MeSection from "../components/sections/MeSection.astro";
+import EducationSection from "../components/sections/EducationSection.astro";
+import ExperienceSection from "../components/sections/ExperienceSection.astro";
+import ProjectsSection from "../components/sections/ProjectsSection.astro";
+import AboutSection from "../components/sections/AboutSection.astro";
 ---
 
-<Base>
+<Base singlePage={true}>
   <PersonSchema />
-
-  <section class="hero" id="me">
-    <h1>Sandeep <em>Danda</em></h1>
-    <p class="location">
-      <a href="https://www.google.com/maps/place/Seattle,+WA" target="_blank" rel="noopener noreferrer">
-        <svg class="pin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-        Seattle
-      </a>
-      · Software Development Engineer
-    </p>
-    <p class="tagline">
-      Three years of writing quiet code in loud rooms. I build backend
-      systems at Amazon - the service that does not page at 3am, the
-      migration that ships on a Thursday and nobody notices. Curious
-      about AI tooling, hiking trails, and the thirty seconds before a
-      deploy.
-    </p>
-  </section>
-
-  <section class="section">
-    <p class="section-number">01</p>
-    <h2 class="section-title">Projects</h2>
-    <p class="bio">
-      A few things I keep coming back to. A movie recommender, a
-      vocabulary RPG, a full-stack membership system, and older things
-      from grad school I am too attached to delete.
-    </p>
-    <a href="/projects" class="see-all">See them all <span class="arrow">→</span></a>
-  </section>
+  <MeSection />
+  <EducationSection />
+  <ExperienceSection />
+  <ProjectsSection />
+  <AboutSection />
 </Base>
-
-<style>
-  .hero {
-    margin: 0 0 6rem 0;
-  }
-  .location {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--color-text-muted);
-    margin: 1.25rem 0 1.75rem 0;
-  }
-  .location a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    color: var(--color-text-muted);
-    text-decoration: none;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 1px;
-    transition: color 150ms ease-out, border-color 150ms ease-out;
-  }
-  .location a:hover {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
-  }
-  .pin {
-    flex-shrink: 0;
-    max-width: 12px;
-    max-height: 12px;
-  }
-  h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(3rem, 9vw, 6.5rem);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 0.95;
-    margin: 0;
-  }
-  h1 em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--color-accent);
-  }
-  .tagline {
-    font-family: var(--font-serif);
-    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
-    line-height: 1.45;
-    color: var(--color-text);
-    max-width: 36rem;
-    margin: 0;
-    font-weight: 400;
-  }
-
-  .section {
-    position: relative;
-    margin-bottom: 5rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
-  }
-  .section-number {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    letter-spacing: 0.1em;
-    margin: 0 0 0.25rem 0;
-  }
-  .section-title {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-text-muted);
-    margin: 0 0 1.5rem 0;
-  }
-  .bio {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text);
-    max-width: 38rem;
-    margin: 0 0 1.25rem 0;
-  }
-  .see-all {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-  }
-  .see-all:hover {
-    color: var(--color-accent);
-  }
-  .arrow {
-    display: inline-block;
-    transition: transform 200ms ease-out;
-  }
-  .see-all:hover .arrow {
-    transform: translateX(4px);
-  }
-</style>

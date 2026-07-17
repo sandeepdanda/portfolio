@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import Card from "../Card.astro";
+import SectionHeader from "./SectionHeader.astro";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section class="section" id="projects" aria-label="Projects">
+  <SectionHeader
+    number="03"
+    title="Things I"
+    em="build"
+    subtitle="I start a project to learn one new thing. I finish it after learning five others I did not plan for."
+  />
+
+  <ul class="cards">
+    {projects.map((entry) => (
+      <li>
+        <Card
+          href={`/projects/${entry.id}`}
+          label="Project"
+          headline={entry.data.name}
+          tags={entry.data.tags}
+        >
+          <p slot="body" class="summary">{entry.data.summary}</p>
+        </Card>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    margin-bottom: 6rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+    scroll-margin-top: 6rem;
+  }
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 52rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .cards li { display: flex; }
+  .summary {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    margin: 0;
+  }
+</style>

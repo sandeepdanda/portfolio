@@ -1,37 +1,19 @@
 ---
-// TODO(sandeep): Hand-edit this copy. Cut anything that still reads as
-// AI-generated or non-relatable. Make it yours - specific, odd, true.
-import Base from "../layouts/Base.astro";
-import Card from "../components/Card.astro";
-import { Picture } from "astro:assets";
-import { SOCIAL } from "../config";
-import profile from "../assets/profile.png";
+import Card from "../Card.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { SOCIAL } from "../../config";
 ---
 
-<Base
-  title="About"
-  description="A software engineer in Seattle. A little about me, beyond the resume."
->
-  <section class="hero">
-    <h1>Nice to <em>meet</em> you</h1>
-    <p class="subtitle">A short version of a longer story - where I am, where I came from, and what I am still curious about.</p>
-  </section>
-
-  <h2 class="sr-only">About</h2>
+<section class="section" id="about" aria-label="About">
+  <SectionHeader
+    number="04"
+    title="Nice to"
+    em="meet you"
+    subtitle="The parts a resume leaves out."
+  />
 
   <div class="about-grid">
     <aside class="dossier">
-      <figure class="portrait">
-        <Picture
-          src={profile}
-          alt="Sandeep Danda"
-          widths={[320, 480, 640, 960]}
-          sizes="(max-width: 720px) 80vw, 22rem"
-          formats={["avif", "webp"]}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </figure>
       <dl class="facts">
         <div><dt>Based in</dt><dd>Seattle, WA</dd></div>
         <div><dt>Doing</dt><dd>SDE — backends &amp; AI tooling</dd></div>
@@ -75,9 +57,9 @@ import profile from "../assets/profile.png";
     </div>
   </div>
 
-  <section class="links-section">
+  <div class="links-section">
     <p class="kicker">Say hi</p>
-    <h2>Get in touch</h2>
+    <h3>Get in touch</h3>
     <p class="intro">
       A few ways to find me.
     </p>
@@ -127,83 +109,49 @@ import profile from "../assets/profile.png";
         </Card>
       </li>
     </ul>
-  </section>
+  </div>
+</section>
 
-  <script>
-    // Portrait fade + lift on first scroll into view
-    const portrait = document.querySelector<HTMLElement>(".portrait");
-    if (portrait) {
-      if (!("IntersectionObserver" in window)) {
-        portrait.classList.add("is-visible");
-      } else {
-        const io = new IntersectionObserver((entries, observer) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              (entry.target as HTMLElement).classList.add("is-visible");
-              observer.unobserve(entry.target);
-            }
-          }
-        }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
-        io.observe(portrait);
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".copy");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const value = btn.dataset.copy ?? "";
+      const label = btn.querySelector<HTMLElement>(".copy-label");
+      if (!label) return;
+      const original = label.textContent;
+      try {
+        await navigator.clipboard.writeText(value);
+        label.textContent = "Copied";
+        btn.classList.add("copied");
+      } catch {
+        label.textContent = "Press ⌘C";
       }
-    }
-
-    const buttons = document.querySelectorAll<HTMLButtonElement>(".copy");
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const value = btn.dataset.copy ?? "";
-        const label = btn.querySelector<HTMLElement>(".copy-label");
-        if (!label) return;
-        const original = label.textContent;
-        try {
-          await navigator.clipboard.writeText(value);
-          label.textContent = "Copied";
-          btn.classList.add("copied");
-        } catch {
-          label.textContent = "Press ⌘C";
-        }
-        setTimeout(() => {
-          label.textContent = original;
-          btn.classList.remove("copied");
-        }, 1600);
-      });
+      setTimeout(() => {
+        label.textContent = original;
+        btn.classList.remove("copied");
+      }, 1600);
     });
-  </script>
-</Base>
+  });
+</script>
 
 <style>
-  .hero {
-    margin: 0 0 4rem 0;
-  }
-  h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 0.95;
-    margin: 0;
-  }
-  h1 em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--color-accent);
-  }
-  .subtitle {
-    font-size: 1.0625rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
-    max-width: 34rem;
-    margin: 1.25rem 0 0 0;
+  .section {
+    position: relative;
+    margin-bottom: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+    scroll-margin-top: 6rem;
   }
 
   .about-grid {
     display: grid;
-    grid-template-columns: minmax(15rem, 19rem) 1fr;
-    gap: clamp(2rem, 6vw, 5rem);
+    grid-template-columns: minmax(11rem, 14rem) 1fr;
+    gap: clamp(2rem, 6vw, 4rem);
     align-items: start;
-    max-width: 58rem;
+    max-width: 56rem;
   }
   @media (max-width: 720px) {
     .about-grid {
@@ -212,11 +160,9 @@ import profile from "../assets/profile.png";
     }
   }
 
-  /* Left rail: portrait + a mono "dossier" of facts. Sticky on desktop so the
-     face stays with the reader through the bio. */
   .dossier {
     position: sticky;
-    top: 2.5rem;
+    top: 6rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -225,38 +171,6 @@ import profile from "../assets/profile.png";
     .dossier { position: static; }
   }
 
-  .portrait {
-    margin: 0;
-    transition: opacity 600ms ease-out, transform 600ms ease-out;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .portrait {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    .portrait.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @media (max-width: 720px) {
-    .portrait { max-width: 18rem; }
-  }
-  .portrait img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 4px;
-    filter: grayscale(1) contrast(1.04);
-    border: 1px solid var(--color-border);
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: center top;
-    transition: filter 500ms ease-out;
-  }
-  .portrait:hover img { filter: grayscale(0) contrast(1.02); }
-
-  /* Mono fact list — masthead, not buttons */
   .facts {
     margin: 0;
     display: flex;
@@ -296,7 +210,6 @@ import profile from "../assets/profile.png";
     color: var(--color-text);
     margin: 0;
   }
-  /* Opening line carries a touch more weight */
   .bio p.lede {
     font-size: clamp(1.125rem, 1.2vw + 1rem, 1.3rem);
     line-height: 1.6;
@@ -309,8 +222,6 @@ import profile from "../assets/profile.png";
     color: var(--color-accent);
     margin-right: 0.5rem;
   }
-  /* Pull-quote: a DISTINCT distilled line (not duplicated body text), hanging
-     into the left margin as a typographic anchor. */
   .bio blockquote.pull {
     font-family: var(--font-serif);
     font-style: italic;
@@ -328,7 +239,7 @@ import profile from "../assets/profile.png";
 
   .links-section {
     max-width: 52rem;
-    margin-top: 5rem;
+    margin-top: 4rem;
     padding-top: 3rem;
     border-top: 1px solid var(--color-border);
   }
@@ -340,7 +251,7 @@ import profile from "../assets/profile.png";
     color: var(--color-text-muted);
     margin: 0 0 0.75rem 0;
   }
-  .links-section h2 {
+  .links-section h3 {
     font-family: var(--font-serif);
     font-size: clamp(1.875rem, 3.4vw, 2.5rem);
     font-weight: 500;

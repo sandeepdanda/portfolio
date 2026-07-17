@@ -1,0 +1,472 @@
+---
+// Command palette. Native <dialog>, no dependency. Cmd/Ctrl+K or "/" opens.
+// Items are built by JS from a config array on first open, so the page ships
+// only a tiny empty shell. Sections come from the current page; project deep
+// links are passed in from the build.
+import { getCollection } from "astro:content";
+import { NAV, SOCIAL } from "../config";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+// Serialize the command config for the client. Sections map to in-page anchors.
+const commandData = {
+  sections: NAV.map((n) => ({
+    label: n.label,
+    // NAV hrefs are "/", "/education" ... -> anchors "#me", "#education" ...
+    anchor: n.href === "/" ? "#me" : `#${n.href.replace(/^\//, "")}`,
+  })),
+  projects: projects.map((p) => ({
+    label: p.data.name,
+    href: `/projects/${p.id}`,
+  })),
+  social: {
+    github: SOCIAL.github,
+    linkedin: SOCIAL.linkedin,
+    // strip the mailto: for copy, keep raw for display
+    email: SOCIAL.email.replace(/^mailto:/, ""),
+  },
+};
+---
+
+<button id="cmdk-hint" class="cmdk-hint" type="button" aria-haspopup="dialog" aria-label="Open command palette">
+  <kbd>⌘</kbd><kbd>K</kbd>
+</button>
+
+<dialog id="cmdk" class="cmdk" aria-label="Command palette">
+  <div class="cmdk-panel">
+    <div class="cmdk-search">
+      <svg class="cmdk-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input
+        id="cmdk-input"
+        class="cmdk-input"
+        type="text"
+        placeholder="Jump to a section, project, or action…"
+        role="combobox"
+        aria-expanded="true"
+        aria-controls="cmdk-list"
+        aria-autocomplete="list"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd class="cmdk-esc">Esc</kbd>
+    </div>
+    <ul id="cmdk-list" class="cmdk-list" role="listbox" aria-label="Commands"></ul>
+    <p id="cmdk-empty" class="cmdk-empty" hidden>No matches.</p>
+  </div>
+  <span id="cmdk-live" class="sr-only" aria-live="polite"></span>
+</dialog>
+
+<script is:inline set:html={`window.__CMDK__ = ${JSON.stringify(commandData)};`}></script>
+
+<script>
+  interface CmdItem {
+    id: string;
+    label: string;
+    group: string;
+    hint?: string;
+    run: () => void;
+  }
+
+  const data = (window as any).__CMDK__ as {
+    sections: { label: string; anchor: string }[];
+    projects: { label: string; href: string }[];
+    social: { github: string; linkedin: string; email: string };
+  };
+
+  const dialog = document.getElementById("cmdk") as HTMLDialogElement | null;
+  const hint = document.getElementById("cmdk-hint");
+  const input = document.getElementById("cmdk-input") as HTMLInputElement | null;
+  const list = document.getElementById("cmdk-list");
+  const empty = document.getElementById("cmdk-empty");
+  const live = document.getElementById("cmdk-live");
+
+  if (dialog && input && list && empty) {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function scrollToAnchor(anchor: string) {
+      const el = document.querySelector(anchor);
+      if (!el) {
+        // Not on the single page (e.g. a project detail route) -> go home + anchor
+        window.location.href = `/${anchor}`;
+        return;
+      }
+      el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+      (el as HTMLElement).setAttribute("tabindex", "-1");
+      (el as HTMLElement).focus({ preventScroll: true });
+    }
+
+    function toggleTheme() {
+      const root = document.documentElement;
+      const explicit = root.dataset.theme;
+      const current =
+        explicit === "light" || explicit === "dark"
+          ? explicit
+          : window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark";
+      const next = current === "light" ? "dark" : "light";
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        /* storage disabled */
+      }
+    }
+
+    async function copyEmail() {
+      try {
+        await navigator.clipboard.writeText(data.social.email);
+        if (live) live.textContent = "Email copied to clipboard";
+      } catch {
+        if (live) live.textContent = "Copy failed - email is " + data.social.email;
+      }
+    }
+
+    // Build the command list once.
+    const items: CmdItem[] = [
+      ...data.sections.map((s, i) => ({
+        id: `sec-${i}`,
+        label: s.label,
+        group: "Go to",
+        hint: s.anchor,
+        run: () => scrollToAnchor(s.anchor),
+      })),
+      ...data.projects.map((p, i) => ({
+        id: `proj-${i}`,
+        label: p.label,
+        group: "Projects",
+        hint: "open",
+        run: () => {
+          window.location.href = p.href;
+        },
+      })),
+      {
+        id: "act-theme",
+        label: "Toggle theme",
+        group: "Actions",
+        hint: "light / dark",
+        run: toggleTheme,
+      },
+      {
+        id: "act-copy",
+        label: "Copy email",
+        group: "Actions",
+        hint: data.social.email,
+        run: copyEmail,
+      },
+      {
+        id: "act-gh",
+        label: "GitHub",
+        group: "Actions",
+        hint: "open",
+        run: () => window.open(data.social.github, "_blank", "noopener"),
+      },
+      {
+        id: "act-li",
+        label: "LinkedIn",
+        group: "Actions",
+        hint: "open",
+        run: () => window.open(data.social.linkedin, "_blank", "noopener"),
+      },
+    ];
+
+    let filtered: CmdItem[] = items;
+    let active = 0;
+
+    function matches(item: CmdItem, q: string): boolean {
+      if (!q) return true;
+      const hay = (item.label + " " + item.group).toLowerCase();
+      // simple subsequence fuzzy match
+      let qi = 0;
+      const needle = q.toLowerCase();
+      for (let i = 0; i < hay.length && qi < needle.length; i++) {
+        if (hay[i] === needle[qi]) qi++;
+      }
+      return qi === needle.length;
+    }
+
+    function render() {
+      const q = input!.value.trim();
+      filtered = items.filter((it) => matches(it, q));
+      if (active >= filtered.length) active = Math.max(0, filtered.length - 1);
+
+      list!.innerHTML = "";
+      if (filtered.length === 0) {
+        empty!.hidden = false;
+        input!.removeAttribute("aria-activedescendant");
+        return;
+      }
+      empty!.hidden = true;
+
+      let lastGroup = "";
+      filtered.forEach((it, idx) => {
+        if (it.group !== lastGroup) {
+          const gh = document.createElement("li");
+          gh.className = "cmdk-group";
+          gh.setAttribute("role", "presentation");
+          gh.textContent = it.group;
+          list!.appendChild(gh);
+          lastGroup = it.group;
+        }
+        const li = document.createElement("li");
+        li.className = "cmdk-item";
+        li.id = `cmdk-opt-${idx}`;
+        li.setAttribute("role", "option");
+        li.setAttribute("aria-selected", String(idx === active));
+        if (idx === active) li.classList.add("is-active");
+        li.innerHTML =
+          `<span class="cmdk-item-label"></span>` +
+          (it.hint ? `<span class="cmdk-item-hint"></span>` : "");
+        li.querySelector(".cmdk-item-label")!.textContent = it.label;
+        if (it.hint) li.querySelector(".cmdk-item-hint")!.textContent = it.hint;
+        li.addEventListener("click", () => {
+          activate(idx);
+        });
+        li.addEventListener("mousemove", () => {
+          if (active !== idx) {
+            active = idx;
+            paintActive();
+          }
+        });
+        list!.appendChild(li);
+      });
+      paintActive();
+    }
+
+    function paintActive() {
+      const opts = list!.querySelectorAll<HTMLElement>(".cmdk-item");
+      opts.forEach((el, i) => {
+        const isActive = i === active;
+        el.classList.toggle("is-active", isActive);
+        el.setAttribute("aria-selected", String(isActive));
+        if (isActive) {
+          input!.setAttribute("aria-activedescendant", el.id);
+          el.scrollIntoView({ block: "nearest" });
+        }
+      });
+    }
+
+    function move(delta: number) {
+      if (filtered.length === 0) return;
+      active = (active + delta + filtered.length) % filtered.length;
+      paintActive();
+    }
+
+    function activate(idx: number) {
+      const it = filtered[idx];
+      if (!it) return;
+      close();
+      // run after close so scroll/focus land on the real page
+      it.run();
+    }
+
+    function open() {
+      if (dialog!.open) return;
+      input!.value = "";
+      active = 0;
+      render();
+      dialog!.showModal();
+      // focus the input, not the dialog
+      requestAnimationFrame(() => input!.focus());
+    }
+
+    function close() {
+      if (dialog!.open) dialog!.close();
+    }
+
+    // Global open shortcuts
+    document.addEventListener("keydown", (e) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      const typing = tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable;
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        dialog!.open ? close() : open();
+      } else if (e.key === "/" && !typing && !dialog!.open) {
+        e.preventDefault();
+        open();
+      }
+    });
+
+    hint?.addEventListener("click", open);
+
+    // In-dialog keys
+    input.addEventListener("input", () => {
+      active = 0;
+      render();
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        move(1);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        move(-1);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        activate(active);
+      }
+      // Esc is handled natively by <dialog>
+    });
+
+    // Click on backdrop closes
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) close();
+    });
+  }
+</script>
+
+<style>
+  .cmdk-hint {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 4rem;
+    height: 2.25rem;
+    padding: 0 0.625rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    z-index: 10;
+    transition: background 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+  }
+  .cmdk-hint:hover {
+    background: var(--color-surface-raised);
+    border-color: var(--color-text-muted);
+    color: var(--color-text);
+  }
+  .cmdk-hint kbd {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  @media (max-width: 480px) {
+    .cmdk-hint { right: 4rem; }
+  }
+
+  .cmdk {
+    margin: 0 auto;
+    top: 12vh;
+    padding: 0;
+    width: min(34rem, 92vw);
+    max-height: 70vh;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: 0 24px 64px -24px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+  }
+  .cmdk::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cmdk[open] {
+      animation: cmdk-in 160ms ease-out;
+    }
+    @keyframes cmdk-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  .cmdk-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+  }
+
+  .cmdk-search {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .cmdk-search-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+  .cmdk-input {
+    flex: 1 1 auto;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    outline: none;
+    min-width: 0;
+  }
+  .cmdk-input::placeholder { color: var(--color-text-muted); }
+  .cmdk-esc {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    flex-shrink: 0;
+  }
+
+  .cmdk-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.375rem;
+    overflow-y: auto;
+  }
+  /* List items are created in JS (createElement), so Astro's scoped
+     data-attribute never lands on them. Scope these under the server-rendered
+     .cmdk-list via :global() so they style the JS children without leaking. */
+  .cmdk-list :global(.cmdk-group) {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-muted);
+    padding: 0.625rem 0.75rem 0.25rem;
+  }
+  .cmdk-list :global(.cmdk-item) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 7px;
+    cursor: pointer;
+    color: var(--color-text);
+  }
+  .cmdk-list :global(.cmdk-item.is-active) {
+    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  }
+  .cmdk-list :global(.cmdk-item-label) {
+    font-size: 0.9375rem;
+  }
+  .cmdk-list :global(.cmdk-item.is-active .cmdk-item-label) {
+    color: var(--color-accent);
+  }
+  .cmdk-list :global(.cmdk-item-hint) {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 45%;
+  }
+  .cmdk-empty {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+</style>

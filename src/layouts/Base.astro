@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { SITE, NAV } from "../config";
 import Footer from "../components/Footer.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import CommandPalette from "../components/CommandPalette.astro";
 import frauncesWoff2 from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url";
 import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 
@@ -10,9 +11,11 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  /** Single-page home enables the scroll-spy tab nav. Detail pages set false. */
+  singlePage?: boolean;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, singlePage = false } = Astro.props;
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const pageDescription = description ?? SITE.description;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
@@ -40,9 +43,11 @@ function deriveOgSlug(pathname: string): string {
 
 const ogUrl = new URL(ogImage ?? `/og/${deriveOgSlug(currentPath)}.png`, SITE.url).toString();
 
-function isCurrent(href: string): boolean {
-  if (href === "/") return currentPath === "/";
-  return currentPath === href || currentPath.startsWith(href + "/");
+// Anchor targets for the single-page nav. "/" -> "#me", "/education" -> "#education".
+// On the single page these smooth-scroll; on detail routes "/#anchor" navigates home.
+function navHref(href: string): string {
+  const anchor = href === "/" ? "me" : href.replace(/^\//, "");
+  return singlePage ? `#${anchor}` : `/#${anchor}`;
 }
 ---
 
@@ -91,9 +96,9 @@ function isCurrent(href: string): boolean {
           {NAV.map((item) => (
             <li>
               <a
-                href={item.href}
+                href={navHref(item.href)}
                 class="nav-link"
-                aria-current={isCurrent(item.href) ? "page" : undefined}
+                data-nav-anchor={singlePage ? navHref(item.href) : undefined}
               >
                 {item.label}
               </a>
@@ -109,6 +114,50 @@ function isCurrent(href: string): boolean {
 
     <Footer />
     <ThemeToggle />
+    <CommandPalette />
+
+    {singlePage && (
+      <script is:inline>
+        // Scroll-spy: highlight the tab whose section is in view.
+        (() => {
+          const links = Array.from(
+            document.querySelectorAll('.nav-link[data-nav-anchor]')
+          );
+          const map = new Map();
+          for (const a of links) {
+            const anchor = a.getAttribute('data-nav-anchor');
+            if (!anchor) continue;
+            const sec = document.querySelector(anchor);
+            if (sec) map.set(sec, a);
+          }
+          if (map.size === 0) return;
+
+          function setCurrent(active) {
+            for (const a of links) {
+              if (a === active) a.setAttribute('aria-current', 'page');
+              else a.removeAttribute('aria-current');
+            }
+          }
+
+          const io = new IntersectionObserver(
+            (entries) => {
+              // pick the most-visible intersecting section
+              let best = null;
+              let bestRatio = 0;
+              for (const e of entries) {
+                if (e.isIntersecting && e.intersectionRatio > bestRatio) {
+                  bestRatio = e.intersectionRatio;
+                  best = e.target;
+                }
+              }
+              if (best && map.has(best)) setCurrent(map.get(best));
+            },
+            { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5, 1] }
+          );
+          for (const sec of map.keys()) io.observe(sec);
+        })();
+      </script>
+    )}
 
     <style>
       .skip-link {
@@ -146,14 +195,17 @@ function isCurrent(href: string): boolean {
       .site-header {
         display: flex;
         align-items: center;
-        padding: 2rem 3rem 2rem 6rem;
+        padding: 1.5rem 3rem 1.5rem 6rem;
         border-bottom: 1px solid var(--color-border);
-        position: relative;
-        z-index: 1;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+        backdrop-filter: blur(10px);
       }
       @media (max-width: 768px) {
         .site-header {
-          padding: 1.25rem 1rem 1.25rem 2.5rem;
+          padding: 1rem 1rem 1rem 2.5rem;
         }
       }
 
@@ -175,10 +227,19 @@ function isCurrent(href: string): boolean {
 
       .nav-list {
         display: flex;
-        gap: 2rem;
+        gap: 1.75rem;
         list-style: none;
         margin: 0;
         padding: 0;
+      }
+      @media (max-width: 768px) {
+        .nav-list {
+          gap: 1rem;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .nav-list::-webkit-scrollbar { display: none; }
       }
 
       .nav-link {
@@ -188,6 +249,7 @@ function isCurrent(href: string): boolean {
         color: var(--color-text-muted);
         position: relative;
         padding: 0.25rem 0;
+        white-space: nowrap;
         transition: color 150ms ease-out;
       }
       .nav-link::after {

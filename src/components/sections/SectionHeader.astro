@@ -1,0 +1,49 @@
+---
+// Numbered editorial section header used across the single-page scroll.
+interface Props {
+  number: string;
+  title: string;
+  em?: string;
+  subtitle?: string;
+}
+const { number, title, em, subtitle } = Astro.props;
+---
+
+<header class="sec-head">
+  <p class="sec-number">{number}</p>
+  <h2 class="sec-title">{title}{em && <em> {em}</em>}</h2>
+  {subtitle && <p class="sec-subtitle">{subtitle}</p>}
+</header>
+
+<style>
+  .sec-head {
+    margin: 0 0 2.5rem 0;
+  }
+  .sec-number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.12em;
+    margin: 0 0 0.5rem 0;
+  }
+  .sec-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0;
+  }
+  .sec-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+  .sec-subtitle {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 34rem;
+    margin: 1rem 0 0 0;
+  }
+</style>
