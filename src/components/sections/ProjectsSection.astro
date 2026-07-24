@@ -10,7 +10,7 @@ const projects = (await getCollection("projects")).sort(
 
 <section class="section" id="projects" aria-label="Projects">
   <SectionHeader
-    number="03"
+    number="02"
     title="Things I"
     em="build"
     subtitle="I start every project to learn one thing, and finish it having accidentally learned five."
@@ -34,27 +34,13 @@ const projects = (await getCollection("projects")).sort(
 </section>
 
 <style>
-  .section {
-    position: relative;
-    margin-bottom: 3.5rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--color-border);
-    scroll-margin-top: 5rem;
-  }
   .cards {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-width: 52rem;
-    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
   }
   /* One column on narrow screens. */
   @media (max-width: 600px) {
     .cards { grid-template-columns: 1fr; }
   }
-  .cards li { display: flex; }
   .summary {
     font-size: 0.9375rem;
     line-height: 1.5;

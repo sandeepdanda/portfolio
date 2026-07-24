@@ -1,10 +1,13 @@
 # Build plan - phased
 
-Living document. Updated as we ship each phase. Mark phases `DONE`, `WIP`, or `TODO`. Keep the "what changed" notes brief.
+Historical implementation log. Early phases describe components and routes that
+were later replaced by the current single-page design. `NORTH_STAR.md` is the
+authoritative current-state document.
 
 **Stack**: Astro 6 + Tailwind v4 + MDX, deployed to Cloudflare Pages.
 **Visual direction**: Editorial brutalist - serif headlines (Fraunces), warm amber accent, thin vertical rule on the left edge.
-**Signature interactions**: Typography-led pages + small build log strip in the footer.
+**Signature interactions**: Typography-led sections, scroll-spy navigation, and
+small brand marks.
 
 ---
 
@@ -19,7 +22,7 @@ Shipped:
 - Design tokens in `src/styles/global.css` (editorial brutalist palette)
 - `src/config.ts` - single source of truth for site metadata, nav, social
 - `src/layouts/Base.astro` - global shell with OG tags, skip link, vertical rule
-- `src/components/BuildLog.astro` - "built YYYY-MM-DD HH:MM · sha" strip
+- `src/components/BuildLog.astro` - "built YYYY-MM-DD HH:MM · sha" strip (later removed)
 - `src/components/Footer.astro` - warm two-line footer
 - `src/components/ThemeToggle.astro` - fixed bottom-right toggle with localStorage
 - `src/pages/index.astro` - typography-led homepage
@@ -37,7 +40,7 @@ Lessons learned:
 Shipped:
 - `src/content.config.ts` with `projects` collection typed by Zod schema
 - `src/lib/content.ts` - reading time + date helpers
-- `src/pages/projects.astro` - sorted project list pulled from collection
+- `src/pages/projects.astro` - sorted project list pulled from collection (later moved into the homepage section)
 - Five starter entries in `src/content/projects/`: not-another-rewatch, readloot, wellness-pro, fake-news-detection, reinforcement-learning
 
 Lessons learned:
@@ -52,10 +55,8 @@ Lessons learned:
 **Goal**: fill out the navigation. All routes return something real.
 
 Shipped:
-- `src/pages/about.astro` - bio, portrait, Get-in-touch contact list
-- `src/pages/experience.astro` - timeline of jobs (Amazon, Deloitte, Nucleus Software)
-- `src/pages/education.astro` - schools and gpas
-- `src/pages/projects.astro` - two-column grid pulling from `projects` collection
+- Separate About, Experience, Education, and Projects pages (later consolidated
+  into the single-page homepage)
 - `src/pages/404.astro` - three-link fallback
 
 Note: earlier drafts included a `work` collection with a single case study and a `/now` page. Both were removed in favor of an Experience page + richer per-project detail (see Phase 7). The case-study concept was killed in commit 14cd27e.
@@ -87,13 +88,13 @@ Shipped:
 - Heading audit: every page has exactly one H1
 - Contrast verified across tokens in both themes. Fixed light-mode focus ring from `#c89b3c` (2.6:1, fails WCAG 1.4.11) to `#6f4f1a` (>7:1) (CR: 256f7f8)
 - `:focus-visible` broadened from `a` only to `a, button, [role="button"], summary` (CR: 256f7f8)
-- Project card titles from `<span>` to `<h2>` for screen-reader document outline (CR: 256f7f8)
-- Visually-hidden `<h2>About</h2>` added to `/about` between hero and bio (CR: 256f7f8)
+- Project card titles promoted to headings for screen-reader document outlines
 - `.sr-only` utility class in `global.css`
 - ThemeToggle wraps `localStorage.setItem` in try/catch for Safari private mode
 - Footer `wave` emoji replaced with inline SVG hand (CR: 8248fbc)
 - Footer GitHub link now opens in new tab, consistent with other externals
-- `aria-current="page"` on active nav link
+- Active navigation state (later refined to `aria-current="location"` for
+  same-page sections)
 
 Agent audit (2026-04-24) confirmed:
 - Zero em dashes in copy
@@ -240,4 +241,5 @@ npm run preview
 - 2026-04-24: Phase 6 shipped. Fonts self-hosted via fontsource-variable. Portrait ships AVIF + WebP + JPG at 4 widths via Astro `<Picture>`.
 - 2026-04-24: Phase 7 shipped. Per-project detail pages at `/projects/<slug>` from MDX bodies. 5 new pages. Project summaries sharpened. About copy deduped against index.
 - 2026-06-26: Phase 9 Batch 2 shipped. `BrandMark.astro` brings hover micro-marks to Experience cards (Amazon smile arrow draw, Deloitte green-square pulse, Nucleus accent-ring spin). Inline SVG/CSS, reduced-motion safe. Browser-verified. Phase 8 (Cloudflare deploy) still open - left to manual run.
-- 2026-04-24: Phase 8 (deploy) queued with exact Cloudflare Pages setup values. Pending user approval for actual deploy.
+- 2026-04-24: Phase 8 deployment setup was queued. The site was later deployed
+  at `https://sandeepdanda.pages.dev`.

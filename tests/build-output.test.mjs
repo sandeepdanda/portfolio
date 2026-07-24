@@ -35,3 +35,40 @@ test("crawler sitemap and generated OG image use deployed assets", async () => {
   assert.match(robots, /Sitemap: https:\/\/sandeepdanda\.pages\.dev\/sitemap-index\.xml/);
   assert.ok(image.size > 0, "home OG image is empty");
 });
+
+test("homepage follows the professional-first section order", async () => {
+  const html = await read("dist/index.html");
+  const sectionOrder = [...html.matchAll(
+    /<section[^>]+id="(experience|projects|education|about)"/g,
+  )].map((match) => match[1]);
+  const navOrder = [...html.matchAll(
+    /data-nav-anchor="#(experience|projects|education|about)"/g,
+  )].map((match) => match[1]);
+
+  assert.deepEqual(sectionOrder, ["experience", "projects", "education", "about"]);
+  assert.deepEqual(navOrder, ["experience", "projects", "education", "about"]);
+});
+
+test("section numbers and compact education content stay aligned", async () => {
+  const html = await read("dist/index.html");
+  const section = (id, nextId) => html.slice(
+    html.indexOf(`id="${id}"`),
+    html.indexOf(`id="${nextId}"`),
+  );
+
+  assert.match(section("experience", "projects"), />01<\/p>/);
+  assert.match(section("projects", "education"), />02<\/p>/);
+  assert.match(section("education", "about"), />03<\/p>/);
+  assert.match(section("about", "__missing__"), />04<\/p>/);
+  assert.doesNotMatch(html, /Narayana Junior College|Aryabhatta Concept School/);
+});
+
+test("card headlines are semantic and 404 links target homepage sections", async () => {
+  const homepage = await read("dist/index.html");
+  const notFound = await read("dist/404.html");
+
+  assert.match(homepage, /<h3 class="headline"/);
+  assert.doesNotMatch(homepage, /<span class="headline"/);
+  assert.match(notFound, /href="\/#experience"/);
+  assert.match(notFound, /href="\/#about"/);
+});

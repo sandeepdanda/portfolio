@@ -38,12 +38,12 @@ const targetAttr = isExternal ? "_blank" : undefined;
       <span class="icon"><slot name="icon" /></span>
     )}
     <span class="label">{label}</span>
-    {showArrow && <span class="arrow" aria-hidden="true">↗</span>}
+    {showArrow && <span class="arrow" aria-hidden="true">{isExternal ? "↗" : "→"}</span>}
   </span>
 
   {headline && (
     <span class="headline-row">
-      <span class="headline">{headline}</span>
+      <h3 class="headline">{headline}</h3>
       {Astro.slots.has("mark") && (
         <span class="headline-mark"><slot name="mark" /></span>
       )}
@@ -143,6 +143,7 @@ const targetAttr = isExternal ? "_blank" : undefined;
     line-height: 1.1;
     color: var(--color-text);
     transition: color 150ms ease-out;
+    margin: 0;
   }
   /* Mark sits right of the name, vertically centered, no extra row height. */
   .headline-mark {

@@ -1,5 +1,9 @@
 # Single-page portfolio + scroll-spy tabs + command palette
 
+> Historical design proposal. The single-page layout and scroll-spy shipped.
+> The command palette and portrait were later removed, and detail pages retain
+> the shared navigation. See `NORTH_STAR.md` for the current direction.
+
 Date: 2026-07-16
 
 ## What
