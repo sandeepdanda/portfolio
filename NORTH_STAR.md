@@ -12,14 +12,14 @@ serif headlines, warm amber accent, thin left vertical rule).
 - **Stack:** Astro 6 + Tailwind v4 (via `@tailwindcss/vite`) + MDX, TypeScript
   strict. Deploys to Cloudflare Pages. **Requires Node 22.12+** (Homebrew's
   default `node` symlink may point at node@20 — use mise's 22).
-- **Shipped (Phases 1–7):** global shell, content collections for typed MDX
+- **Shipped:** global shell, content collections for typed MDX
   projects, About/Experience/Education/Projects pages, per-page OG images,
   JSON-LD, a11y pass, self-hosted fonts + responsive images, per-project detail
-  pages from MDX bodies.
-- **Phase 9 Batch 2 (new):** `BrandMark.astro` — brand-true hover micro-marks on
+  pages from MDX bodies, Cloudflare Pages deployment, single-page scroll-spy
+  navigation, and the About journey map.
+- **Brand marks:** `BrandMark.astro` - brand-true hover micro-marks on
   the Experience cards (Amazon smile-arrow draw, Deloitte green-square pulse,
-  Nucleus accent-ring spin). Inline SVG/CSS, no external assets, reduced-motion
-  safe, browser-verified.
+  Nucleus accent-ring spin), plus the Education card marks.
 
 ## The vision
 
@@ -29,18 +29,12 @@ template. Every animation earns its place; nothing is decoration.
 
 ## Next level — roadmap (highest value first)
 
-1. **Phase 8 — deploy (the real gap).** Cloudflare Pages Git integration:
-   framework Astro, build `npm run build`, output `dist`, `NODE_VERSION=22.12.0`.
-   Outward-facing → run by the human. Verify the BuildLog strip shows the real
-   commit SHA, then attach a custom domain.
-2. **Animation Batch 3 — education marks.** Buffalo snow drift, NIT torch
-   flicker, school underline sweep. Reuse the `BrandMark.astro` pattern.
-3. **Batch 4 — project motifs.** Film reel, coin flip, ECG heartbeat, scan line,
-   gridworld walk — one per project card.
-4. **Batches 5–6.** Contact-card interactions (envelope open, LinkedIn glow,
-   GitHub head-tilt) and the home-hero name shimmer + arrow draw-in.
-5. **About page refresh.** `docs/design/about-page-ideas.md` has directions
-   (photo strip, map + timeline, pull quotes) and a decision checklist.
+1. Add concrete, public-safe ownership and outcomes to Experience entries.
+2. Add screenshots, tradeoffs, and measured results to the strongest project
+   pages once those artifacts are available.
+3. Keep regression checks focused on metadata, responsive layout, navigation,
+   and the journey map.
+4. Add animation only when it clarifies identity or state.
 
 ## Constraints that don't change
 
@@ -50,8 +44,8 @@ template. Every animation earns its place; nothing is decoration.
 - CSS-first: `transform`/`opacity` only, no JS animation unless CSS can't do it.
 - Brand-true: honor each brand's own visual language; never invent. Public brand
   assets/hexes only.
-- Voice: no em dashes, no `leverage`/`utilize`/`facilitate`. Keep homepage HTML
-  under 10 KB. No hamburger menu, no testimonials unless real.
+- Voice: no em dashes, no `leverage`/`utilize`/`facilitate`. Keep transferred
+  homepage HTML under 10 KB gzip. No hamburger menu, no testimonials unless real.
 - Reject list (do not build): parallax, confetti, page transitions, cursor
   trails, typewriter H1.
 

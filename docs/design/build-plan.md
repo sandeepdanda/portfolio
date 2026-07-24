@@ -138,9 +138,11 @@ Shipped (CR: 1479e38):
 
 ---
 
-## Phase 8 - Deploy to Cloudflare Pages  `TODO`
+## Phase 8 - Deploy to Cloudflare Pages  `DONE`
 
 **Goal**: the site is live on a real URL.
+
+Shipped at `https://sandeepdanda.pages.dev`.
 
 Recommended path: **Cloudflare Pages UI Git integration** (over wrangler CLI or GitHub Actions). Reasons: zero YAML, automatic PR preview URLs posted to GitHub, `CF_PAGES_COMMIT_SHA` env var injected free (BuildLog reads this).
 
@@ -177,7 +179,7 @@ References:
 
 ---
 
-## Phase 9 - Brand micro-interactions (Batch 2)  `WIP`
+## Phase 9 - Brand micro-interactions  `DONE`
 
 **Goal**: brand-true hover marks on the Experience cards, per `docs/design/animations-todo.md`.
 
@@ -187,7 +189,9 @@ Shipped:
 - Every animation gated behind `prefers-reduced-motion: no-preference`; reduce mode shows the Amazon arc static.
 - Verified in browser (Playwright): all 3 marks render, Amazon arc dashoffset animates 80px -> 0 on hover, 0 console errors, build green (11 pages).
 
-Remaining batches (1 = chrome polish + portrait fade-in already shipped in earlier phases): Batch 3 education marks, 4 project motifs, 5 contact cards, 6 home hero.
+Shipped: scroll-spy underline, theme toggle, Experience marks, Education marks,
+and section entrance motion. The remaining motif ideas are optional, not a
+committed backlog.
 
 ---
 
@@ -196,17 +200,14 @@ Remaining batches (1 = chrome polish + portrait fade-in already shipped in earli
 - `/uses` page for tools and setup
 - Writing section if I commit to 4+ posts a year
 - Command palette (`cmd+k` style) if navigation gets busier
-- Per-page OG images (template exists in `src/pages/og/[...route].png.ts` but `Base.astro:17` currently hardcodes `/og/home.png`)
 - Movie recommendation card as a live widget on the index page
-- Brand-aware micro-animations on hover (Amazon smile arrow, Deloitte green dot, etc). See `docs/design/animations-todo.md` for the full list, principles, and ship order.
-- Extract shared `Card.astro` component (4 near-identical copies live in experience, education, projects, about today)
-- About page visual refresh. Current /about is honest but flat. Directions (photo strip, map + timeline, asymmetric grid, pull quotes, side annotations, favorites grid) captured in `docs/design/about-page-ideas.md` with references and a decision checklist.
+- Optional project and contact motifs from `docs/design/animations-todo.md`
 
 ---
 
 ## Notes to future self
 
-- Keep the homepage HTML under 10 KB. Measure on every change.
+- Keep transferred homepage HTML under 10 KB gzip. Measure on every change.
 - Do not add a hamburger menu. The 4 nav items fit on 360px.
 - Do not add testimonials unless they are real.
 - Voice check before shipping any copy: no em dashes, no `leverage`/`utilize`/`facilitate`, no "I'd be happy to".

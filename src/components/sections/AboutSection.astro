@@ -14,7 +14,7 @@ import { SOCIAL } from "../../config";
 
   <ul class="cards">
     <li>
-      <article class="card about-card">
+      <div class="card about-card">
         <div class="bio">
           <p>
             I grew up in Jalubavula, a village in Telangana you've never heard
@@ -29,17 +29,17 @@ import { SOCIAL } from "../../config";
             AI-tooling rabbit holes for fun.
           </p>
         </div>
-      </article>
+      </div>
     </li>
 
     <li>
-      <article class="card about-card">
+      <div class="card about-card">
         <JourneyMap />
-      </article>
+      </div>
     </li>
 
     <li>
-      <article class="card about-card links-card">
+      <div class="card about-card links-card">
         <p class="kicker">Say hi</p>
         <div class="connect-row">
       <a href={SOCIAL.github} target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="GitHub" data-tip="GitHub">
@@ -71,8 +71,9 @@ import { SOCIAL } from "../../config";
         </svg>
         <span class="sr-only copy-label">Copy</span>
       </button>
+          <span class="sr-only copy-status" aria-live="polite"></span>
         </div>
-      </article>
+      </div>
     </li>
   </ul>
 </section>
@@ -85,18 +86,22 @@ import { SOCIAL } from "../../config";
       e.stopPropagation();
       const value = btn.dataset.copy ?? "";
       const label = btn.querySelector<HTMLElement>(".copy-label");
+      const status = btn.parentElement?.querySelector<HTMLElement>(".copy-status");
       try {
         await navigator.clipboard.writeText(value);
         btn.classList.add("copied");
         btn.setAttribute("data-tip", "Copied");
         if (label) label.textContent = "Copied";
+        if (status) status.textContent = "Email address copied.";
       } catch {
         btn.setAttribute("data-tip", "Press ⌘C");
+        if (status) status.textContent = "Copy failed. Use the email link instead.";
       }
       setTimeout(() => {
         btn.classList.remove("copied");
         btn.setAttribute("data-tip", "Copy email");
         if (label) label.textContent = "Copy";
+        if (status) status.textContent = "";
       }, 1600);
     });
   });

@@ -10,11 +10,18 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  robots?: string;
   /** Single-page home enables the scroll-spy tab nav. Detail pages set false. */
   singlePage?: boolean;
 }
 
-const { title, description, ogImage, singlePage = false } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  robots = "index,follow",
+  singlePage = false,
+} = Astro.props;
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const pageDescription = description ?? SITE.description;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
@@ -58,6 +65,7 @@ function navHref(href: string): string {
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -67,8 +75,12 @@ function navHref(href: string): string {
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:alt" content={`${pageTitle} preview`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={`${pageTitle} preview`} />
 
     <!-- Fonts self-hosted via @fontsource-variable (imported in global.css). Preload critical weights. -->
     <link rel="preload" href={frauncesWoff2} as="font" type="font/woff2" crossorigin />
@@ -77,9 +89,12 @@ function navHref(href: string): string {
     <!-- Theme script: run before paint to avoid flash -->
     <script is:inline>
       const stored = localStorage.getItem("theme");
-      if (stored) {
-        document.documentElement.dataset.theme = stored;
-      }
+      document.documentElement.dataset.theme =
+        stored === "light" || stored === "dark"
+          ? stored
+          : matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark";
     </script>
   </head>
   <body>
@@ -91,20 +106,22 @@ function navHref(href: string): string {
     <header class="site-header">
       <nav class="nav" aria-label="Primary">
         <a href="/" class="brand">{SITE.name}</a>
-        <ul class="nav-list">
-          {NAV.map((item) => (
-            <li>
-              <a
-                href={navHref(item.href)}
-                class="nav-link"
-                data-nav-anchor={singlePage ? navHref(item.href) : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+        <div class="nav-tabs">
+          <ul class="nav-list">
+            {NAV.map((item) => (
+              <li>
+                <a
+                  href={navHref(item.href)}
+                  class="nav-link"
+                  data-nav-anchor={singlePage ? navHref(item.href) : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
           {singlePage && <span class="nav-indicator" aria-hidden="true"></span>}
-        </ul>
+        </div>
       </nav>
     </header>
 
@@ -120,11 +137,12 @@ function navHref(href: string): string {
         // Scroll-spy with a single underline that SLIDES to the active tab.
         (() => {
           const list = document.querySelector('.nav-list');
+          const tabs = document.querySelector('.nav-tabs');
           const indicator = document.querySelector('.nav-indicator');
           const links = Array.from(
             document.querySelectorAll('.nav-link[data-nav-anchor]')
           );
-          if (!list || !indicator || links.length === 0) return;
+          if (!list || !tabs || !indicator || links.length === 0) return;
 
           const map = new Map();
           for (const a of links) {
@@ -137,11 +155,11 @@ function navHref(href: string): string {
 
           let activeLink = links[0];
 
-          // Move the bar under a given link, measured against the nav-list box.
+          // Move the bar under a given link, measured against the tab viewport.
           function moveTo(link) {
             if (!link) return;
             const l = link.getBoundingClientRect();
-            const base = list.getBoundingClientRect();
+            const base = tabs.getBoundingClientRect();
             indicator.style.width = l.width + 'px';
             indicator.style.transform = 'translateX(' + (l.left - base.left) + 'px)';
             indicator.style.opacity = '1';
@@ -150,10 +168,21 @@ function navHref(href: string): string {
           function setCurrent(link) {
             activeLink = link;
             for (const a of links) {
-              if (a === link) a.setAttribute('aria-current', 'page');
+              if (a === link) a.setAttribute('aria-current', 'location');
               else a.removeAttribute('aria-current');
             }
-            moveTo(link);
+            const linkBox = link.getBoundingClientRect();
+            const listBox = list.getBoundingClientRect();
+            if (linkBox.left < listBox.left || linkBox.right > listBox.right) {
+              link.scrollIntoView({
+                behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                block: 'nearest',
+                inline: 'center'
+              });
+              requestAnimationFrame(() => moveTo(link));
+            } else {
+              moveTo(link);
+            }
           }
 
           const io = new IntersectionObserver(
@@ -177,6 +206,7 @@ function navHref(href: string): string {
             a.addEventListener('mouseenter', () => moveTo(a));
           });
           list.addEventListener('mouseleave', () => moveTo(activeLink));
+          list.addEventListener('scroll', () => moveTo(activeLink), { passive: true });
 
           // Recompute on resize / font load so the bar stays aligned.
           const recompute = () => moveTo(activeLink);
@@ -264,14 +294,20 @@ function navHref(href: string): string {
       }
 
       .nav-list {
-        position: relative;
         display: flex;
         gap: 1.75rem;
         list-style: none;
         margin: 0;
         padding: 0;
       }
+      .nav-tabs {
+        position: relative;
+        min-width: 0;
+      }
       @media (max-width: 768px) {
+        .nav-tabs {
+          flex: 1;
+        }
         .nav-list {
           gap: 1rem;
           overflow-x: auto;
@@ -294,7 +330,7 @@ function navHref(href: string): string {
       .nav-link:hover {
         color: var(--color-text);
       }
-      .nav-link[aria-current="page"] {
+      .nav-link[aria-current="location"] {
         color: var(--color-text);
       }
 

@@ -1,6 +1,7 @@
-# Animation ideas - TODO
+# Animation ideas
 
-Living list. Add, pick, implement in small batches. Every idea must earn its place: reinforces identity, not decoration.
+Reference list, not a committed backlog. Shipped ideas are marked below. Every
+new animation must reinforce identity or state rather than decorate.
 
 ## Principles
 
@@ -10,7 +11,7 @@ Living list. Add, pick, implement in small batches. Every idea must earn its pla
 - **Stagger, do not swarm.** Max one animation firing per user action.
 - **Performance.** Prefer `transform` + `opacity` over layout props. No JS-driven animation unless CSS cannot do it.
 
-## Experience page cards
+## Experience page cards - shipped
 
 ### Amazon - smile arrow
 
@@ -28,7 +29,7 @@ Deloitte logo uses a single green square/dot (`#86BC25`). On hover: pulse a smal
 
 Nucleus brand is a stylized nucleus circle. On hover: spin a thin ring (1px border) once, 360deg, 900ms ease. Border color = accent, not brand (brand color is dated maroon).
 
-## Education page cards
+## Education page cards - shipped
 
 ### Buffalo - snow
 
@@ -113,16 +114,16 @@ On first scroll into view: fade in + lift 8px, 600ms ease-out. Once per page loa
 - [ ] Axe scan after each batch - animations must not trigger accessibility warnings
 - [ ] Lighthouse performance score must not drop > 2 points from current baseline
 
-## Implementation order
+## Original implementation order
 
 Ship in this order so each batch is self-contained:
 
-1. **Batch 1 - Chrome polish** (low risk): nav underline sweep, theme toggle morph, portrait fade-in
-2. **Batch 2 - Experience brand marks**: Amazon smile, Deloitte dot, Nucleus ring. Introduces `BrandMark.astro`.
-3. **Batch 3 - Education brand marks**: Buffalo snow, NIT flame, underline sweep for schools.
-4. **Batch 4 - Projects motifs**: film reel, coin flip, heartbeat, scan line, gridworld.
-5. **Batch 5 - Contact cards**: envelope open, LinkedIn glow, GitHub head-tilt.
-6. **Batch 6 - Home hero**: name shimmer, arrow draw-in.
+1. **Shipped - Chrome polish**: nav underline and theme toggle.
+2. **Shipped - Experience brand marks**: Amazon smile, Deloitte dot, Nucleus ring.
+3. **Shipped - Education brand marks**: Buffalo snow, NIT flame, school underlines.
+4. **Optional - Projects motifs**: film reel, coin flip, heartbeat, scan line, gridworld.
+5. **Optional - Contact cards**: envelope, LinkedIn, and GitHub treatments.
+6. **Optional - Home hero**: name shimmer.
 
 Each batch = its own branch + its own CR.
 

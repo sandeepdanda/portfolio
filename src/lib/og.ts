@@ -1,11 +1,10 @@
 // Shared font + style options for OG image generation.
-// Build-time fonts are loaded over HTTPS by astro-og-canvas.
 import type { OGImageOptions } from "astro-og-canvas/dist/types";
 
 const FONT_FRAUNCES =
-  "https://cdn.jsdelivr.net/fontsource/fonts/fraunces:vf@latest/latin-wght-normal.woff2";
+  "./node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2";
 const FONT_INTER =
-  "https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2";
+  "./node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2";
 
 export function buildOGOptions(
   title: string,

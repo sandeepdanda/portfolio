@@ -10,6 +10,26 @@
   <a href="https://github.com/sandeepdanda"><img src="https://img.shields.io/badge/GitHub-sandeepdanda-181717?style=flat&logo=github&logoColor=white" /></a>
 </p>
 
+## Local development
+
+The portfolio is an Astro 6 static site deployed to Cloudflare Pages.
+
+```bash
+nvm use
+npm ci
+npm run dev
+```
+
+Before pushing to `main`, run:
+
+```bash
+npm run verify
+```
+
+That command builds every page and Open Graph image, then checks canonical URLs,
+social metadata, crawler configuration, 404 indexing, and navigation structure.
+The production output is written to `dist/`.
+
 ---
 
 ```python

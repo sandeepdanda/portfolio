@@ -82,7 +82,7 @@
     position: absolute;
     transition: opacity 300ms ease-out, transform 300ms ease-out;
   }
-  /* Default (no data-theme = dark preferred): moon visible, sun hidden */
+  /* The head script always sets data-theme before first paint. */
   .icon-sun {
     opacity: 0;
     transform: rotate(-90deg);
